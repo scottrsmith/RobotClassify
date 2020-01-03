@@ -10,4 +10,7 @@ DEBUG = True
 
 
 # TODO IMPLEMENT DATABASE URL
-SQLALCHEMY_DATABASE_URI = 'postgresql://scottsmith@localhost:5432/fyyur'
+database_path = os.environ['DATABASE_URL']
+
+SQLALCHEMY_DATABASE_URI = database_path
+

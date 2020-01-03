@@ -47,7 +47,7 @@ csrf = CSRFProtect(app)
 
 
 #----------------------------------------------------------------------------#
-# Filters.
+# Filters..
 #----------------------------------------------------------------------------#
 def format_datetime(value, format='medium'):
   date = dateutil.parser.parse(value)

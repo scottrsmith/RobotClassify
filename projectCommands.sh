@@ -234,15 +234,15 @@ aws ec2 describe-network-interfaces --filters 'Name=vpc-id,Values='$vpc  --regio
 InternetGateway, VPC, SubnetPublicUSWEST2B, VPCGatewayAttachment
 
 # Heroku
-# https://herocoolkids.herokuapp.com/ | https://git.heroku.com/herocoolkids.git
+# https://robotclassify.herokuapp.com/ | https://git.heroku.com/robotclassify.git
 #
 # 
-keroku create herocoolkids.git
-# Returns:  https://herocoolkids.herokuapp.com/ | https://git.heroku.com/herocoolkids.git
-git remote add heroku https://git.heroku.com/herocoolkids.git
-heroku addons:create heroku-postgresql:hobby-dev --app herocoolkids
-heroku config --app herocoolkids
+keroku create robotclassify
+# Returns:  https://robotclassify.herokuapp.com/ | https://git.heroku.com/robotclassify.git
+git remote add heroku https://git.heroku.com/robotclassify.git
+heroku addons:create heroku-postgresql:hobby-dev --app robotclassify
+heroku config --app robotclassify
 # DATABASE_URL: postgres://ulshqjhulusupi:8c7f63bcc8fa70086de2cff1fb935690100ef1a213bd0f71a490883e5bddf3ed@ec2-174-129-33-13.compute-1.amazonaws.com:5432/d754q9aeqj9oqv
 git push heroku master
-heroku run python manage.py db upgrade --app herocoolkids
+heroku run python manage.py db upgrade --app robotclassify
 
