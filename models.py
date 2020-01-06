@@ -1,3 +1,13 @@
+"""
+**Introduction**
+
+There are three models:
+- Venue
+- Artists
+- Shows
+
+"""
+
 #----------------------------------------------------------------------------#
 # Models..
 #----------------------------------------------------------------------------#
@@ -17,12 +27,27 @@ def connectToDB(app):
 
 # ----- Define the Venue Table Class
 class Venue(db.Model):
+    '''
+    Venue
+    A list of venues that artist can play at.
+    '''
     
     __tablename__ = 'Venue'
 
     id = db.Column(db.Integer, primary_key=True)
+    '''*id* is the auto assigned primary key.
+        Type: Integer, Primary key. Required.
+    '''
     name = db.Column(db.String)
+    '''
+    name, String, Required
+    The name of the venue
+    '''
     city = db.Column(db.String(120))
+    '''
+    City, String, Required
+    The name of the city
+    '''
     state = db.Column(db.String(120))
     address = db.Column(db.String(120))
     phone = db.Column(db.String(120))
@@ -85,13 +110,35 @@ class Venue(db.Model):
    
 
 class Artist(db.Model):
-  
+    '''
+    Artist
+    A list of Artist that can play at venues.
+    '''
+ 
     __tablename__ = 'Artist'
  
     id = db.Column(db.Integer, primary_key=True)
+    '''*id* is the auto assigned primary key.
+        Type: Integer, Primary key. Required.
+    '''
+    
     name = db.Column(db.String)
+    '''
+    name, String, Required
+    The name of the Artist
+    '''
+ 
     city = db.Column(db.String(120))
+    '''
+    city, String, Required
+    The city of the artist
+    '''
+ 
     state = db.Column(db.String(120))
+    '''
+    state, String, Required
+    The state of the artist
+    '''
     phone = db.Column(db.String(120))
     website = db.Column(db.String(500))
     genres = db.Column(db.ARRAY(db.String))
@@ -134,10 +181,24 @@ class Artist(db.Model):
 # Show records are dependent upon their parent records of venue and artist IDs. 
 # There can be no Show records on their own
 class Show(db.Model):
+    '''
+    Show
+    A list of Shows for venues and artists.
+    '''
   
     __tablename__ = 'Show'
     venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    '''
+    venue_id, Integer, Required, part of the primary key
+    The auto-assigned id of the venue
+    '''
+ 
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    '''
+    artist_id, Integer, Required, part of the primary key
+    The auto-assigned id of the artist
+    '''
+
     start_time = db.Column(db.DateTime, primary_key=True, nullable=False)
     Venue = db.relationship('Venue', backref=db.backref('Shows', cascade='all, delete-orphan'))
     Artist = db.relationship('Artist', backref=db.backref('Shows', cascade='all, delete-orphan'))
