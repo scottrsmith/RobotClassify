@@ -1,5 +1,5 @@
 # Requjirements.txt
-pip34 freeze > requirements.txt
+pip3 freeze > requirements.txt
 # or, only modules used.
 pipreqs --force . 
 
@@ -242,7 +242,20 @@ keroku create robotclassify
 git remote add heroku https://git.heroku.com/robotclassify.git
 heroku addons:create heroku-postgresql:hobby-dev --app robotclassify
 heroku config --app robotclassify
-# DATABASE_URL: postgres://ulshqjhulusupi:8c7f63bcc8fa70086de2cff1fb935690100ef1a213bd0f71a490883e5bddf3ed@ec2-174-129-33-13.compute-1.amazonaws.com:5432/d754q9aeqj9oqv
+# DATABASE_URL: postgres://qvkifkfipufjnh:718a3891226432160f9b4e82ae25eec0af091e3594cde17db016548d74e55045@ec2-174-129-32-212.compute-1.amazonaws.com:5432/d8k8ns1lsffrjs
+
 git push heroku master
 heroku run python manage.py db upgrade --app robotclassify
 
+
+#
+# MIGTRATIONS 
+#  1. Add code to config: migrate = Migrate(app, db)
+# Create flask migrtations folder
+flask db init
+# 
+# Create version in version folder
+flask db migrate
+#
+# run the upgrade
+flask db upgrade
