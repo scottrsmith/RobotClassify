@@ -8,9 +8,4 @@ DEBUG = True
 
 # Connect to the database
 
-
-# TODO IMPLEMENT DATABASE URL
-database_path = os.environ['DATABASE_URL']
-
-SQLALCHEMY_DATABASE_URI = database_path
-
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
