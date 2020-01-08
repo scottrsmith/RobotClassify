@@ -98,6 +98,7 @@ def after_request(response):
 
 # Auth0 security setup
 
+
 AUTH0_DOMAIN = 'dev-p35ewo73.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'robotclassify'
@@ -111,7 +112,7 @@ AUTH0_CALLBACK_URL = env.get(config.AUTH0_CALLBACK_URL)
 AUTH0_CLIENT_ID = env.get(config.AUTH0_CLIENT_ID)
 AUTH0_CLIENT_SECRET = env.get(config.AUTH0_CLIENT_SECRET)
 AUTH0_DOMAIN = env.get(config.AUTH0_DOMAIN)
-AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
+AUTH0_BASE_URL = 'https://dev-p35ewo73.auth0.com'
 AUTH0_AUDIENCE = env.get(config.AUTH0_AUDIENCE)
 
 
@@ -340,7 +341,7 @@ def index():
         - Sample Call::
 
             curl -X GET http://localhost:5000/
-
+0
 
         - Expected Success Response::
 
