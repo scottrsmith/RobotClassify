@@ -243,7 +243,7 @@ def requires_auth(permission=''):
 
             
             # Save the URL 'state' for redirects
-            session['state'] = request.full_path
+            # session['state'] = request.full_path
 
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
@@ -290,7 +290,8 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/callback')
 def callback_handling():
-    auth0.authorize_access_token()
+    token = auth0.authorize_access_token()
+    #dumpObj(token)
     resp = auth0.get('userinfo')
     #dumpObj(resp,name='userinfo ')
     #dumpObj(auth0,name='call back auto0 object ')
@@ -305,6 +306,7 @@ def callback_handling():
     }
     session['token'] = auth0.token
 
+    # Check to see of the redirected URL was saved to redirect back after login
     if 'state' in session:
         return redirect(session['state'])
     else:
