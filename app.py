@@ -243,7 +243,7 @@ def requires_auth(permission=''):
 
             
             # Save the URL 'state' for redirects
-            # session['state'] = request.full_path
+            session['state'] = request.full_path
 
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
