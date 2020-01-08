@@ -21,10 +21,16 @@ With the following API permissions:
 # Imports
 #----------------------------------------------------------------------------#
 import json
+from os import environ as env
+from werkzeug.exceptions import HTTPException
+from dotenv import load_dotenv, find_dotenv
+from authlib.flask.client import OAuth
+
 import dateutil.parser
 import babel
 import sys
-from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort
+from flask import Flask, render_template, request, Response, flash, redirect
+from flask import url_for, abort, session, jsonify, Blueprint, Request
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -35,9 +41,17 @@ from flask_wtf import Form
 from flask_cors import CORS
 
 
+from six.moves.urllib.parse import urlencode
+
+from functools import wraps
+from jose import jwt
+from urllib.request import urlopen
+
+
 from forms import *
 from models import *
-from auth import requires_auth
+
+import config
 
 
 #----------------------------------------------------------------------------#
@@ -45,13 +59,15 @@ from auth import requires_auth
 #    dump: print out the contents of an object
 #----------------------------------------------------------------------------#
 
-def dumpObj(obj):
+def dumpObj(obj, name='None'):
+  print ('\n\nDump of object...{}'.format(name))
   for attr in dir(obj):
-    print("obj.%s = %r" % (attr, getattr(obj, attr)))
+    print("    obj.%s = %r" % (attr, getattr(obj, attr)))
 
-def dumpData(obj):
+def dumpData(obj, name='None'):
+  print ('\n\nDump of data...{}'.format(name))
   for attr in obj:
-    print("data.%s = %r" % (attr, obj[attr]))
+    print("    data.%s = %r" % (attr, obj[attr]))
 
 
 #----------------------------------------------------------------------------#
@@ -68,6 +84,7 @@ migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
 CORS(app)
 
+
 # CORS Headers
 
 @app.after_request
@@ -78,6 +95,170 @@ def after_request(response):
                          'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+# Auth0 security setup
+
+AUTH0_DOMAIN = 'dev-p35ewo73.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'robotclassify'
+
+
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+
+AUTH0_CALLBACK_URL = env.get(config.AUTH0_CALLBACK_URL)
+AUTH0_CLIENT_ID = env.get(config.AUTH0_CLIENT_ID)
+AUTH0_CLIENT_SECRET = env.get(config.AUTH0_CLIENT_SECRET)
+AUTH0_DOMAIN = env.get(config.AUTH0_DOMAIN)
+AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
+AUTH0_AUDIENCE = env.get(config.AUTH0_AUDIENCE)
+
+
+oauth = OAuth(app)
+
+auth0= oauth.register(
+    'auth0',
+    client_id=AUTH0_CLIENT_ID,
+    client_secret=AUTH0_CLIENT_SECRET,
+    api_base_url=AUTH0_BASE_URL,
+    access_token_url=AUTH0_BASE_URL + '/oauth/token',
+    authorize_url=AUTH0_BASE_URL + '/authorize',
+    client_kwargs={
+        'scope': 'openid profile email',
+    },
+)
+
+#----------------------------------------------------------------------------#
+# auth setup
+#----------------------------------------------------------------------------#
+
+
+
+# Auth Header
+
+# def get_token_auth_header():
+#   raise Exception('Not Implemented')
+
+def get_token_auth_header():
+    """Obtains the Access Token from the Authorization Header
+    """
+
+    # auth = request.headers.get('Authorization', None)
+    auth = session.get('token', None)
+    
+
+    if not auth:
+        abort(401, 'Authorization header is expected.')
+
+    if 'access_token' not in auth:
+        abort(401, 'Token not found.')
+
+    elif auth['token_type'] != 'Bearer':
+        abort(401, 'Authorization header must start with "Bearer".')
+
+    return auth['access_token']
+
+
+# ----------------------------------------------------------------------------#
+#  Raise an AuthError if permissions are not included in the payload
+#
+#  INPUTS
+#     permission: string permission (i.e. 'post:admin')
+#        payload: decoded jwt payload
+# ----------------------------------------------------------------------------#
+
+def check_permissions(permission, payload):
+    if 'permissions' not in payload:
+        abort(400, 'Permissions not included in JWT.')
+
+    if permission not in payload['permissions']:
+        abort(401, 'Permission not found.')
+
+    return True
+
+
+# ----------------------------------------------------------------------------#
+# verify_decode_jwt(token) method
+# INPUTS
+#    token: a json web token (string)
+# Returns:
+#     decoded payload
+# ----------------------------------------------------------------------------#
+
+def verify_decode_jwt(token):
+    jsonurl = urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
+    jwks = json.loads(jsonurl.read())
+    unverified_header = jwt.get_unverified_header(token)
+    rsa_key = {}
+
+    if 'kid' not in unverified_header:
+        raise AuthError({'code': 'invalid_header',
+                        'description': 'Authorization malformed.'}, 401)
+
+    for key in jwks['keys']:
+        if key['kid'] == unverified_header['kid']:
+            rsa_key = {
+                'kty': key['kty'],
+                'kid': key['kid'],
+                'use': key['use'],
+                'n': key['n'],
+                'e': key['e'],
+                }
+    if rsa_key:
+        try:
+            payload = jwt.decode(token, rsa_key, algorithms=ALGORITHMS,
+                                 audience=API_AUDIENCE,
+                                 issuer='https://' + AUTH0_DOMAIN + '/')
+
+            return payload
+        except jwt.ExpiredSignatureError:
+
+            abort(401, 'Token expired.')
+        except jwt.JWTClaimsError:
+
+            abort(401,
+                  'Incorrect claims. Please, check the audience and issuer.'
+                  )
+        except Exception:
+
+            abort(400, 'Unable to parse authentication token.')
+
+    abort(400, 'Unable to find the appropriate key.')
+
+
+# ----------------------------------------------------------------------------#
+#  @requires_auth(permission) decorator method
+#  INPUTS
+#     permission: string permission (i.e. 'post:admin')
+#
+# ----------------------------------------------------------------------------#
+
+def requires_auth(permission=''):
+    def requires_auth_decorator(f):
+        
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+
+            
+            # Save the URL 'state' for redirects
+            session['state'] = request.full_path
+
+            if config.PROFILE_KEY not in session:
+                return redirect('/login')
+            token = get_token_auth_header()
+            try:
+                payload = verify_decode_jwt(token)
+            except Exception:
+                abort(401)
+            check_permissions(permission, payload)
+            
+            return f( *args, **kwargs)
+            #return f(payload, *args, **kwargs)
+        return wrapper
+
+    return requires_auth_decorator
+
 
 
 
@@ -95,9 +276,55 @@ def format_datetime(value, format='medium'):
 app.jinja_env.filters['datetime'] = format_datetime
 
 
+
 #----------------------------------------------------------------------------
 # Controllers.
 #----------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#  Account and Session security
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+
+@app.route('/callback')
+def callback_handling():
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    #dumpObj(resp,name='userinfo ')
+    #dumpObj(auth0,name='call back auto0 object ')
+    #dumpData(auth0)
+    userinfo = resp.json()
+    
+    session[config.JWT_PAYLOAD] = userinfo
+    session[config.PROFILE_KEY] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture']
+    }
+    session['token'] = auth0.token
+
+    if 'state' in session:
+        return redirect(session['state'])
+    else:
+        return redirect('/')
+
+
+@app.route('/login')
+def login():
+    # print (dumpObj(session))
+    # print (dumpData(session))
+    
+    return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL
+                                    , audience=AUTH0_AUDIENCE)
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    params = {'returnTo': url_for('index', _external=True), 'client_id': AUTH0_CLIENT_ID}
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+
 
 
 #----------------------------------------------------------------------------
@@ -137,6 +364,8 @@ def index():
     return render_template('pages/home.html')
 
 
+
+
 #----------------------------------------------------------------------------
 #----------------------------------------------------------------------------
 #  Venues
@@ -148,6 +377,7 @@ def index():
 #  List Venues
 #----------------------------------------------------------------------------
 @app.route('/venues')
+@requires_auth('get:admin')
 def venues():
     """
         **List Venues**
@@ -188,6 +418,7 @@ def venues():
 #  Search Venues
 #  ----------------------------------------------------------------
 @app.route('/venues/search', methods=['POST'])
+@requires_auth('get:admin')
 def search_venues():
     """
         **Search Venues**
@@ -236,6 +467,7 @@ def search_venues():
 #  Show single Venue
 #  ----------------------------------------------------------------
 @app.route('/venues/<int:venue_id>')
+@requires_auth('get:admin')
 def show_venue(venue_id):
     """
         **Venue**
@@ -275,8 +507,8 @@ def show_venue(venue_id):
 #----------------------------------------------------------------------------
 #  Create Venue
 #----------------------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/venues/create', methods=['GET'])
+@requires_auth('get:admin')
 def create_venue_form():
     """
         **Create Venue**
@@ -313,8 +545,8 @@ def create_venue_form():
 
 
 # Process the create request
-@requires_auth('post:admin')
 @app.route('/venues/create', methods=['POST'])
+@requires_auth('post:admin')
 def create_venue_submission():
     """
         **Create Venue**
@@ -364,8 +596,8 @@ def create_venue_submission():
 #----------------------------------------------------------------------------
 #  Delete Venue
 #----------------------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/venues/<venue_id>/delete', methods=['get'])
+@requires_auth('get:admin')
 def delete_venue(venue_id):
     """
         **Delete Venue**
@@ -410,8 +642,8 @@ def delete_venue(venue_id):
 # ----------------------------------------------------------------
 #  Edit Venue
 # ----------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/venues/<int:venue_id>/edit', methods=['GET','POST'])
+@requires_auth('get:admin')
 def edit_venue_submission(venue_id):
     """
         **Edit Venue**
@@ -475,6 +707,7 @@ def edit_venue_submission(venue_id):
 #  List Artists
 #  ----------------------------------------------------------------
 @app.route('/artists')
+@requires_auth('get:admin')
 def artists():
     """
         ** List Artists**
@@ -514,6 +747,7 @@ def artists():
 #  Search Artists
 #  ----------------------------------------------------------------
 @app.route('/artists/search', methods=['POST'])
+@requires_auth('get:admin')
 def search_artists():
     """
         **Search Artists**
@@ -557,6 +791,7 @@ def search_artists():
 #  ----------------------------------------------------------------
 
 @app.route('/artists/<int:artist_id>')
+@requires_auth('get:admin')
 def show_artist(artist_id):
     """
         **Show single Artistt**
@@ -595,8 +830,8 @@ def show_artist(artist_id):
 #  ----------------------------------------------------------------
 #  Create Artist
 #  ----------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/artists/create', methods=['GET'])
+@requires_auth('get:admin')
 def create_artist_form():
     """
         **Get Artist**
@@ -632,8 +867,8 @@ def create_artist_form():
     return render_template('forms/new_artist.html', form=form) 
 
 
-@requires_auth('post:admin')
 @app.route('/artists/create', methods=['POST'])
+@requires_auth('post:admin')
 def create_artist_submission():
     """
         **Create an Artist**
@@ -686,8 +921,8 @@ def create_artist_submission():
 #  ----------------------------------------------------------------
 #  Edit Artist
 #  ----------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/artists/<int:artist_id>/edit', methods=['GET','POST'])
+@requires_auth('get:admin')
 def edit_artist_submission(artist_id):
     """
         **Edit Artists Information**
@@ -750,8 +985,8 @@ def edit_artist_submission(artist_id):
 #----------------------------------------------------------------------------
 #  Delete Artist
 #----------------------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/artists/<artist_id>/delete', methods=['get'])
+@requires_auth('get:admin')
 def delete_artist(artist_id):
     """
         **Delete an artist**
@@ -806,6 +1041,7 @@ def delete_artist(artist_id):
 #  List Shows
 #  ----------------------------------------------------------------
 @app.route('/shows')
+@requires_auth('get:admin')
 def shows():
     """
         **List of Shows**
@@ -844,8 +1080,8 @@ def shows():
 #----------------------------------------------------------------------------
 #  Create Show
 #----------------------------------------------------------------------------
-@requires_auth('get:admin')
 @app.route('/shows/create', methods=['GET'])
+@requires_auth('get:admin')
 def create_shows():
     """
         **Show a show**
@@ -879,8 +1115,8 @@ def create_shows():
     form = ShowForm()
     return render_template('forms/new_show.html', form=form)
 
-@requires_auth('get:admin')
 @app.route('/shows/create', methods=['POST'])
+@requires_auth('get:admin')
 def create_show_submission():
     """
         **Create Show submission**
