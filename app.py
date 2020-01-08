@@ -108,12 +108,12 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-AUTH0_CALLBACK_URL = env.get(config.AUTH0_CALLBACK_URL)
-AUTH0_CLIENT_ID = env.get(config.AUTH0_CLIENT_ID)
-AUTH0_CLIENT_SECRET = env.get(config.AUTH0_CLIENT_SECRET)
-AUTH0_DOMAIN = env.get(config.AUTH0_DOMAIN)
+AUTH0_CALLBACK_URL = str(env.get(config.AUTH0_CALLBACK_URL))
+AUTH0_CLIENT_ID = str(env.get(config.AUTH0_CLIENT_ID))
+AUTH0_CLIENT_SECRET = str(env.get(config.AUTH0_CLIENT_SECRET))
+AUTH0_DOMAIN = str(env.get(config.AUTH0_DOMAIN))
 AUTH0_BASE_URL = 'https://dev-p35ewo73.auth0.com'
-AUTH0_AUDIENCE = env.get(config.AUTH0_AUDIENCE)
+AUTH0_AUDIENCE = str(env.get(config.AUTH0_AUDIENCE))
 
 
 oauth = OAuth(app)
