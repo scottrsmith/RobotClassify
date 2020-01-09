@@ -245,24 +245,24 @@ def requires_auth(permission=''):
 
             
             # Save the URL 'state' for redirects
-            session['state'] = request.full_path
-            if 'Count' in session:
-                session['Count'] += 1
-                print ('    session[Count] += 1 is ', session['Count'])
-            session.modified = True
+            #session['state'] = request.full_path
+            #if 'Count' in session:
+            #    session['Count'] += 1
+            #   print ('    session[Count] += 1 is ', session['Count'])
+            #session.modified = True
 
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
 
-            token = get_token_auth_header()
-            try:
-                payload = verify_decode_jwt(token)
-            except Exception:
-                abort(401)
-            check_permissions(permission, payload)
+            #token = get_token_auth_header()
+            #try:
+            #    payload = verify_decode_jwt(token)
+            #except Exception:
+            #    abort(401)
+            #check_permissions(permission, payload)
             
             #return f( *args, **kwargs)
-            return f(payload, *args, **kwargs)
+            return f(None, *args, **kwargs)
         return wrapper
 
     return requires_auth_decorator
@@ -308,8 +308,8 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    session['token'] = auth0.token
-    session.modified = True
+    #session['token'] = auth0.token
+    #session.modified = True
 
     # Check to see of the redirected URL was saved to redirect back after login
     if 'state' in session:
@@ -324,8 +324,8 @@ def login():
     # print (dumpData(session))
     # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
     flash('You are now logged in!')
-    session['Count'] = 1
-    print ('    session[Count] = 1')
+    #session['Count'] = 1
+    #print ('    session[Count] = 1')
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
