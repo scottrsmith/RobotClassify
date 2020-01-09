@@ -77,7 +77,7 @@ def dumpData(obj, name='None'):
 
 app = Flask(__name__)
 moment = Moment(app)
-app.config.from_object('config')
+#app.config.from_object('config')
 
 # open/Connect to a local postgresql database
 db = connectToDB(app)
@@ -117,13 +117,7 @@ def getEnvVars(first=None, second=None, third=None):
     else:
         return first
     
-print ('constants.AUTH0_CALLBACK_URL=',config.AUTH0_CALLBACK_URL)
-print ('constants.AUTH0_CLIENT_ID=',config.AUTH0_CLIENT_ID)
-print ('constants.AUTH0_CLIENT_SECRET=',config.AUTH0_CLIENT_SECRET)
-print ('constants.AUTH0_DOMAIN=',config.AUTH0_DOMAIN)
-print ('constants.AUTH0_AUDIENCE=',config.AUTH0_AUDIENCE)
-
-
+# Get environment variables, priority order: OS Env, .env, config.opy
 AUTH0_CALLBACK_URL = getEnvVars(os.getenv('AUTH0_CALLBACK_URL'), \
                                 env.get('AUTH0_CALLBACK_URL'), \
                                 config.AUTH0_CALLBACK_URL)
@@ -283,13 +277,15 @@ def requires_auth(permission=''):
         def wrapper(*args, **kwargs):
 
             
-            # Save the URL 'state' for redirects
-            #session['state'] = request.full_path
+            # Save the URL 'redirect_url' 
+            session['redirect_url'] = request.full_path
+            session.modified = True
+
+
             #if 'Count' in session:
             #    session['Count'] += 1
             #   print ('    session[Count] += 1 is ', session['Count'])
-            #session.modified = True
-
+            
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
 
@@ -351,8 +347,8 @@ def callback_handling():
     #session.modified = True
 
     # Check to see of the redirected URL was saved to redirect back after login
-    if 'state' in session:
-        return redirect(session['state'])
+    if 'redirect_url' in session:
+        return redirect(session['redirect_url'])
     else:
         return redirect('/')
 
