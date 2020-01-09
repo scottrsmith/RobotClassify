@@ -246,6 +246,7 @@ def requires_auth(permission=''):
             
             # Save the URL 'state' for redirects
             session['state'] = request.full_path
+            session.modified = True
 
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
@@ -305,6 +306,7 @@ def callback_handling():
         'picture': userinfo['picture']
     }
     session['token'] = auth0.token
+    session.modified = True
 
     # Check to see of the redirected URL was saved to redirect back after login
     if 'state' in session:
