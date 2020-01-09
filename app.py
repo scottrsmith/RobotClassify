@@ -82,6 +82,7 @@ app.config.from_object('config')
 db = connectToDB(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
+# CORS(app, supports_credentials=True)
 CORS(app)
 
 
@@ -90,7 +91,8 @@ CORS(app)
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
-                         'Content-Type,Authorization,true')
+    #                     'Content-Type,Authorization,true')
+                         '*')
     response.headers.add('Access-Control-Allow-Methods',
                          'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -247,6 +249,7 @@ def requires_auth(permission=''):
 
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
+
             token = get_token_auth_header()
             try:
                 payload = verify_decode_jwt(token)
@@ -314,7 +317,7 @@ def callback_handling():
 def login():
     # print (dumpObj(session))
     # print (dumpData(session))
-    print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
+    # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
