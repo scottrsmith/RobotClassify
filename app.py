@@ -257,8 +257,8 @@ def requires_auth(permission=''):
                 abort(401)
             check_permissions(permission, payload)
             
-            return f( *args, **kwargs)
-            #return f(payload, *args, **kwargs)
+            #return f( *args, **kwargs)
+            return f(payload, *args, **kwargs)
         return wrapper
 
     return requires_auth_decorator
@@ -318,6 +318,7 @@ def login():
     # print (dumpObj(session))
     # print (dumpData(session))
     # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
+    flash('You are now logged in!')
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
@@ -325,6 +326,7 @@ def login():
 def logout():
     session.clear()
     params = {'returnTo': url_for('index', _external=True), 'client_id': AUTH0_CLIENT_ID}
+    flash('You are now logged out')
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 
@@ -380,7 +382,7 @@ def index():
 #----------------------------------------------------------------------------
 @app.route('/venues')
 @requires_auth('get:admin')
-def venues():
+def venues(payload):
     """
         **List Venues**
 
@@ -421,7 +423,7 @@ def venues():
 #  ----------------------------------------------------------------
 @app.route('/venues/search', methods=['POST'])
 @requires_auth('get:admin')
-def search_venues():
+def search_venues(payload):
     """
         **Search Venues**
 
@@ -470,7 +472,7 @@ def search_venues():
 #  ----------------------------------------------------------------
 @app.route('/venues/<int:venue_id>')
 @requires_auth('get:admin')
-def show_venue(venue_id):
+def show_venue(payload, venue_id):
     """
         **Venue**
 
@@ -511,7 +513,7 @@ def show_venue(venue_id):
 #----------------------------------------------------------------------------
 @app.route('/venues/create', methods=['GET'])
 @requires_auth('get:admin')
-def create_venue_form():
+def create_venue_form(payload):
     """
         **Create Venue**
 
@@ -549,7 +551,7 @@ def create_venue_form():
 # Process the create request
 @app.route('/venues/create', methods=['POST'])
 @requires_auth('post:admin')
-def create_venue_submission():
+def create_venue_submission(payload):
     """
         **Create Venue**
 
@@ -600,7 +602,7 @@ def create_venue_submission():
 #----------------------------------------------------------------------------
 @app.route('/venues/<venue_id>/delete', methods=['get'])
 @requires_auth('get:admin')
-def delete_venue(venue_id):
+def delete_venue(payload, venue_id):
     """
         **Delete Venue**
 
@@ -646,7 +648,7 @@ def delete_venue(venue_id):
 # ----------------------------------------------------------------
 @app.route('/venues/<int:venue_id>/edit', methods=['GET','POST'])
 @requires_auth('get:admin')
-def edit_venue_submission(venue_id):
+def edit_venue_submission(payload, venue_id):
     """
         **Edit Venue**
 
@@ -710,7 +712,7 @@ def edit_venue_submission(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 @requires_auth('get:admin')
-def artists():
+def artists(payload):
     """
         ** List Artists**
 
@@ -750,7 +752,7 @@ def artists():
 #  ----------------------------------------------------------------
 @app.route('/artists/search', methods=['POST'])
 @requires_auth('get:admin')
-def search_artists():
+def search_artists(payload):
     """
         **Search Artists**
 
@@ -794,7 +796,7 @@ def search_artists():
 
 @app.route('/artists/<int:artist_id>')
 @requires_auth('get:admin')
-def show_artist(artist_id):
+def show_artist(payload, artist_id):
     """
         **Show single Artistt**
 
@@ -834,7 +836,7 @@ def show_artist(artist_id):
 #  ----------------------------------------------------------------
 @app.route('/artists/create', methods=['GET'])
 @requires_auth('get:admin')
-def create_artist_form():
+def create_artist_form(payload):
     """
         **Get Artist**
 
@@ -871,7 +873,7 @@ def create_artist_form():
 
 @app.route('/artists/create', methods=['POST'])
 @requires_auth('post:admin')
-def create_artist_submission():
+def create_artist_submission(payload):
     """
         **Create an Artist**
 
@@ -925,7 +927,7 @@ def create_artist_submission():
 #  ----------------------------------------------------------------
 @app.route('/artists/<int:artist_id>/edit', methods=['GET','POST'])
 @requires_auth('get:admin')
-def edit_artist_submission(artist_id):
+def edit_artist_submission(payload, artist_id):
     """
         **Edit Artists Information**
 
@@ -989,7 +991,7 @@ def edit_artist_submission(artist_id):
 #----------------------------------------------------------------------------
 @app.route('/artists/<artist_id>/delete', methods=['get'])
 @requires_auth('get:admin')
-def delete_artist(artist_id):
+def delete_artist(payload, artist_id):
     """
         **Delete an artist**
 
@@ -1044,7 +1046,7 @@ def delete_artist(artist_id):
 #  ----------------------------------------------------------------
 @app.route('/shows')
 @requires_auth('get:admin')
-def shows():
+def shows(payload):
     """
         **List of Shows**
 
@@ -1084,7 +1086,7 @@ def shows():
 #----------------------------------------------------------------------------
 @app.route('/shows/create', methods=['GET'])
 @requires_auth('get:admin')
-def create_shows():
+def create_shows(payload):
     """
         **Show a show**
 
@@ -1119,7 +1121,7 @@ def create_shows():
 
 @app.route('/shows/create', methods=['POST'])
 @requires_auth('get:admin')
-def create_show_submission():
+def create_show_submission(payload):
     """
         **Create Show submission**
 
