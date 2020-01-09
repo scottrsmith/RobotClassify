@@ -246,6 +246,9 @@ def requires_auth(permission=''):
             
             # Save the URL 'state' for redirects
             session['state'] = request.full_path
+            if 'Count' in session:
+                session['Count'] += 1
+                print ('    session[Count] += 1 is ', session['Count'])
             session.modified = True
 
             if config.PROFILE_KEY not in session:
@@ -321,6 +324,8 @@ def login():
     # print (dumpData(session))
     # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
     flash('You are now logged in!')
+    session['Count'] = 1
+    print ('    session[Count] = 1')
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
