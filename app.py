@@ -20,6 +20,7 @@ With the following API permissions:
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+import os
 import json
 from os import environ as env
 from werkzeug.exceptions import HTTPException
@@ -106,16 +107,54 @@ ALGORITHMS = ['RS256']
 API_AUDIENCE = 'robotclassify'
 
 
-ENV_FILE = find_dotenv()
-if ENV_FILE:
-    load_dotenv(ENV_FILE)
+def getEnvVars(first=None, second=None, third=None):
+    print ('first={}, second={}, third={}'.format(first,second,third))
+    if first is None:
+        if second is None:
+            return third
+        else:
+            return second
+    else:
+        return first
+    
+print ('constants.AUTH0_CALLBACK_URL=',config.AUTH0_CALLBACK_URL)
+print ('constants.AUTH0_CLIENT_ID=',config.AUTH0_CLIENT_ID)
+print ('constants.AUTH0_CLIENT_SECRET=',config.AUTH0_CLIENT_SECRET)
+print ('constants.AUTH0_DOMAIN=',config.AUTH0_DOMAIN)
+print ('constants.AUTH0_AUDIENCE=',config.AUTH0_AUDIENCE)
 
-AUTH0_CALLBACK_URL = str(env.get(config.AUTH0_CALLBACK_URL))
-AUTH0_CLIENT_ID = str(env.get(config.AUTH0_CLIENT_ID))
-AUTH0_CLIENT_SECRET = str(env.get(config.AUTH0_CLIENT_SECRET))
-AUTH0_DOMAIN = str(env.get(config.AUTH0_DOMAIN))
-AUTH0_BASE_URL = 'https://dev-p35ewo73.auth0.com'
-AUTH0_AUDIENCE = str(env.get(config.AUTH0_AUDIENCE))
+
+AUTH0_CALLBACK_URL = getEnvVars(os.getenv('AUTH0_CALLBACK_URL'), \
+                                env.get('AUTH0_CALLBACK_URL'), \
+                                config.AUTH0_CALLBACK_URL)
+
+AUTH0_CLIENT_ID = getEnvVars(os.getenv('AUTH0_CLIENT_ID'), \
+                                env.get('AUTH0_CLIENT_ID'), \
+                                config.AUTH0_CLIENT_ID)
+
+AUTH0_DOMAIN = getEnvVars(os.getenv('AUTH0_DOMAIN'), \
+                                env.get('AUTH0_DOMAIN'), \
+                                config.AUTH0_DOMAIN)
+
+AUTH0_AUDIENCE = getEnvVars(os.getenv('AUTH0_AUDIENCE'), \
+                                env.get('AUTH0_AUDIENCE'), \
+                                config.AUTH0_AUDIENCE)
+
+
+AUTH0_CLIENT_SECRET = getEnvVars(os.getenv('AUTH0_CLIENT_SECRET'), \
+                                env.get('AUTH0_CLIENT_SECRET'), \
+                                config.AUTH0_CLIENT_SECRET)
+
+
+AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
+
+
+print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
+print ('AUTH0_CLIENT_ID=',AUTH0_CLIENT_ID)
+print ('AUTH0_CLIENT_SECRET=',AUTH0_CLIENT_SECRET)
+print ('AUTH0_DOMAIN=',AUTH0_DOMAIN)
+print ('AUTH0_BASE_URL=',AUTH0_BASE_URL)
+print ('AUTH0_AUDIENCE=',AUTH0_AUDIENCE)
 
 
 oauth = OAuth(app)
