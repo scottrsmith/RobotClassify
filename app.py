@@ -290,12 +290,9 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/callback')
 def callback_handling():
-    token = auth0.authorize_access_token()
-    #dumpObj(token)
+    auth0.authorize_access_token()
+    
     resp = auth0.get('userinfo')
-    #dumpObj(resp,name='userinfo ')
-    #dumpObj(auth0,name='call back auto0 object ')
-    #dumpData(auth0)
     userinfo = resp.json()
     
     session[config.JWT_PAYLOAD] = userinfo
@@ -317,9 +314,8 @@ def callback_handling():
 def login():
     # print (dumpObj(session))
     # print (dumpData(session))
-    
-    return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL
-                                    , audience=AUTH0_AUDIENCE)
+    print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
+    return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
 @app.route('/logout')
