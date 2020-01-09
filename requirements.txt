@@ -18,3 +18,5 @@ Fabric==2.5.0
 jose==1.0.0
 python-dotenv==0.10.3
 python_dateutil==2.8.1
+psycopg2==2.8.3
+psycopg2-binary==2.8.4
