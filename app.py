@@ -276,11 +276,10 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
 
-            dumpObj(request)
             # Save the URL 'redirect_url' 
             session['redirect_url'] = request.path
             session.modified = True
-
+            
 
             #if 'Count' in session:
             #    session['Count'] += 1
@@ -357,6 +356,8 @@ def callback_handling():
 def login():
     # print (dumpObj(session))
     # print (dumpData(session))
+    dumpObj(request,"Request @ login")
+    dumpObj(session,"Session @ login")
     # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
     flash('You are now logged in!')
     #session['Count'] = 1
