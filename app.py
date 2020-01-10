@@ -362,6 +362,7 @@ def login():
     flash('You are now logged in!')
     #session['Count'] = 1
     #print ('    session[Count] = 1')
+    session['request_uri'] = AUTH0_CALLBACK_URL
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
 
