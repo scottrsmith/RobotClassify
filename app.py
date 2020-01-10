@@ -276,9 +276,9 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
 
-            
+            dumpObj(request)
             # Save the URL 'redirect_url' 
-            session['redirect_url'] = request.full_path
+            session['redirect_url'] = request.path
             session.modified = True
 
 
