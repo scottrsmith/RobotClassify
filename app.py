@@ -77,7 +77,8 @@ def dumpData(obj, name='None'):
 
 app = Flask(__name__)
 moment = Moment(app)
-#app.config.from_object('config')
+app.secret_key = config.SECRET_KEY
+app.config.from_object('config')
 
 # open/Connect to a local postgresql database
 db = connectToDB(app)
@@ -92,8 +93,7 @@ CORS(app)
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
-    #                     'Content-Type,Authorization,true')
-                         '*')
+                         'Content-Type,Authorization,true')
     response.headers.add('Access-Control-Allow-Methods',
                          'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -347,7 +347,7 @@ def callback_handling():
 
     # Check to see of the redirected URL was saved to redirect back after login
     if 'redirect_url' in session:
-        return redirect(session['redirect_url'])
+        return redirect(session.get('redirect_url'))
     else:
         return redirect('/')
 
