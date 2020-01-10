@@ -331,8 +331,19 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/callback')
 def callback_handling():
-    auth0.authorize_access_token()
-    
+    tries = 0
+    failed = False
+    while tries < 10:
+        try:
+            auth0.authorize_access_token()
+            tries = 10
+            failed = False
+        except:
+            tries += 1
+            failed = True
+    if failed:
+        abort(500)
+
     resp = auth0.get('userinfo')
     userinfo = resp.json()
     
