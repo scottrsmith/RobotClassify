@@ -24,6 +24,7 @@ import os
 import json
 from os import environ as env
 from werkzeug.exceptions import HTTPException
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
 from authlib.flask.client import OAuth
 
@@ -40,6 +41,19 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from flask_cors import CORS
+from flask_uploads import UploadSet, configure_uploads, DATA, IMAGES, patch_request_class, send_from_directory
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import SubmitField
+import pandas as pd
+import pickle
+
+
+
+
+# Machine learning libraries
+from xgboost import XGBClassifier
+from mlLib.project import autoEvaluateClassifier, autoFlaskEvaluateClassifier
+
 
 
 from six.moves.urllib.parse import urlencode
@@ -70,6 +84,8 @@ def dumpData(obj, name='None'):
   for attr in obj:
     print("    data.%s = %r" % (attr, obj[attr]))
 
+def makePickList(columns):
+    return [(c,c) for c in columns]
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -80,12 +96,23 @@ moment = Moment(app)
 app.secret_key = config.SECRET_KEY
 app.config.from_object('config')
 
+# define file uploadss
+configure_uploads(app, config.dataFiles)
+patch_request_class(app, 1024 * 1024)  # set maximum file size to 1 mb
+
+# Setup for mllib
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
+#import sys
+#sys.path.append('/users/scottsmith/kat/RobotClassify')
+
+
 # open/Connect to a local postgresql database
 db = connectToDB(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
 # CORS(app, supports_credentials=True)
 CORS(app)
+
 
 
 # CORS Headers
@@ -108,7 +135,7 @@ API_AUDIENCE = 'robotclassify'
 
 
 def getEnvVars(first=None, second=None, third=None):
-    print ('first={}, second={}, third={}'.format(first,second,third))
+    # print ('first={}, second={}, third={}'.format(first,second,third))
     if first is None:
         if second is None:
             return third
@@ -141,14 +168,6 @@ AUTH0_CLIENT_SECRET = getEnvVars(os.getenv('AUTH0_CLIENT_SECRET'), \
 
 
 AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
-
-
-print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
-print ('AUTH0_CLIENT_ID=',AUTH0_CLIENT_ID)
-print ('AUTH0_CLIENT_SECRET=',AUTH0_CLIENT_SECRET)
-print ('AUTH0_DOMAIN=',AUTH0_DOMAIN)
-print ('AUTH0_BASE_URL=',AUTH0_BASE_URL)
-print ('AUTH0_AUDIENCE=',AUTH0_AUDIENCE)
 
 
 oauth = OAuth(app)
@@ -279,23 +298,10 @@ def requires_auth(permission=''):
             # Save the URL 'redirect_url' 
             session['redirect_url'] = request.path
             session.modified = True
-            
-
-            #if 'Count' in session:
-            #    session['Count'] += 1
-            #   print ('    session[Count] += 1 is ', session['Count'])
-            
+                       
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
 
-            #token = get_token_auth_header()
-            #try:
-            #    payload = verify_decode_jwt(token)
-            #except Exception:
-            #    abort(401)
-            #check_permissions(permission, payload)
-            
-            #return f( *args, **kwargs)
             return f(None, *args, **kwargs)
         return wrapper
 
@@ -353,6 +359,8 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
+    session['account_id'] = userinfo['sub']
+    #dumpObj(session, 'Dump of Session afer callback')
     #session['token'] = auth0.token
     #session.modified = True
 
@@ -365,14 +373,7 @@ def callback_handling():
 
 @app.route('/login')
 def login():
-    # print (dumpObj(session))
-    # print (dumpData(session))
-    dumpObj(request,"Request @ login")
-    dumpObj(session,"Session @ login")
-    # print ('AUTH0_CALLBACK_URL=',AUTH0_CALLBACK_URL)
     flash('You are now logged in!')
-    #session['Count'] = 1
-    #print ('    session[Count] = 1')
     session['request_uri'] = AUTH0_CALLBACK_URL
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
@@ -385,67 +386,19 @@ def logout():
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 
-
 #----------------------------------------------------------------------------
-# Home Page
+#  List Projects
 #----------------------------------------------------------------------------
-@app.route('/')
-def index():
-    """
-        **Home Page**
-
-        Display the home page
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/
-0
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    return render_template('pages/home.html')
-
-
-
-
-#----------------------------------------------------------------------------
-#----------------------------------------------------------------------------
-#  Venues
-#----------------------------------------------------------------------------
-#----------------------------------------------------------------------------
-
-
-#----------------------------------------------------------------------------
-#  List Venues
-#----------------------------------------------------------------------------
-@app.route('/venues')
+@app.route('/projects')
 @requires_auth('get:admin')
-def venues(payload):
+def projects(payload):
     """
-        **List Venues**
+        **List Proejcts**
 
-        Display a list of venues
-
+        Display a list of projects
         - Sample Call::
 
-            curl -X GET http://localhost:5000/venues
+            curl -X GET http://localhost:5000/projects
 
 
         - Expected Success Response::
@@ -467,75 +420,27 @@ def venues(payload):
             }
 
     """  
-    # List the venues grouped by city/state
-    uniqueCityStates = Venue.query.distinct(Venue.city, Venue.state).all()
-    data = [cs.filterCityState for cs in uniqueCityStates]
-    return render_template('pages/venues.html', areas=data)
+    # List the projects 
+    projectList = Project.query.filter_by(account_id=session['account_id']).all()
+    data = [p.projectList for p in projectList]
+    return render_template('pages/projects.html', projects=data, count=len(data))
+
 
 
 #  ----------------------------------------------------------------
-#  Search Venues
+#  Show single project
 #  ----------------------------------------------------------------
-@app.route('/venues/search', methods=['POST'])
+@app.route('/projects/<int:project_id>')
 @requires_auth('get:admin')
-def search_venues(payload):
+def show_project(payload, project_id):
     """
-        **Search Venues**
+        **Project**
 
-        Display the hoime page
+        Display a single projects
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/venues/search
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """ 
-    search_term = request.form.get('search_term', None )
-
-    # Search for an included string, case sensitive
-    searchResults = Venue.query.filter(Venue.name.ilike('%{}%'.format(search_term))).all()
-    count_items = len(searchResults)
-
-    # List and format the search results using venueShowCount property
-    response = {"count": count_items, 
-                "data": [v.venueShowsCount for v in searchResults]}
-
-    return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
-
-
-
-#  ----------------------------------------------------------------
-#  Show single Venue
-#  ----------------------------------------------------------------
-@app.route('/venues/<int:venue_id>')
-@requires_auth('get:admin')
-def show_venue(payload, venue_id):
-    """
-        **Venue**
-
-        Display a single venue
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/venues/<id>
+            curl -X GET http://localhost:5000/projects/<id>
 
 
         - Expected Success Response::
@@ -556,65 +461,55 @@ def show_venue(payload, venue_id):
             }
 
     """
-    # Query and show a single venue
-    theVenue = Venue.query.get(venue_id)
-    data = theVenue.venueShowsCount
-    return render_template('pages/show_venue.html', venue=data)
+    # Query and show a single project
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+    if project is None:
+        abort(404)
+
+    data = project.projectPage
+    return render_template('pages/show_project.html', project=data)
 
 
 
-#----------------------------------------------------------------------------
-#  Create Venue
-#----------------------------------------------------------------------------
-@app.route('/venues/create', methods=['GET'])
-@requires_auth('get:admin')
-def create_venue_form(payload):
-    """
-        **Create Venue**
+# upload and parse the file data
+def populateProjectFiles(project, form):
+    # Get the filenames
+    project.trainingFile = config.dataFiles.save(form.trainingFile.data)
+    project.testingFile = config.dataFiles.save(form.testingFile.data)
 
-        Create a venue
+    print ('Populate proejct files.project.trainingFile =',project.trainingFile, project.testingFile)
+    #dumpObj(form.trainingFile.data,'form.trainingFile.data')
 
-        - Sample Call::
+    # pickle the testing/training data for later runs
+    # The data will be in the form of a
+    
+    training=pd.read_csv(app.config['UPLOADED_DATA_DEST'] + '/' + project.trainingFile, 
+                            low_memory=False)
+    testing=pd.read_csv(app.config['UPLOADED_DATA_DEST'] + '/' + project.testingFile, 
+                            low_memory=False)
+    project.savedTrainingFile = pickle.dumps(training)
+    project.savedTestingFile = pickle.dumps(testing)
 
-            curl -X GET http://localhost:5000/venues/create
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    # Display an empty venue form for create
-    form = VenueForm()
-    return render_template('forms/new_venue.html', form=form)
+    # Last, get the column namesto be saved (from the training file)
+    # These are to be used later in the runs to help select attributes.
+    project.columns = [c for c in training.columns.tolist()]
 
 
-# Process the create request
-@app.route('/venues/create', methods=['POST'])
+#  ----------------------------------------------------------------
+#  Create project
+#  ----------------------------------------------------------------
+
+@app.route('/projects/create', methods=['POST', 'GET'])
 @requires_auth('post:admin')
-def create_venue_submission(payload):
+def create_projects_submission(payload):
     """
-        **Create Venue**
+        **Create Project**
 
-        Create Venue
+        Create Project
 
         - Sample Call::
 
-            curl -X POST http://localhost:5000/venues/create
+            curl -X POST http://localhost:5000/project/create
 
 
         - Expected Success Response::
@@ -635,37 +530,114 @@ def create_venue_submission(payload):
             }
 
     """
- 
-    form = VenueForm(request.form)
-    venue = Venue()
     
+
+    form = ProjectForm() # request.form
     
-    if form.validate():
-        form.populate_obj(venue)
-        db.session.add(venue)
-        db.session.commit()
+    if form.validate_on_submit():
+        project = Project()
+        form.populate_obj(project)
+
+        # load the files and column data into the project record
+        populateProjectFiles(project, form)
+
+        # Now insert
+        project.insert()
+
         # on successful db insert, flash success
-        flash('Venue ' + form['name'].data + ' was successfully listed!')
+        flash('Project ' + form['name'].data + ' was successfully added!')
     else:
-        flash('An error occurred. Venue ' + form['name'].data + ' could not be listed.')
-    
-    return render_template('pages/home.html')
+        return render_template('forms/new_project.html', form=form)
+
+    return render_template('pages/index.html')
 
 
-#----------------------------------------------------------------------------
-#  Delete Venue
-#----------------------------------------------------------------------------
-@app.route('/venues/<venue_id>/delete', methods=['get'])
+# ----------------------------------------------------------------
+#  Edit Project
+# ----------------------------------------------------------------
+@app.route('/projects/<int:project_id>/edit', methods=['GET','POST'])
 @requires_auth('get:admin')
-def delete_venue(payload, venue_id):
+def edit_project_submission(payload, project_id):
     """
-        **Delete Venue**
+        **Edit Project**
 
-        Delete Venue
+        Edit Project
+
+        - Sample Call to edit::
+
+            curl -X POST http://localhost:5000/projects/<int:project_id>/edit
+
+       - Sample Call to display::
+
+            curl -X GET http://localhost:5000/projects/<int:project_id>/edit
+
+        - Expected Success Response::
+
+            HTTP Status Code: 200
+
+            <!doctype html>...</html>
+
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 401
+            {
+                "description": "401: Authorization header is expected.",
+                "error": 401,
+                "message": "Unauthorized",
+                "success": false
+            }
+
+    """
+
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+    if project is None:
+        abort(404)
+    form = ProjectFormEdit(obj=project)
+    
+
+    if request.method=='POST':
+      if form.is_submitted() and form.validate():
+        # form data is posted to venue object for update
+        form.populate_obj(project)
+
+        # load the files and column data into the project record
+        populateProjectFiles(project, form)
+
+        project.update()
+        # on successful db update, flash success
+        
+        flash('Project ' + form['name'].data + ' was successfully Updated!')
+
+        return redirect(url_for('show_project', project_id=project_id))
+
+        #except:
+        #  db.session.rollback()
+        #  flash('An DB error occurred. Project ' + form['name'].data + ' could not be Updated.')
+      else:
+        print (form.errors.items())
+        flash('An error occurred. Project ' + form['name'].data + ' could not be Updated.')
+
+      return redirect(url_for('show_project', project_id=project_id))
+    
+    return render_template('forms/edit_project.html', form=form, project=project)
+
+
+
+#----------------------------------------------------------------------------
+#  Delete Project
+#----------------------------------------------------------------------------
+@app.route('/projects/<project_id>/delete', methods=['get'])
+@requires_auth('get:admin')
+def delete_project(payload, project_id):
+    """
+        **Delete Project**
+
+        Delete Project
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/venues/<venue_id>/delete
+            curl -X GET http://localhost:5000/project/<project_id>/delete
 
 
         - Expected Success Response::
@@ -688,35 +660,90 @@ def delete_venue(payload, venue_id):
     """
 
     try:
-        Venue.query.filter_by(id=venue_id).delete()
+        Project.query.filter_by(id=project_id).delete()
         db.session.commit()
     except:
         db.session.rollback()
-        flash('Oh Snap! Venue with ID of "' + venue_id + '" was not deleted')
+        flash('Oh Snap! Project with ID of "' + project_id + '" was not deleted')
         return redirect(url_for('index'))
 
-    flash('Venue with ID of "' + venue_id + '" was successfully deleted!')
+    flash('Project with ID of "' + project_id + '" was successfully deleted!')
     return redirect(url_for('index'))
 
+
 # ----------------------------------------------------------------
-#  Edit Venue
 # ----------------------------------------------------------------
-@app.route('/venues/<int:venue_id>/edit', methods=['GET','POST'])
+#  R U N S
+# ----------------------------------------------------------------
+# ----------------------------------------------------------------
+
+
+#  ----------------------------------------------------------------
+#  Show single run
+#  ----------------------------------------------------------------
+@app.route('/runs/<int:run_id>')
 @requires_auth('get:admin')
-def edit_venue_submission(payload, venue_id):
+def show_run(payload, run_id):
     """
-        **Edit Venue**
+        **Runs**
 
-        Edit Venue
+        Display a single run
 
-        - Sample Call to edit::
+        - Sample Call::
 
-            curl -X POST http://localhost:5000/venues/<int:venue_id>/edit
+            curl -X GET http://localhost:5000/runs/<id>
 
-       - Sample Call to display::
 
-            curl -X GET http://localhost:5000/venues/<int:venue_id>/edit
+        - Expected Success Response::
 
+            HTTP Status Code: 200
+
+            <!doctype html>...</html>
+
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 401
+            {
+                "description": "401: Authorization header is expected.",
+                "error": 401,
+                "message": "Unauthorized",
+                "success": false
+            }
+
+    """
+    # Query and show a single project
+    run = Run.query.filter(Run.id == run_id).one_or_none()
+ 
+    if run is None:
+        abort(404)
+
+
+    if isinstance(run.results, type(None)):
+        flash ('No Run Results for '+run.name)
+        redirect(url_for('show_project', project_id=run.Project.id))
+    else:
+        return render_template('pages/results.html', run=run, results=pickle.loads(run.results))
+    
+
+
+#----------------------------------------------------------------------------
+#  Create Run
+#----------------------------------------------------------------------------
+
+
+# Process the create request
+@app.route('/runs/create/<int:project_id>', methods=['GET','POST'])
+@requires_auth('post:admin')
+def create_run_submission(payload, project_id):
+    """
+        **Create Run**
+
+        Create Run
+
+        - Sample Call::
+
+            curl -X POST http://localhost:5000/run/create
 
 
         - Expected Success Response::
@@ -738,264 +765,165 @@ def edit_venue_submission(payload, venue_id):
 
     """
 
-    venue = Venue.query.get(venue_id)
-    form = VenueForm(obj=venue)
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+    if project is None:
+        abort(404)
+    form = RunForm()
+    pickList = makePickList(project.columns)
+    form.targetVariable.choices=pickList
+    form.key.choices=pickList
+    form.predictSetOut.choices=pickList
+    
+    if form.validate_on_submit():
+        run = Run()
+        form.populate_obj(run)
+        run.project_id = project_id
+        run.insert()
+        # on successful db insert, flash success
+        flash('Run ' + form['name'].data + ' was successfully added!')
+    else:
+        return render_template('forms/new_run.html', form=form)
+        # flash('An error occurred. Run ' + form['name'].data + ' could not be added.')
+    
+    return redirect(url_for('show_project', project_id=project_id)) 
+
+
+#----------------------------------------------------------------------------
+#  Delete Runs
+#----------------------------------------------------------------------------
+@app.route('/runs/<int:run_id>/delete', methods=['get'])
+@requires_auth('get:admin')
+def delete_run(payload, run_id):
+    """
+        **Delete Run**
+
+        Delete Run
+
+        - Sample Call::
+
+            curl -X GET http://localhost:5000/runs/<run_id>/delete
+
+
+        - Expected Success Response::
+
+            HTTP Status Code: 200
+
+            <!doctype html>...</html>
+
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 401
+            {
+                "description": "401: Authorization header is expected.",
+                "error": 401,
+                "message": "Unauthorized",
+                "success": false
+            }
+
+    """
+    run = Run.query.filter(Run.id == run_id).one_or_none()
+    if run is None:
+        abort(404)
+
+    try:
+        project_id = run.project_id
+        run.delete()
+    except:
+        db.session.rollback()
+        flash('Oh Snap! Run with ID of "' + str(run_id) + '" was not deleted')
+        return redirect(url_for('show_project', project_id=project_id))
+
+    flash('Run with ID of "' + str(run_id) + '" was successfully deleted!')
+    return redirect(url_for('show_project', project_id=project_id)) 
+
+
+# ----------------------------------------------------------------
+#  Edit Runs
+# ----------------------------------------------------------------
+@app.route('/runs/<int:run_id>/edit', methods=['GET','POST'])
+@requires_auth('get:admin')
+def edit_run_submission(payload, run_id):
+    """
+        **Edit Run**
+
+        Edit Run
+
+        - Sample Call to edit::
+
+            curl -X POST http://localhost:5000/runs/<int:run_id>/edit
+
+       - Sample Call to display::
+
+            curl -X GET http://localhost:5000/runs/<int:run_id>/edit
+
+
+
+        - Expected Success Response::
+
+            HTTP Status Code: 200
+
+            <!doctype html>...</html>
+
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 401
+            {
+                "description": "401: Authorization header is expected.",
+                "error": 401,
+                "message": "Unauthorized",
+                "success": false
+            }
+
+    """
+    run = Run.query.filter(Run.id == run_id).one_or_none()
+    if run is None:
+        abort(404)
+
+    form = RunForm(obj=run)
+    pickList = makePickList(run.Project.columns)
+    form.targetVariable.choices=pickList
+    form.key.choices=pickList
+    form.predictSetOut.choices=pickList
 
     if request.method=='POST':
       if form.is_submitted() and form.validate():
         # form data is posted to venue object for update
         try:
-          form.populate_obj(venue)
-          db.session.commit()
+          form.populate_obj(run)
+          run.update()
           # on successful db update, flash success
-          flash('Venue ' + form['name'].data + ' was successfully Updated!')
+          flash('Run ' + form['name'].data + ' was successfully Updated!')
         except:
           db.session.rollback()
-          flash('An DB error occurred. Venue ' + form['name'].data + ' could not be Updated.')
+          flash('An DB error occurred. Run ' + form['name'].data + ' could not be Updated.')
       else:
         print (form.errors.items())
-        flash('An error occurred. Venue ' + form['name'].data + ' could not be Updated.')
+        flash('An error occurred. Run ' + form['name'].data + ' could not be Updated.')
 
-      return redirect(url_for('show_venue', venue_id=venue_id))
+      return redirect(url_for('show_project', project_id=run.Project.id)) 
     
-    return render_template('forms/edit_venue.html', form=form, venue=venue)
+    return render_template('forms/edit_run.html', form=form, run=run)
 
 
-
-#  ----------------------------------------------------------------
-#  List Artists
-#  ----------------------------------------------------------------
-@app.route('/artists')
-@requires_auth('get:admin')
-def artists(payload):
+# ----------------------------------------------------------------
+#  Edit Runs
+# ----------------------------------------------------------------
+@app.route('/runs/<int:run_id>/exec', methods=['GET'])
+# requires_auth('get:admin')
+def run_submission(run_id):
     """
-        ** List Artists**
+        **Exec Run**
 
-        List Artists
+        Edit Run
 
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/artists
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    data = Artist.query.all()
-    return render_template('pages/artists.html', artists=data)
-
-
-
-#  ----------------------------------------------------------------
-#  Search Artists
-#  ----------------------------------------------------------------
-@app.route('/artists/search', methods=['POST'])
-@requires_auth('get:admin')
-def search_artists(payload):
-    """
-        **Search Artists**
-
-        Search Artists
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/artists/search 
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    search_term = request.form.get('search_term', None )
-    searchResults = Artist.query.filter(Artist.name.ilike('%{}%'.format(search_term))).all()
-    count_items = len(searchResults)
-    response = {"count": count_items, 
-                "data": [a.artistShowsCount for a in searchResults]}
-
-    return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
-
-#  ----------------------------------------------------------------
-#  Show single Artist
-#  ----------------------------------------------------------------
-
-@app.route('/artists/<int:artist_id>')
-@requires_auth('get:admin')
-def show_artist(payload, artist_id):
-    """
-        **Show single Artistt**
-
-        Show single artist details
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/artists/<int:artist_id>
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    theArtist = Artist.query.get(artist_id)
-    data = theArtist.artistShowsCount
-    return render_template('pages/show_artist.html', artist=data)
-
-
-#  ----------------------------------------------------------------
-#  Create Artist
-#  ----------------------------------------------------------------
-@app.route('/artists/create', methods=['GET'])
-@requires_auth('get:admin')
-def create_artist_form(payload):
-    """
-        **Get Artist**
-
-        Display an Artist's info
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/artists/create
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    # Display an empty artist form for create
-    form = ArtistForm()
-    return render_template('forms/new_artist.html', form=form) 
-
-
-@app.route('/artists/create', methods=['POST'])
-@requires_auth('post:admin')
-def create_artist_submission(payload):
-    """
-        **Create an Artist**
-
-        Create an Artist
-
-        - Sample Call::
-
-            curl -X POST http://localhost:5000/artists/create
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    form = ArtistForm(request.form)
-    artist = Artist()
-    
-    if form.validate():
-        form.populate_obj(artist)
-        try:
-          db.session.add(artist)
-          db.session.commit()
-          # on successful db insert, flash success
-          flash('Artist ' + request.form['name'] + ' was successfully listed!')
-        except:
-          db.session.rollback()
-          flash('An DB error occurred. Artist ' + form['name'].data + ' could not be listed.')
-    else:
-        print (form.errors.items())
-        flash('An error occurred. Artist ' + form['name'].data + ' could not be listed.')
-    return render_template('pages/home.html')
-
-
-#  ----------------------------------------------------------------
-#  Edit Artist
-#  ----------------------------------------------------------------
-@app.route('/artists/<int:artist_id>/edit', methods=['GET','POST'])
-@requires_auth('get:admin')
-def edit_artist_submission(payload, artist_id):
-    """
-        **Edit Artists Information**
-
-        Edit Artists Information
+        
 
         - Sample Call to display::
 
-            curl -X GET http://localhost:5000/artists/<int:artist_id>/edit
+            curl -X GET http://localhost:5000/runs/<int:run_id>/exec
 
-
-        - Sample Call to edit::
-
-            curl -X POST http://localhost:5000/artists/<int:artist_id>/edit
 
 
         - Expected Success Response::
@@ -1015,47 +943,66 @@ def edit_artist_submission(payload, artist_id):
                 "success": false
             }
 
+
+
     """
 
-    artist = Artist.query.get(artist_id)
-    form = ArtistForm(obj=artist)
+    run = Run.query.filter(Run.id == run_id).one_or_none()
+    if run is None:
+        abort(404)
+   
+    results = autoFlaskEvaluateClassifier(projectName=run.name,
+                        trainingFile = run.Project.trainingFile,
+                        testingFile = run.Project.testingFile,
+                        trainingFileDF = run.Project.savedTrainingFile,
+                        testingFileDF = run.Project.savedTestingFile,
+                        targetVariable = run.targetVariable,
+                        key = run.key,
+                        predictSetOut=run.predictSetOut,
 
-    if request.method=='POST':
-      if form.is_submitted() and form.validate():
-        # The form is submitted and valid, get the form data into the artist object for updates
-        form.populate_obj(artist)
-        try:
-          db.session.commit()
-          # on successful db update, flash success
-          flash('Artist ' + form['name'].data + ' was successfully Updated!')
-        except:
-          db.session.rollback()
-          flash('An database error occurred. Artist ' + form['name'].data + ' could not be Updated.')
-      else:
-        print (form.errors.items())
-        flash('An error occurred. Artist ' + form['name'].data + ' could not be Updated.')
+                        logFileOut = None,
+                        transcriptFile = None,
+                        trainingFileOut= None,
+                        predictFileOut= None,
 
-      return redirect(url_for('show_artist', artist_id=artist_id))
-    
-    return render_template('forms/edit_artist.html', form=form, artist=artist)
+                        #logFileOut = './examples/resultsFile.csv',
+                        #transcriptFile = './examples/AutoRunTransscript.txt',
+                        #trainingFileOut='./examples/AutoReadyToTrain.csv',
+                        #predictFileOut= './examples/ReadyToPredict.csv',
+                        resultsFile='KaggleSubmitFile.csv',
+                        modelList = None,
+                        confusionMatrixLabels=None,
+                        scoring = run.scoring,
+                        setProjectGoals={'f1': (0.9,'>')},
+                        runVerbose = 0,
+                        recommendOnly=True,
+                        basicAutoMethod = True,
+                        skewFactor=40.0,
+                        doExplore=True,
+                        doTrain=True,
+                        doPredict=True,
+                        toTerminal=True
+                        )
+    run.results = pickle.dumps(results)
+    run.update()
+
+    return render_template('pages/results.html', run=run, results=results)
 
 
 
 #----------------------------------------------------------------------------
-#  Delete Artist
+# Home Page
 #----------------------------------------------------------------------------
-@app.route('/artists/<artist_id>/delete', methods=['get'])
-@requires_auth('get:admin')
-def delete_artist(payload, artist_id):
+@app.route('/')
+def index():
     """
-        **Delete an artist**
+        **Home Page**
 
-        Delete an artist
+        Display the home page
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/artists/<artist_id>/delete
-
+            curl -X GET http://localhost:5000/
 
         - Expected Success Response::
 
@@ -1075,157 +1022,13 @@ def delete_artist(payload, artist_id):
             }
 
     """
-
-    try:
-        Artist.query.filter_by(id=artist_id).delete()
-        db.session.commit()
-    except:
-        db.session.rollback()
-        flash('Oh Snap! Artist with ID of "' + artist_id + '" was not deleted')
-        return redirect(url_for('index'))
+    return render_template('pages/index.html')
 
 
-    flash('Artist with ID of "' + artist_id + '" was successfully deleted!')
-    return redirect(url_for('index'))
-
-
-#  ----------------------------------------------------------------
-#  ----------------------------------------------------------------
-#  SHOWS
-#  ----------------------------------------------------------------
-#  ----------------------------------------------------------------
-
-
-#  ----------------------------------------------------------------
-#  List Shows
-#  ----------------------------------------------------------------
-@app.route('/shows')
-@requires_auth('get:admin')
-def shows(payload):
-    """
-        **List of Shows**
-
-        Display a list of shows
-
-        - Sample Call::
-
-            curl -X POST http://localhost:5000/shows
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    data = Show.query.all()
-    return render_template('pages/shows.html', shows=data)
-
-
-
-#----------------------------------------------------------------------------
-#  Create Show
-#----------------------------------------------------------------------------
-@app.route('/shows/create', methods=['GET'])
-@requires_auth('get:admin')
-def create_shows(payload):
-    """
-        **Show a show**
-
-        Display a show
-
-        - Sample Call::
-
-            curl -X GET http://localhost:5000/shows/create
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    form = ShowForm()
-    return render_template('forms/new_show.html', form=form)
-
-@app.route('/shows/create', methods=['POST'])
-@requires_auth('get:admin')
-def create_show_submission(payload):
-    """
-        **Create Show submission**
-
-        Create a new show submission
-
-        - Sample Call::
-
-            curl -X POST http://localhost:5000/shows/create
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-
-    # create the form and show record object
-    form = ShowForm()
-    show = Show()
-    
-    if form.validate():
-        form.populate_obj(show)
-        try:
-          db.session.add(show)
-          db.session.commit()
-          # on successful db insert, flash success
-          flash('Show was successfully listed!')
-        except:
-          db.session.rollback()
-          flash('There was an database error submitting show')
-    else:
-        flash('There was an error submitting show')
-    
-    return render_template('pages/home.html')
-
-
+@app.route('/downloads/<path:filename>', methods=['GET'])
+def download(filename):
+    uploads = os.path.join(current_app.root_path, app.config['DOWNLOAD_DATA_DEST'])
+    return send_from_directory(directory=uploads, filename=filename)
 
 
 #----------------------------------------------------------------------------
