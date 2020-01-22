@@ -13,7 +13,9 @@ There are three models:
 #----------------------------------------------------------------------------#
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask import session
 import datetime
+import pickle
 
 db = SQLAlchemy()
 
@@ -24,210 +26,192 @@ def connectToDB(app):
     db.init_app(app)
     return db
 
-
-# ----- Define the Venue Table Class
-class Venue(db.Model):
+# ----- Define the Project Table Class
+class Project(db.Model):
     '''
-    Venue
-    A list of venues that artist can play at.
+    Project
+    An ML Project. Projects are the top-orginizing layer for running ML problems
     '''
-    
-    __tablename__ = 'Venue'
+    __tablename__ = 'Project'
 
     id = db.Column(db.Integer, primary_key=True)
-    '''*id* is the auto assigned primary key.
-        Type: Integer, Primary key. Required.
-    '''
+    account_id = db.Column(db.String(100))
     name = db.Column(db.String)
-    '''
-    name, String, Required
-    The name of the venue
-    '''
-    city = db.Column(db.String(120))
-    '''
-    City, String, Required
-    The name of the city
-    '''
-    state = db.Column(db.String(120))
-    address = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
-    genres = db.Column(db.ARRAY(db.String))
-    website = db.Column(db.String(500))
-    seeking_talent = db.Column(db.Boolean, default=False)
-    seeking_description = db.Column(db.String(500), default='')
-    image_link = db.Column(db.String(500))
-    facebook_link = db.Column(db.String(120))
-    #shows = db.relationship('Show', backref='Venue', lazy='dynamic', cascade="all, delete-orphan")
-    
-    #----------------------------------------------------------------------------#
-    # serialize Venues
-    #    - Return the venue with lists of upcomming/past shows plus counts
-    #----------------------------------------------------------------------------#
+    description = db.Column(db.String(120))
+    trainingFile = db.Column(db.String(120)) # './Data/titanic_train.csv',
+    testingFile = db.Column(db.String(120)) #'./Data/titanic_test.csv',
+    savedTrainingFile = db.Column(db.PickleType)
+    savedTestingFile = db.Column(db.PickleType)
+    columns = db.Column(db.ARRAY(db.String))
+    runs = db.relationship('Run', backref='project', lazy=True)
+
 
     @property
-    def venueShowsCount(self):
+    def projectPage(self):
             return {
                 'id': self.id,
                 'name': self.name,
-                'address': self.address,
-                'city': self.city,
-                'state': self.state,
-                'phone': self.phone,
-                'website': self.website,
-                'genres': self.genres,
-                'facebook_link': self.facebook_link,
-                'seeking_talent': self.seeking_talent,
-                'seeking_description': self.seeking_description,
-                'image_link': self.image_link,
-                'upcoming_shows_count': Show.query.filter(
-                    Show.start_time >= datetime.datetime.now(),
-                    Show.venue_id == self.id).count(),
-                'upcoming_shows': [s.showDetails for s in Show.query.filter(
-                    Show.start_time >= datetime.datetime.now(),
-                    Show.venue_id == self.id)],
-                'past_shows_count': Show.query.filter(
-                    Show.start_time < datetime.datetime.now(),
-                    Show.venue_id == self.id).count(),
-                'past_shows': [s.showDetails for s in Show.query.filter(
-                    Show.start_time < datetime.datetime.now(),
-                    Show.venue_id == self.id)]
+                'description': self.description,
+                'trainingFile': self.trainingFile,
+                'testingFile': self.testingFile,
+                'description': self.description,
+                'runCount': 
+                    Run.query.filter(Run.project_id == self.id).count(),
+                'runs': [r.runList for r in Run.query.filter(
+                    Run.project_id == self.id,
+                    Run.account_id == session['account_id'])],
             }
 
-    # query for list of venues by city/state
     @property
-    def filterCityState(self):
-            return {'city': self.city,
-                    'state': self.state,
-                    'venues': [v.venueShowsCount
-                            for v in Venue.query.filter(Venue.city == self.city,
-                                        Venue.state == self.state).all()]}
-    
-    @property
-    def theShows(self):
-            return {'artist_image_link': Artist.image_link,
-                    'artist_name ': Artist.name,
-                    'start_time': self.start_time}
+    def projectList(self):
+            return {
+                'id': self.id,
+                'name': self.name,
+                'description': self.description,
+            }
+
+
+    def insert(self):
+        '''
+        insert()
+            Inserts a new model into a database.
+            The model must have a unique id and title.
+
+            EXAMPLE::
+
+                p = Project()
+                p.insert()
+
+        '''
+        self.account_id = session['account_id']
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        '''
+        delete()
+            deletes a new model into a database
+            the model must exist in the database
+
+            EXAMPLE::
+
+                p = Project()
+                p.delete()
+
+        '''
+
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        '''
+        update()
+            updates a new model into a database
+            the model must exist in the database
+
+            EXAMPLE::
+
+                p = Project.query.filter(p.id == id).one_or_none()
+                p.name = 'Regression Test'
+                p.update()
+
+        '''
+        db.session.commit()
+
+
+# ----- Define the Run Table Class
+class Run(db.Model):
+    '''
+    Run
+    '''
+    __tablename__ = 'Run'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String(120))
+    results = db.Column(db.PickleType)
+    account_id = db.Column(db.String(100))
+    project_id = db.Column(db.Integer, db.ForeignKey('Project.id', ondelete='CASCADE'),  nullable=False)
    
 
-class Artist(db.Model):
-    '''
-    Artist
-    A list of Artist that can play at venues.
-    '''
- 
-    __tablename__ = 'Artist'
- 
-    id = db.Column(db.Integer, primary_key=True)
-    '''*id* is the auto assigned primary key.
-        Type: Integer, Primary key. Required.
-    '''
+    targetVariable= db.Column(db.String(120)) #'Survived',
+    key= db.Column(db.String(120)) #'PassengerId',
+    predictSetOut = db.Column(db.ARRAY(db.String)) # predictSetOut=['Survived','PassengerId'],
+
+
+    #confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
+    scoring = db.Column(db.String(120), default='f1')
+    setProjectGoals=db.Column(db.Float, default=0.9)     # {'F1': (0.9,'>')},
+   
+    # Booleans
+    basicAutoMethod = db.Column(db.Boolean(), default=True)
     
-    name = db.Column(db.String)
-    '''
-    name, String, Required
-    The name of the Artist
-    '''
+    Project = db.relationship('Project', backref=db.backref('Run', cascade='all, delete-orphan'))
  
-    city = db.Column(db.String(120))
-    '''
-    city, String, Required
-    The city of the artist
-    '''
- 
-    state = db.Column(db.String(120))
-    '''
-    state, String, Required
-    The state of the artist
-    '''
-    phone = db.Column(db.String(120))
-    website = db.Column(db.String(500))
-    genres = db.Column(db.ARRAY(db.String))
-    seeking_venue = db.Column(db.Boolean, default=False)
-    seeking_description = db.Column(db.String(500), default='')
-    image_link = db.Column(db.String(500))
-    facebook_link = db.Column(db.String(120))
-    #shows = db.relationship('Show', cascade="all, delete-orphan")
-    
+    # List out the runs for display on the project page
     @property
-    def artistShowsCount(self):
-            return {
-                'id': self.id,
-                'name': self.name,
-                'city': self.city,
-                'state': self.state,
-                'phone': self.phone,
-                'website': self.website,
-                'genres': self.genres,
-                'facebook_link': self.facebook_link,
-                'seeking_venue': self.seeking_venue,
-                'seeking_description': self.seeking_description,
-                'image_link': self.image_link,
-                'upcoming_shows_count': Show.query.filter(
-                    Show.start_time >= datetime.datetime.now(),
-                    Show.artist_id == self.id).count(),
-                'upcoming_shows': [s.showDetails for s in Show.query.filter(
-                    Show.start_time >= datetime.datetime.now(),
-                    Show.artist_id == self.id)],
-                'past_shows_count': Show.query.filter(
-                    Show.start_time < datetime.datetime.now(),
-                    Show.artist_id == self.id).count(),
-                'past_shows': [s.showDetails for s in Show.query.filter(
-                    Show.start_time < datetime.datetime.now(),
-                    Show.artist_id == self.id)]
-            }
+    def runList(self):
+        if self.results is None:
+            results = None
+        else:
+            results = pickle.loads(self.results)
 
-
-# Define the show class
-# Show records are dependent upon their parent records of venue and artist IDs. 
-# There can be no Show records on their own
-class Show(db.Model):
-    '''
-    Show
-    A list of Shows for venues and artists.
-    '''
-  
-    __tablename__ = 'Show'
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', ondelete='CASCADE'), primary_key=True, nullable=False)
-    '''
-    venue_id, Integer, Required, part of the primary key
-    The auto-assigned id of the venue
-    '''
- 
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id', ondelete='CASCADE'), primary_key=True, nullable=False)
-    '''
-    artist_id, Integer, Required, part of the primary key
-    The auto-assigned id of the artist
-    '''
-
-    start_time = db.Column(db.DateTime, primary_key=True, nullable=False)
-    Venue = db.relationship('Venue', backref=db.backref('Shows', cascade='all, delete-orphan'))
-    Artist = db.relationship('Artist', backref=db.backref('Shows', cascade='all, delete-orphan'))
-
-
-    @property
-    def venue_name(self):
-        return self.Venue.name
-
-    @property
-    def artist_name (self):
-        return self.Artist.name
-
-    @property
-    def artist_image_link (self):
-        return self.Artist.image_link
-
-    @property
-    def start_time_str (self):
-        return self.start_time.strftime("%Y-%m-%dT%H:%M:%S")
-
-    # Show the expanded details on the show records (getting venue and artist names & links)
-    @property
-    def showDetails(self):
-        return {"artist_id": self.Artist.id,
-                "artist_name": self.Artist.name,
-                "artist_image_link": self.Artist.image_link,
-                "venue_id": self.Venue.id,
-                "venue_name": self.Venue.name,
-                "venue_image_link": self.Venue.image_link,
-                "start_time": self.start_time_str
+        return {"id": self.id,
+                "name": self.name,
+                "description": self.description,
+                "trainingFile": self.Project.trainingFile,
+                "testingFile": self.Project.testingFile,
+                "targetVariable": self.targetVariable,
+                "basicAutoMethod": self.basicAutoMethod,
+                "scoring": self.scoring,
+                "setProjectGoals" : self.setProjectGoals,
+                "results": results
                 }
+
+    def insert(self):
+        '''
+        insert()
+            Inserts a new model into a database.
+            The model must have a unique id and title.
+
+            EXAMPLE::
+
+                p = Project()
+                p.insert()
+
+        '''
+        self.account_id = session['account_id']
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        '''
+        delete()
+            deletes a new model into a database
+            the model must exist in the database
+
+            EXAMPLE::
+
+                p = Project()
+                p.delete()
+
+        '''
+
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        '''
+        update()
+            updates a new model into a database
+            the model must exist in the database
+
+            EXAMPLE::
+
+                p = Project.query.filter(p.id == id).one_or_none()
+                p.name = 'Regression Test'
+                p.update()
+
+        '''
+        db.session.commit()
+
