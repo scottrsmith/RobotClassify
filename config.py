@@ -1,4 +1,5 @@
 import os
+from flask_uploads import UploadSet, DATA
 
 # Grabs the folder where the script runs.
 # basedir = os.path.abspath(os.path.dirname(__file__))
@@ -6,10 +7,13 @@ import os
 # Enable debug mode.
 DEBUG = True
 
-# Connect to the database
+# setup flask uploads
+dataFiles = UploadSet('data', DATA)
+basedir = os.path.abspath(os.path.dirname(__file__))
+UPLOADED_DATA_DEST = os.path.join(basedir, 'uploads') 
+DOWNLOAD_DATA_DEST = os.path.join(basedir, 'download')  
 
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-
 AUTH0_CLIENT_ID = 'AUTH0_CLIENT_ID'
 AUTH0_CLIENT_SECRET = 'AUTH0_CLIENT_SECRET'
 AUTH0_CALLBACK_URL = 'AUTH0_CALLBACK_URL'
