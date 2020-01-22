@@ -1,0 +1,23 @@
+{% extends 'layouts/main.html' %}
+{% block title %}RobotClassify | Projects{% endblock %}
+{% block content %}
+<ul class="items">
+	{% if count > 0 %}
+		{% for project in projects %}
+		<li>
+			<a href="/projects/{{ project.id }}">
+				<i class="fas fa-robot"></i>
+				<div class="item">
+					<h5>{{ project.name }} | {{ project.description }}</h5>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	{% else %}
+	    <h5>No Projects.</h5>
+	{% endif %}
+	<div>
+	    <a href="/projects/create" class="btn btn-primary btn-lg btn-block" role="button">Create a New Project</a>
+    </div>
+</ul>
+{% endblock %}

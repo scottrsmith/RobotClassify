@@ -1,0 +1,22 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Robot Classify{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1>Robot Classify</h1>
+		<p class="lead">Automated Machine Learning Training</p>
+		<h3>
+			<a href="/projects"><button class="btn btn-primary btn-lg">List Projects</button></a>
+			<a href="/projects/create"><button class="btn btn-default btn-lg">Create New Project</button></a>
+        </h3>
+        <p class="lead">Create and edit Recipes.</p>
+		<h3>
+			<a href="/recipes"><button class="btn btn-primary btn-lg">List Recipes</button></a>
+			<a href="/recipes/create"><button class="btn btn-default btn-lg">Create Recipe</button></a>
+		</h3>
+	</div>
+	<div class="col-sm-6 hidden-sm hidden-xs">
+		<img id="front-splash" src="{{ url_for('static',filename='img/front-splash.png') }}" alt="Robot Classify" />
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Machine Learning Run{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form method="post" class="form" enctype="multipart/form-data">
+      {{ form.csrf_token }}
+      <h3 class="form-heading">Create a new ML Run <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+	  
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+	    {% if form.name.errors %}
+	        <ul class="errors">
+	        	{% for error in form.name.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}	
+      </div>
+	  
+      <div class="form-group">
+        <label for="description">Description</label>
+        {{ form.description(class_ = 'form-control', autofocus = true) }}
+	    {% if form.description.errors %}
+	        <ul class="errors">
+	        	{% for error in form.description.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="targetVariable">Target Variable to Predict</label>
+        <small>Select one</small>
+        {{ form.targetVariable(class_ = 'form-control', placeholder='targetVariable', id=form.targetVariable, autofocus = true) }}
+	    {% if form.targetVariable.errors %}
+	        <ul class="errors">
+	        	{% for error in form.targetVariable.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+
+      <div class="form-group">
+        <label for="key">Record Key</label>
+        <small>Select one</small>
+        {{ form.key(class_ = 'form-control', placeholder='key', id=form.key, autofocus = true) }}
+	    {% if form.key.errors %}
+	        <ul class="errors">
+	        	{% for error in form.key.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="predictSetOut">Predict Set Out</label>
+        <small>Typically the Record Key and Target Variable. Ctrl+Click to select two</small>
+        {{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
+	    {% if form.predictSetOut.errors %}
+	        <ul class="errors">
+	        	{% for error in form.predictSetOut.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+ 	  
+      <div class="form-group">
+        <label for="scoring">Scoring Method for Training</label>
+        <small>Select one</small>
+        {{ form.scoring(class_ = 'form-control', placeholder='f1', id=form.key, autofocus = true) }}
+	    {% if form.scoring.errors %}
+	        <ul class="errors">
+	        	{% for error in form.scoring.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+	  
+      <div class="form-group">
+        <label for="setProjectGoals">Scoring goal for Training Method</label>
+        <small>Between 1 and 0</small>
+        {{ form.setProjectGoals(class_ = 'form-control', placeholder=0.9, id=form.setProjectGoals, autofocus = true) }}
+	    {% if form.setProjectGoals.errors %}
+	        <ul class="errors">
+	        	{% for error in form.setProjectGoals.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+  
+      <!-- Booleans -->
+      <div class="form-group">
+        <label for="basicAutoMethod">Use Algorithm I for feature engineering</label><br>
+		<small>Algorithm I (checked): Tests based upon datatypes. Basic conversions category-based data</small><br>
+		<small>Algorithm II: More numerical analysis of feature importane</small><br>
+        {{ form.basicAutoMethod(class_ = 'form-control', placeholder='True', id=form.basicAutoMethod, autofocus = true) }}
+	    {% if form.basicAutoMethod.errors %}
+	        <ul class="errors">
+	        	{% for error in form.basicAutoMethod.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+      <input type="submit" value="Create a New Run" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+{% endblock %}
+ 

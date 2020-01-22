@@ -1,0 +1,111 @@
+{% extends 'layouts/main.html' %}
+{% block title %}RobotClassify | Results{% endblock %}
+{% block content %}
+
+<div class="row" id="top">
+	<center><h3>{{ run.name }}</h3></center>
+	<center><h5>{{ run.description }}</h5></center>
+</div>
+
+<div class="row">
+	<center>
+	Jump to: <a href="#heatmap">Heatmap</a> |  <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> | <a href="/projects/{{ run.project_id }}">Project</a>
+</center>
+</div>
+
+<div class="row" id="results">
+	<h3>Summary Results</h3>
+	<h5>The best model is '{{ results.final.bestmodel }}' with a {{results.final.scoring}} score of {{results.final.bestscore}}</h5>
+	<h5>Model Details: {{results.final.model}}</h5>
+	<h5>Kaggle submission file: <a href={{results.downloadfile}}>Download</a></h5>
+</div>
+
+<br>
+
+<div class="row" id="heatmap">
+	<h3 >Explore Heatmap: At a glance, what columns need feature engineering</h3>
+	<img src="{{ results.exploreheatmap }}" alt="Heat Map" />
+</div>
+
+<div class="row" id="engineering">
+	<h3>Feature Engineering Recommendations</h3>
+	{% for col in results.recommendations %}
+	
+		<h5>Column: {{ col.name }} of type {{ col.type }}</h5>
+	    {% if col.count > 0 %}
+			<ul>
+			   {% for recomended in col.list %}
+					<li>
+						<h5>{{ recomended }}</h5>
+					</li>
+			   {% endfor %}
+			</ul>
+		{% else %}
+			  <ul>
+					<li>
+						<h5>No recommendations for column {{ col.name }}</h5>
+					</li>
+			  </ul>
+		{% endif %}
+	</ul>
+	{% endfor %}
+</div>
+
+<div class="row" id="cleaninglog">
+	<h3 >Final Set of Feature Engineering Changes</h3>
+    {% for clean in results.cleaninglog %}
+      <ul>
+		 <li>
+			<h5>{{ clean }}</h5>
+		 </li>
+	  </ul>
+    {% endfor %}
+</div>
+
+<div id="scores">
+ 	<h3 >Training Scores for Models Evaluated</h3>
+	
+	<!-- DO HEADER -->
+	<div class="row">
+	  	<div class="col-sm-1">Model</div>
+	  	<div class="col-sm-1">r2</div>
+	  	<div class="col-sm-1">MAE</div>
+	  	<div class="col-sm-1">Best</div>
+	  	<div class="col-sm-1">AUROC</div>
+	  	<div class="col-sm-1">Accuracy</div>
+	  	<div class="col-sm-1">fbeta</div>
+	  	<div class="col-sm-1">Score</div>
+	  	<div class="col-sm-1">F1</div>
+	  	<div class="col-sm-1">Recall</div>
+	  	<div class="col-sm-1">Precision</div>
+	  	<div class="col-sm-1">RunTime</div>
+	</div>
+	{% for model in results.scores.models %}
+	    <div class="row">
+			<div class="col-sm-1">{{ model.Model }}</div>
+			<div class="col-sm-1">{{ model.r2 }}</div>
+			<div class="col-sm-1">{{ model.MAE }}</div>
+			<div class="col-sm-1">{{ model.Best }}</div>
+			<div class="col-sm-1">{{ model.AUROC }}</div>
+			<div class="col-sm-1">{{ model.Accuracy }}</div>
+			<div class="col-sm-1">{{ model.fbeta }}</div>
+			<div class="col-sm-1">{{ model.Score }}</div>
+			<div class="col-sm-1">{{ model.f1 }}</div>
+			<div class="col-sm-1">{{ model.Recall }}</div>
+			<div class="col-sm-1">{{ model.Precision }}</div>
+			<div class="col-sm-1">{{ model.RunTime }}</div>
+	    </div>
+	{% endfor %}
+</div>
+
+<div>
+	<br><br><br>
+	<center>
+	Jump to: <a href="#top">Top</a> | <a href="#results">Results</a> | <a href="#heatmap">Heatmap</a> |  <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> 
+</center>
+<br><br>
+</div>
+
+
+{% endblock %}
+
