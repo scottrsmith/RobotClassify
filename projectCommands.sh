@@ -3,6 +3,8 @@ pip3 freeze > requirements.txt
 # or, only modules used.
 pipreqs --force . 
 
+pip3 install -r requirements.txt
+
 # GIT
 
 # Create from a folder
