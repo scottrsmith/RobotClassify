@@ -1,0 +1,36 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Edit Project{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form class="form" method="post" action="/projects/{{project.id}}/edit">
+      {{ form.csrf_token }}
+      <h3 class="form-heading">Edit Project <em>{{ project.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+      
+      <div class="form-group">
+        <label for="address">Description</label>
+        {{ form.description(class_ = 'form-control', autofocus = true) }}
+      </div>
+	  
+	  <div>
+		  <h3>Training files can not be updated </h3>
+      <div>
+        <label for="trainingFile">Training File</label>
+        {{ project.trainingFile }}
+	    
+      </div>
+	
+      <div>
+        <label for="testingFile">Testing File</label>
+        {{ project.testingFile }}
+	    
+      </div>
+ 
+
+      <input type="submit" value="Update Project" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+{% endblock %}
