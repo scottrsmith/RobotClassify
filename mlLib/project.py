@@ -253,6 +253,10 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
     mlUtility.closeLogs()
     
+    del project
+    if predict not None:
+        del predict
+    
     return results
      
 

@@ -817,7 +817,7 @@ def create_run_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Runs
 #----------------------------------------------------------------------------
-@app.route('/runs/<int:run_id>/delete')
+@app.route('/runs/<int:run_id>/delete', methods=['DELETE'])
 @requires_auth('delete:run')
 def delete_run(payload, run_id):
     """
@@ -827,7 +827,7 @@ def delete_run(payload, run_id):
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/runs/<run_id>/delete
+            curl -X DELETE http://localhost:5000/runs/<run_id>/delete
 
 
         - Expected Success Response::
@@ -862,6 +862,26 @@ def delete_run(payload, run_id):
 
     flash('Run with ID of "' + str(run_id) + '" was successfully deleted!')
     return redirect(url_for('show_project', project_id=project_id)) 
+
+
+@app.route('/runs/<int:run_id>/delete')
+@requires_auth('delete:run')
+def delete_run(payload, run_id):
+    run = Run.query.filter(Run.id == run_id).one_or_none()
+    if run is None:
+        abort(404)
+
+    try:
+        project_id = run.project_id
+        run.delete()
+    except:
+        db.session.rollback()
+        flash('Oh Snap! Run with ID of "' + str(run_id) + '" was not deleted')
+        return redirect(url_for('show_project', project_id=project_id))
+
+    flash('Run with ID of "' + str(run_id) + '" was successfully deleted!')
+    return redirect(url_for('show_project', project_id=project_id)) 
+
 
 
 # ----------------------------------------------------------------

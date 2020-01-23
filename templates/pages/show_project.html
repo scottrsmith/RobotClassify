@@ -19,7 +19,7 @@
 <script type="text/javascript" language="javascript">
 	function DeleteRun(run_id) {
 		var request = new XMLHttpRequest();
-		request.open("DELETE", "/runs/" + run_id + "/delete" + , false);
+		request.open("DELETE", "/runs/" + run_id + "/delete" + , true);
 		request.send();
 	}
 </script>
