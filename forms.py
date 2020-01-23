@@ -64,8 +64,16 @@ class RunForm(FlaskForm):
    
     scoring = SelectField('scoring', 
                     validators=[DataRequired('A target scoring method is required')], 
-                    choices=[('f1','f1'),('r2','r2'),('Recall','Recall'),('Precision','Precision'),
-                             ('Accuracy','Accuracy')])
+                    choices=[('f1','f1'),('r2','r2'),('Recall','Recall'),('Precision','Precision')])
+    
+    modelList = SelectMultipleField('modelList', 
+                    validators=[DataRequired('A ML Model is required')], 
+                    choices=[('l2','l2'),('rfc','rfc'),('gbc','gbc'),('decisiontree','decisiontree'),
+                            ('kneighbors','kneighbors'),('sgd','sgd'),('bagging','bagging'),
+                            ('adaboost','adaboost'),('gaussiannb','gaussiannb'),('etc','etc'),('svc','svc'),
+                            ('xgbc','xgbc'),('stack','stack'),('vote','vote')])
+
+
     # Booleans
     
     basicAutoMethod = BooleanField('basicAutoMethod', default=False)

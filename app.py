@@ -88,10 +88,36 @@ def makePickList(columns):
     return [(c,c) for c in columns]
 
 #----------------------------------------------------------------------------#
+# Helper Class
+#    Override http methods to support RBAC
+#----------------------------------------------------------------------------#
+
+class HTTPMethodOverrideMiddleware(object):
+    allowed_methods = frozenset([
+        'GET',
+        'POST',
+        'DELETE',
+        'PATCH'
+    ])
+    bodyless_methods = frozenset(['GET', 'HEAD', 'OPTIONS', 'DELETE'])
+
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        method = environ.get('HTTP_X_HTTP_METHOD_OVERRIDE', '').upper()
+        if method in self.allowed_methods:
+            environ['REQUEST_METHOD'] = method
+        if method in self.bodyless_methods:
+            environ['CONTENT_LENGTH'] = '0'
+        return self.app(environ, start_response)
+
+#----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
 
 app = Flask(__name__)
+# app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
 moment = Moment(app)
 app.secret_key = config.SECRET_KEY
 app.config.from_object('config')
@@ -122,7 +148,7 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
                          'Content-Type,Authorization,true')
     response.headers.add('Access-Control-Allow-Methods',
-                         'GET,PUT,POST,DELETE,OPTIONS')
+                         'GET,PUT,POST,DELETE,OPTIONS,PATCH')
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -430,7 +456,7 @@ def projects(payload):
 #  ----------------------------------------------------------------
 #  Show single project
 #  ----------------------------------------------------------------
-@app.route('/projects/<int:project_id>')
+@app.route('/projects/<int:project_id>', methods=['GET'])
 @requires_auth('get:admin')
 def show_project(payload, project_id):
     """
@@ -627,7 +653,7 @@ def edit_project_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Project
 #----------------------------------------------------------------------------
-@app.route('/projects/<project_id>/delete', methods=['get'])
+@app.route('/projects/<project_id>/delete', methods=['GET'])
 @requires_auth('get:admin')
 def delete_project(payload, project_id):
     """
@@ -681,7 +707,7 @@ def delete_project(payload, project_id):
 #  ----------------------------------------------------------------
 #  Show single run
 #  ----------------------------------------------------------------
-@app.route('/runs/<int:run_id>')
+@app.route('/runs/<int:run_id>', methods=['GET'])
 @requires_auth('get:admin')
 def show_run(payload, run_id):
     """
@@ -791,8 +817,8 @@ def create_run_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Runs
 #----------------------------------------------------------------------------
-@app.route('/runs/<int:run_id>/delete', methods=['get'])
-@requires_auth('get:admin')
+@app.route('/runs/<int:run_id>/delete')
+@requires_auth('delete:run')
 def delete_run(payload, run_id):
     """
         **Delete Run**
@@ -841,7 +867,7 @@ def delete_run(payload, run_id):
 # ----------------------------------------------------------------
 #  Edit Runs
 # ----------------------------------------------------------------
-@app.route('/runs/<int:run_id>/edit', methods=['GET','POST'])
+@app.route('/runs/<int:run_id>/edit', methods=['GET', 'POST'])
 @requires_auth('get:admin')
 def edit_run_submission(payload, run_id):
     """
@@ -908,7 +934,7 @@ def edit_run_submission(payload, run_id):
 
 
 # ----------------------------------------------------------------
-#  Edit Runs
+#  Run ML training
 # ----------------------------------------------------------------
 @app.route('/runs/<int:run_id>/exec', methods=['GET'])
 # requires_auth('get:admin')
@@ -970,7 +996,7 @@ def run_submission(run_id):
                         #trainingFileOut='./examples/AutoReadyToTrain.csv',
                         #predictFileOut= './examples/ReadyToPredict.csv',
                         resultsFile='KaggleSubmitFile.csv',
-                        modelList = None,
+                        modelList = run.modelList,
                         confusionMatrixLabels=None,
                         scoring = run.scoring,
                         setProjectGoals={'f1': (0.9,'>')},

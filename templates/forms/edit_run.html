@@ -2,7 +2,7 @@
 {% block title %}Edit Run{% endblock %}
 {% block content %}
   <div class="form-wrapper">
-    <form class="form" method="post" action="/runs/{{run.id}}/edit">
+    <form class="form" method="POST" action="/runs/{{run.id}}/edit">
       {{ form.csrf_token }}
       <h3 class="form-heading">Edit ML Run <em>{{ run.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
 	  
@@ -65,6 +65,19 @@
 	    {% if form.predictSetOut.errors %}
 	        <ul class="errors">
 	        	{% for error in form.predictSetOut.errors %}
+	        		<li>{{ error }}</li>
+	            {% endfor %}
+	        </ul>
+	    {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="modelList">Classification Models for Training</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.modelList(class_ = 'form-control', placeholder='modelList', id=form.modelList, autofocus = true) }}
+	    {% if form.modelList.errors %}
+	        <ul class="errors">
+	        	{% for error in form.modelList.errors %}
 	        		<li>{{ error }}</li>
 	            {% endfor %}
 	        </ul>

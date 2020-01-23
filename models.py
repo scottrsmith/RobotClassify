@@ -140,6 +140,8 @@ class Run(db.Model):
 
 
     #confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
+    modelList = db.Column(db.ARRAY(db.String))
+
     scoring = db.Column(db.String(120), default='f1')
     setProjectGoals=db.Column(db.Float, default=0.9)     # {'F1': (0.9,'>')},
    
@@ -164,6 +166,7 @@ class Run(db.Model):
                 "targetVariable": self.targetVariable,
                 "basicAutoMethod": self.basicAutoMethod,
                 "scoring": self.scoring,
+                "modelList" : self.modelList,
                 "setProjectGoals" : self.setProjectGoals,
                 "results": results
                 }

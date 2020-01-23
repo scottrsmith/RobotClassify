@@ -2,6 +2,20 @@
 
 The RobotClassify app does stuff.....
 
+- Motivation for project
+- Project dependencies, local development and hosting instructions,
+- Detailed instructions for scripts to install any project dependencies, and to run the development server.
+- Documentation of API behavior and RBAC controls
+
+## Runing and Testing instrunctions:
+
+URL:
+Auth:
+Testing:
+https://robotclassify.herokuapp.com/
+
+
+
 ## Getting Started - Backend
 
 ### Installing Dependencies
@@ -109,13 +123,22 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 
 ## API End Points
 
-The following APIs are available. Detailed html documentation can be found in the 'docs' folder.
+The following APIs are available. Detailed html documentation can be found in the 'docs/source' folder.
 
-- GET /drinks
-- GET /drinks-detail
-- POST /drinks
-- PATCH /drinks/<id>
-- DELETE /drinks/<id>
+--- Projects ---
+- GET /projects (List all projects)
+- GET /projects/<int:project_id> (Project page)
+- POST/GET /projects/create (create a new project)
+- PATCH /projects/<int:project_id>/edit (edit a project)
+- DELETE /projects/<project_id>/delete (Delete a project)
+
+--- Runs ---
+- GET /runs/<int:run_id>  (Display a run results)
+- GET/POST /runs/create/<int:project_id> (Create a run)
+- DELETE /runs/<int:run_id>/delete (Delete a run)
+- PATCH /run/<int:run_id>/edit (edit a run)
+- POST /runs/<int:run_id>/exec  (run ML training for a run)
+
 
 
 ## Error Handling

@@ -16,6 +16,7 @@
 <div class="row" id="results">
 	<h3>Summary Results</h3>
 	<h5>The best model is '{{ results.final.bestmodel }}' with a {{results.final.scoring}} score of {{results.final.bestscore}}</h5>
+	<h5>Models Run: {% for model in run.modelList %}{{model}}, {% endfor %}</h5>
 	<h5>Model Details: {{results.final.model}}</h5>
 	<h5>Kaggle submission file: <a href={{results.downloadfile}}>Download</a></h5>
 </div>
