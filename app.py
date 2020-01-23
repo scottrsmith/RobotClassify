@@ -448,7 +448,7 @@ def projects(payload):
     """  
     # List the projects 
     projectList = Project.query.filter_by(account_id=session['account_id']).all()
-    data = [p.projectList for p in projectList]
+    data = [p.projectPage for p in projectList]
     return render_template('pages/projects.html', projects=data, count=len(data))
 
 
@@ -653,7 +653,7 @@ def edit_project_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Project
 #----------------------------------------------------------------------------
-@app.route('/projects/<project_id>/delete', methods=['GET'])
+@app.route('/projects/<project_id>/delete')
 @requires_auth('get:admin')
 def delete_project(payload, project_id):
     """
@@ -819,7 +819,7 @@ def create_run_submission(payload, project_id):
 #----------------------------------------------------------------------------
 @app.route('/runs/<int:run_id>/delete', methods=['DELETE'])
 @requires_auth('delete:run')
-def delete_run(payload, run_id):
+def delete_run_by_id(payload, run_id):
     """
         **Delete Run**
 

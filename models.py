@@ -54,20 +54,11 @@ class Project(db.Model):
                 'description': self.description,
                 'trainingFile': self.trainingFile,
                 'testingFile': self.testingFile,
-                'description': self.description,
                 'runCount': 
                     Run.query.filter(Run.project_id == self.id).count(),
                 'runs': [r.runList for r in Run.query.filter(
                     Run.project_id == self.id,
                     Run.account_id == session['account_id'])],
-            }
-
-    @property
-    def projectList(self):
-            return {
-                'id': self.id,
-                'name': self.name,
-                'description': self.description,
             }
 
 

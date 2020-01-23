@@ -1,22 +1,59 @@
 {% extends 'layouts/main.html' %}
 {% block title %}RobotClassify | Projects{% endblock %}
 {% block content %}
+
+<style>
+	.row-striped:nth-of-type(odd){
+	  background-color: #efefef;
+	}
+
+	.row-striped:nth-of-type(even){
+	  background-color: #ffffff;
+	}
+</style>
+
 <ul class="items">
+	<h1 class="monospace">PROJECTS<h1>
 	{% if count > 0 %}
 		{% for project in projects %}
-		<li>
-			<a href="/projects/{{ project.id }}">
-				<i class="fas fa-robot"></i>
-				<div class="item">
-					<h5>{{ project.name }} | {{ project.description }}</h5>
-				</div>
-			</a>
-		</li>
+		<div class="row row-striped">
+			<div class="col-sm-6">
+				<a href="/projects/{{ project.id }}">
+				  <h2 class="monospace">{{ project.name }}</h2>
+				</a>	
+				<h5>{{ project.description }}</h5>
+				<h5>Training on file: {{project.trainingFile}}</h3>
+				
+			</div>
+			<div class="col-sm-6">
+				<h5 class="monospace">Runs:</h5>
+				{% if project.runCount>0 %}
+					{%for run in project.runs %}
+						{% if run.results %}
+							<h5><u>Run: <a href="/runs/{{ run.id }}">{{ run.name }}</a></u></h5>
+						{% else %}
+							<h5><u>Run: {{ run.name }}</u></h5>
+						{% endif %}
+						<h5> {{ run.description }}</h5>
+						{% if run.results %}
+						   <h5>Best model {{ run.results.final.bestmodel }} with a {{ run.results.final.scoring }} score of {{ run.results.final.bestscore }}: <a href="/runs/{{ run.id }}"><button>View Results</button></a></h5>
+						{% else %}
+							<h5> No Results Yet: <a href="/runs/{{ run.id }}/exec"><button>Run Training</button></a></h5>
+						{% endif %}
+						<hr>
+					{% endfor %}
+					
+				{% else %}
+					<h5>There are no runs yet. <a href="/runs/create/{{ project.id }}">Create a new run.</a></h5>
+				{% endif %}
+			</div>
+		</div>
 		{% endfor %}
 	{% else %}
 	    <h5>No Projects.</h5>
 	{% endif %}
-	<div>
+	<br>
+	<div class-"row">
 	    <a href="/projects/create" class="btn btn-primary btn-lg btn-block" role="button">Create a New Project</a>
     </div>
 </ul>
