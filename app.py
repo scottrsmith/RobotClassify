@@ -96,7 +96,7 @@ moment = Moment(app)
 app.secret_key = config.SECRET_KEY
 app.config.from_object('config')
 #app.config['WTF_CSRF_CHECK_DEFAULT'] = False
-#app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
+app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
 
 # define file uploadss
 configure_uploads(app, config.dataFiles)
@@ -107,8 +107,6 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 # Setup for mllib
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-#import sys
-#sys.path.append('/users/scottsmith/kat/RobotClassify')
 
 
 # open/Connect to a local postgresql database
@@ -135,9 +133,6 @@ def after_request(response):
 # Auth0 security setup
 
 
-AUTH0_DOMAIN = 'dev-p35ewo73.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'robotclassify'
 
 
 def getEnvVars(first=None, second=None, third=None):

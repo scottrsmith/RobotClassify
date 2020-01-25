@@ -24,3 +24,6 @@ SECRET_KEY = os.urandom(32)
 JWT_PAYLOAD = 'jwt_payload'
 #WTF_CSRF_CHECK_DEFAULT = False
 #WTF_CSRF_HEADERS = ['X-CSRFToken', 'X-CSRF-Token']
+AUTH0_DOMAIN = 'dev-p35ewo73.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'robotclassify'
