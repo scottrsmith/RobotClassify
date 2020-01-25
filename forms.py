@@ -34,13 +34,11 @@ class ProjectFormEdit(FlaskForm):
 
     #testingFile = StringField()
 
-    trainingFile = FileField(validators=[FileRequired(),
-                                        FileAllowed(config.dataFiles, 
-                                        'csv files only')])
+    #trainingFile = FileField(validators=[FileAllowed(config.dataFiles, 
+    #                                    'csv files only')])
 
-    testingFile = FileField(validators=[FileRequired(),
-                                        FileAllowed(config.dataFiles, 
-                                        'csv files only')])
+    #testingFile = FileField(validators=[FileAllowed(config.dataFiles, 
+    #                                    'csv files only')])
 
   
 

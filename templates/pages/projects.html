@@ -38,7 +38,7 @@
 						{% if run.results %}
 						   <h5>Best model {{ run.results.final.bestmodel }} with a {{ run.results.final.scoring }} score of {{ run.results.final.bestscore }}: <a href="/runs/{{ run.id }}"><button>View Results</button></a></h5>
 						{% else %}
-							<h5> No Results Yet: <a href="/runs/{{ run.id }}/exec"><button>Run Training</button></a></h5>
+							<h5> No Results Yet: <a href="/train/{{ run.id }}"><button>Run Training</button></a></h5>
 						{% endif %}
 						<hr>
 					{% endfor %}

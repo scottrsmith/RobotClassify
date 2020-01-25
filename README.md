@@ -126,18 +126,18 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 The following APIs are available. Detailed html documentation can be found in the 'docs/source' folder.
 
 --- Projects ---
-- GET /projects (List all projects)
-- GET /projects/<int:project_id> (Project page)
-- POST/GET /projects/create (create a new project)
-- PATCH /projects/<int:project_id>/edit (edit a project)
-- DELETE /projects/<project_id>/delete (Delete a project)
+- GET /projects (List all projects) - get:project
+- GET /projects/<int:project_id> (Project page) - get:project
+- POST/GET /projects/create (create a new project) - post:project
+- PATCH /projects/<int:project_id>/edit (edit a project) - patch:project
+- DELETE /projects/<project_id>/delete (Delete a project) - delete:project
 
 --- Runs ---
-- GET /runs/<int:run_id>  (Display a run results)
-- GET/POST /runs/create/<int:project_id> (Create a run)
-- DELETE /runs/<int:run_id>/delete (Delete a run)
-- PATCH /run/<int:run_id>/edit (edit a run)
-- POST /runs/<int:run_id>/exec  (run ML training for a run)
+- GET /runs/<int:run_id>  (Display a run results) - get:run
+- GET/POST /runs/create/<int:project_id> (Create a run) - get:post
+- DELETE /runs/<int:run_id>/delete (Delete a run) - delete:post
+- PATCH /run/<int:run_id>/edit (edit a run) - patch:run
+- POST /train/<int:run_id>  (run ML training for a run) post:train
 
 
 

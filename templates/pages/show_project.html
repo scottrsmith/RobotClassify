@@ -1,28 +1,6 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Project Search{% endblock %}
 {% block content %}
-
-<script type="text/javascript" language="javascript">
-	function DeleteRun2(run_id) {
-	    var xhttp = new XMLHttpRequest();
-	    xhttp.onreadystatechange = function() {
-	         if (this.readyState == 4 && this.status == 200) {
-	             alert(this.responseText);
-	         }
-	    };
-	    xhttp.open("DELETE", "/runs/" + run_id + "/delete", false);
-	    xhttp.setRequestHeader("Content-type", "application/json");
-	    xhttp.send();
-	}
-</script>
-
-<script type="text/javascript" language="javascript">
-	function DeleteRun(run_id) {
-		var request = new XMLHttpRequest();
-		request.open("DELETE", "/runs/" + run_id + "/delete" + , true);
-		request.send();
-	}
-</script>
 	
 
 <div class="row">
@@ -66,7 +44,7 @@
 							  <a href="/runs/{{ run.id }}"><button>Results</button></a>
 						 </li>
 					  {% endif %}
-		              <li class="active"><a href="/runs/{{ run.id }}/exec"><button>Train</button></a></li>
+		              <li class="active"><a href="/train/{{ run.id }}"><button>Train</button></a></li>
 					  <li class="active"><a href="/runs/{{ run.id }}/edit"><button>Edit</button></a></li>
 					  <li class="active"><a href="/runs/{{ run.id }}/delete"><button>Delete</button></a></li>
 					  <!-- ><li class="active"><a onclick="DeleteRun({{run.id}})" href="javascript:void(0);">Delete</li> -->

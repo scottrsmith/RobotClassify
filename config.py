@@ -22,3 +22,5 @@ AUTH0_AUDIENCE = 'AUTH0_AUDIENCE'
 PROFILE_KEY = 'profile'
 SECRET_KEY = os.urandom(32)
 JWT_PAYLOAD = 'jwt_payload'
+#WTF_CSRF_CHECK_DEFAULT = False
+WTF_CSRF_HEADERS = ['X-CSRFToken', 'X-CSRF-Token']

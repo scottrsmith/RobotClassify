@@ -37,24 +37,21 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
+from flask_modus import Modus
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from flask_cors import CORS
+from flask_session import Session
 from flask_uploads import UploadSet, configure_uploads, DATA, IMAGES, patch_request_class, send_from_directory
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 import pandas as pd
 import pickle
 
-
-
-
 # Machine learning libraries
 from xgboost import XGBClassifier
 from mlLib.project import autoEvaluateClassifier, autoFlaskEvaluateClassifier
-
-
 
 from six.moves.urllib.parse import urlencode
 
@@ -65,7 +62,6 @@ from urllib.request import urlopen
 
 from forms import *
 from models import *
-
 import config
 
 
@@ -87,44 +83,27 @@ def dumpData(obj, name='None'):
 def makePickList(columns):
     return [(c,c) for c in columns]
 
-#----------------------------------------------------------------------------#
-# Helper Class
-#    Override http methods to support RBAC
-#----------------------------------------------------------------------------#
-
-class HTTPMethodOverrideMiddleware(object):
-    allowed_methods = frozenset([
-        'GET',
-        'POST',
-        'DELETE',
-        'PATCH'
-    ])
-    bodyless_methods = frozenset(['GET', 'HEAD', 'OPTIONS', 'DELETE'])
-
-    def __init__(self, app):
-        self.app = app
-
-    def __call__(self, environ, start_response):
-        method = environ.get('HTTP_X_HTTP_METHOD_OVERRIDE', '').upper()
-        if method in self.allowed_methods:
-            environ['REQUEST_METHOD'] = method
-        if method in self.bodyless_methods:
-            environ['CONTENT_LENGTH'] = '0'
-        return self.app(environ, start_response)
 
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
 
 app = Flask(__name__)
+#modus = Modus(app)
+
 # app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
 moment = Moment(app)
 app.secret_key = config.SECRET_KEY
 app.config.from_object('config')
+#app.config['WTF_CSRF_CHECK_DEFAULT'] = False
+app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
 
 # define file uploadss
 configure_uploads(app, config.dataFiles)
 patch_request_class(app, 1024 * 1024)  # set maximum file size to 1 mb
+app.secret_key = config.SECRET_KEY
+#app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 # Setup for mllib
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -138,6 +117,7 @@ migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
 # CORS(app, supports_credentials=True)
 CORS(app)
+Session(app)
 
 
 
@@ -415,8 +395,8 @@ def logout():
 #----------------------------------------------------------------------------
 #  List Projects
 #----------------------------------------------------------------------------
-@app.route('/projects')
-@requires_auth('get:admin')
+@app.route('/projects', methods=['GET'])
+@requires_auth('get:project')
 def projects(payload):
     """
         **List Proejcts**
@@ -457,7 +437,7 @@ def projects(payload):
 #  Show single project
 #  ----------------------------------------------------------------
 @app.route('/projects/<int:project_id>', methods=['GET'])
-@requires_auth('get:admin')
+@requires_auth('get:project')
 def show_project(payload, project_id):
     """
         **Project**
@@ -526,7 +506,7 @@ def populateProjectFiles(project, form):
 #  ----------------------------------------------------------------
 
 @app.route('/projects/create', methods=['POST', 'GET'])
-@requires_auth('post:admin')
+@requires_auth('post:project')
 def create_projects_submission(payload):
     """
         **Create Project**
@@ -581,8 +561,9 @@ def create_projects_submission(payload):
 # ----------------------------------------------------------------
 #  Edit Project
 # ----------------------------------------------------------------
-@app.route('/projects/<int:project_id>/edit', methods=['GET','POST'])
-@requires_auth('get:admin')
+@app.route('/projects/<int:project_id>/edit', methods=['GET','POST','PATCH'])
+@csrf.exempt
+@requires_auth('patch:project')
 def edit_project_submission(payload, project_id):
     """
         **Edit Project**
@@ -628,7 +609,7 @@ def edit_project_submission(payload, project_id):
         form.populate_obj(project)
 
         # load the files and column data into the project record
-        populateProjectFiles(project, form)
+        # populateProjectFiles(project, form)
 
         project.update()
         # on successful db update, flash success
@@ -653,8 +634,8 @@ def edit_project_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Project
 #----------------------------------------------------------------------------
-@app.route('/projects/<project_id>/delete')
-@requires_auth('get:admin')
+@app.route('/projects/<project_id>/delete', methods=['GET','DELETE'])
+@requires_auth('delete:project')
 def delete_project(payload, project_id):
     """
         **Delete Project**
@@ -708,7 +689,7 @@ def delete_project(payload, project_id):
 #  Show single run
 #  ----------------------------------------------------------------
 @app.route('/runs/<int:run_id>', methods=['GET'])
-@requires_auth('get:admin')
+@requires_auth('get:run')
 def show_run(payload, run_id):
     """
         **Runs**
@@ -760,7 +741,7 @@ def show_run(payload, run_id):
 
 # Process the create request
 @app.route('/runs/create/<int:project_id>', methods=['GET','POST'])
-@requires_auth('post:admin')
+@requires_auth('post:run')
 def create_run_submission(payload, project_id):
     """
         **Create Run**
@@ -817,54 +798,8 @@ def create_run_submission(payload, project_id):
 #----------------------------------------------------------------------------
 #  Delete Runs
 #----------------------------------------------------------------------------
-@app.route('/runs/<int:run_id>/delete', methods=['DELETE'])
-@requires_auth('delete:run')
-def delete_run_by_id(payload, run_id):
-    """
-        **Delete Run**
 
-        Delete Run
-
-        - Sample Call::
-
-            curl -X DELETE http://localhost:5000/runs/<run_id>/delete
-
-
-        - Expected Success Response::
-
-            HTTP Status Code: 200
-
-            <!doctype html>...</html>
-
-
-        - Expected Fail Response::
-
-            HTTP Status Code: 401
-            {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
-            }
-
-    """
-    run = Run.query.filter(Run.id == run_id).one_or_none()
-    if run is None:
-        abort(404)
-
-    try:
-        project_id = run.project_id
-        run.delete()
-    except:
-        db.session.rollback()
-        flash('Oh Snap! Run with ID of "' + str(run_id) + '" was not deleted')
-        return redirect(url_for('show_project', project_id=project_id))
-
-    flash('Run with ID of "' + str(run_id) + '" was successfully deleted!')
-    return redirect(url_for('show_project', project_id=project_id)) 
-
-
-@app.route('/runs/<int:run_id>/delete')
+@app.route('/runs/<int:run_id>/delete', methods=['GET','DELETE'])
 @requires_auth('delete:run')
 def delete_run(payload, run_id):
     run = Run.query.filter(Run.id == run_id).one_or_none()
@@ -887,8 +822,9 @@ def delete_run(payload, run_id):
 # ----------------------------------------------------------------
 #  Edit Runs
 # ----------------------------------------------------------------
-@app.route('/runs/<int:run_id>/edit', methods=['GET', 'POST'])
-@requires_auth('get:admin')
+@app.route('/runs/<int:run_id>/edit', methods=['GET', 'POST', 'PATCH'])
+@requires_auth('patch:run')
+@csrf.exempt
 def edit_run_submission(payload, run_id):
     """
         **Edit Run**
@@ -933,7 +869,9 @@ def edit_run_submission(payload, run_id):
     form.key.choices=pickList
     form.predictSetOut.choices=pickList
 
+    print (">>>>> request.method, form.is_submitted() , form.validate()",request.method, form.is_submitted() , form.validate())
     if request.method=='POST':
+       
       if form.is_submitted() and form.validate():
         # form data is posted to venue object for update
         try:
@@ -956,19 +894,19 @@ def edit_run_submission(payload, run_id):
 # ----------------------------------------------------------------
 #  Run ML training
 # ----------------------------------------------------------------
-@app.route('/runs/<int:run_id>/exec', methods=['GET'])
-# requires_auth('get:admin')
+@app.route('/train/<int:run_id>', methods=['GET'])
+# requires_auth('post:train')
 def run_submission(run_id):
     """
         **Exec Run**
 
-        Edit Run
+        Run ML Training based upon run record attributes
 
         
 
         - Sample Call to display::
 
-            curl -X GET http://localhost:5000/runs/<int:run_id>/exec
+            curl -X POST http://localhost:5000/rutrainns/<int:run_id>
 
 
 
