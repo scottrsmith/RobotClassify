@@ -96,7 +96,7 @@ moment = Moment(app)
 app.secret_key = config.SECRET_KEY
 app.config.from_object('config')
 #app.config['WTF_CSRF_CHECK_DEFAULT'] = False
-app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
+#app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
 
 # define file uploadss
 configure_uploads(app, config.dataFiles)
