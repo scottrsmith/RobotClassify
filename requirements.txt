@@ -25,6 +25,7 @@ Flask-SQLAlchemy==2.4.1
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.2
 Flask-Modus==0.0.1
+Flask-Session==0.3.1
 future==0.18.2
 greenlet==0.4.15
 gunicorn==20.0.4
