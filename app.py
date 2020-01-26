@@ -2,19 +2,16 @@
 **Introduction**
 ----------------
 Robot Classify does stuff...
-
 - GET /XXX
 - GET /XXX-detail
 - POST /XXX
 - PATCH /XXX/<id>
 - DELETE /XXX/<id>
-
 With the following API permissions:
 - `get:drinks-detail` (Barista and Manager)
 - `post:drinks` (Manager)
 - `patch:drinks` (Manager)
 - `delete:drinks` (Manager)
-
 """
 
 #----------------------------------------------------------------------------#
@@ -195,14 +192,18 @@ auth0= oauth.register(
 
 # def get_token_auth_header():
 #   raise Exception('Not Implemented')
+# This is executed from thr callback
 
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
     """
 
-    # auth = request.headers.get('Authorization', None)
-    auth = session.get('token', None)
-    
+    #auth = request.headers.get('Authorization', None)
+
+    auth = auth0.token
+    #print ('\n\n\nAuth=',auth)
+    #dumpObj(auth0)
+
 
     if not auth:
         abort(401, 'Authorization header is expected.')
@@ -230,7 +231,7 @@ def check_permissions(permission, payload):
 
     if permission not in payload['permissions']:
         abort(401, 'Permission not found.')
-
+    print ('check permission=',permission)
     return True
 
 
@@ -243,9 +244,17 @@ def check_permissions(permission, payload):
 # ----------------------------------------------------------------------------#
 
 def verify_decode_jwt(token):
-    jsonurl = urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
-    jwks = json.loads(jsonurl.read())
+    #jsonurl = urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
+    #print ('\n\nToken=', token)
+    #dumpObj(token,'Token')
+   
     unverified_header = jwt.get_unverified_header(token)
+    #print ('unverified_header',unverified_header)
+    jsonurl = urlopen(f'https://dev-p35ewo73.auth0.com/.well-known/jwks.json')
+    jwks = json.loads(jsonurl.read())
+    
+
+    #print ('jwks=',jwks)
     rsa_key = {}
 
     if 'kid' not in unverified_header:
@@ -263,9 +272,9 @@ def verify_decode_jwt(token):
                 }
     if rsa_key:
         try:
-            payload = jwt.decode(token, rsa_key, algorithms=ALGORITHMS,
-                                 audience=API_AUDIENCE,
-                                 issuer='https://' + AUTH0_DOMAIN + '/')
+            payload = jwt.decode(token, rsa_key, algorithms=config.ALGORITHMS,
+                                    audience=AUTH0_AUDIENCE,
+                                    issuer='https://' + AUTH0_DOMAIN + '/')
 
             return payload
         except jwt.ExpiredSignatureError:
@@ -298,31 +307,20 @@ def requires_auth(permission=''):
 
             # Save the URL 'redirect_url' 
             session['redirect_url'] = request.path
+            session['permission'] = permission
             session.modified = True
                        
             if config.PROFILE_KEY not in session:
                 return redirect('/login')
+            else:
+                # check premissions in an active session
+                payload = session['payload'] 
+                check_permissions(permission, payload)
 
             return f(None, *args, **kwargs)
         return wrapper
 
     return requires_auth_decorator
-
-
-
-
-#----------------------------------------------------------------------------#
-# Filters..
-#----------------------------------------------------------------------------#
-def format_datetime(value, format='medium'):
-  date = dateutil.parser.parse(value)
-  if format == 'full':
-      format="EEEE MMMM, d, y 'at' h:mma"
-  elif format == 'medium':
-      format="EE MM, dd, y h:mma"
-  return babel.dates.format_datetime(date, format)
-
-app.jinja_env.filters['datetime'] = format_datetime
 
 
 
@@ -338,22 +336,34 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/callback')
 def callback_handling():
-    tries = 0
-    failed = False
-    while tries < 10:
-        try:
-            auth0.authorize_access_token()
-            tries = 10
-            failed = False
-        except:
-            tries += 1
-            failed = True
-    if failed:
-        abort(500)
+    #tries = 0
+    #failed = False
+    #while tries < 10:
+    #    try:
+    #        auth0.authorize_access_token()
+    #        tries = 10
+    #        failed = False
+    #    except:
+    #        tries += 1
+    #        failed = True
+    #if failed:
+    #    abort(500)
 
+    auth0.authorize_access_token()
+    token = get_token_auth_header()
+    try:
+        payload = verify_decode_jwt(token)
+    except Exception:
+        abort(401)
+    # Get the premission from requires_auth (which will call the callback in a redirect)
+    # Pages that do not have redirercts will go to the unprotected home page, so no need to check permissions
+    if 'redirect_url' in session:
+        permission = session['permission']
+        check_permissions(permission, payload)
+
+    # Get the user info and update session attributes
     resp = auth0.get('userinfo')
     userinfo = resp.json()
-    
     session[config.JWT_PAYLOAD] = userinfo
     session[config.PROFILE_KEY] = {
         'user_id': userinfo['sub'],
@@ -361,9 +371,8 @@ def callback_handling():
         'picture': userinfo['picture']
     }
     session['account_id'] = userinfo['sub']
-    #dumpObj(session, 'Dump of Session afer callback')
-    #session['token'] = auth0.token
-    #session.modified = True
+    session['payload'] = payload
+    session.modified = True
 
     # Check to see of the redirected URL was saved to redirect back after login
     if 'redirect_url' in session:
@@ -375,6 +384,8 @@ def callback_handling():
 @app.route('/login')
 def login():
     flash('You are now logged in!')
+    if 'permission' not in session:
+        session['permission']=None
     session['request_uri'] = AUTH0_CALLBACK_URL
     return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL, audience=AUTH0_AUDIENCE)
 
@@ -395,23 +406,13 @@ def logout():
 def projects(payload):
     """
         **List Proejcts**
-
         Display a list of projects
         - Sample Call::
-
             curl -X GET http://localhost:5000/projects
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -419,7 +420,6 @@ def projects(payload):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """  
     # List the projects 
     projectList = Project.query.filter_by(account_id=session['account_id']).all()
@@ -436,23 +436,13 @@ def projects(payload):
 def show_project(payload, project_id):
     """
         **Project**
-
         Display a single projects
-
         - Sample Call::
-
             curl -X GET http://localhost:5000/projects/<id>
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -460,7 +450,6 @@ def show_project(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
     # Query and show a single project
     project = Project.query.filter(Project.id == project_id).one_or_none()
@@ -505,23 +494,13 @@ def populateProjectFiles(project, form):
 def create_projects_submission(payload):
     """
         **Create Project**
-
         Create Project
-
         - Sample Call::
-
             curl -X POST http://localhost:5000/project/create
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -529,7 +508,6 @@ def create_projects_submission(payload):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
     
 
@@ -562,26 +540,15 @@ def create_projects_submission(payload):
 def edit_project_submission(payload, project_id):
     """
         **Edit Project**
-
         Edit Project
-
         - Sample Call to edit::
-
             curl -X POST http://localhost:5000/projects/<int:project_id>/edit
-
        - Sample Call to display::
-
             curl -X GET http://localhost:5000/projects/<int:project_id>/edit
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -589,7 +556,6 @@ def edit_project_submission(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
 
     project = Project.query.filter(Project.id == project_id).one_or_none()
@@ -634,23 +600,13 @@ def edit_project_submission(payload, project_id):
 def delete_project(payload, project_id):
     """
         **Delete Project**
-
         Delete Project
-
         - Sample Call::
-
             curl -X GET http://localhost:5000/project/<project_id>/delete
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -658,7 +614,6 @@ def delete_project(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
 
     try:
@@ -688,23 +643,13 @@ def delete_project(payload, project_id):
 def show_run(payload, run_id):
     """
         **Runs**
-
         Display a single run
-
         - Sample Call::
-
             curl -X GET http://localhost:5000/runs/<id>
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -712,7 +657,6 @@ def show_run(payload, run_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
     # Query and show a single project
     run = Run.query.filter(Run.id == run_id).one_or_none()
@@ -740,23 +684,13 @@ def show_run(payload, run_id):
 def create_run_submission(payload, project_id):
     """
         **Create Run**
-
         Create Run
-
         - Sample Call::
-
             curl -X POST http://localhost:5000/run/create
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -764,7 +698,6 @@ def create_run_submission(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
 
     project = Project.query.filter(Project.id == project_id).one_or_none()
@@ -823,28 +756,15 @@ def delete_run(payload, run_id):
 def edit_run_submission(payload, run_id):
     """
         **Edit Run**
-
         Edit Run
-
         - Sample Call to edit::
-
             curl -X POST http://localhost:5000/runs/<int:run_id>/edit
-
        - Sample Call to display::
-
             curl -X GET http://localhost:5000/runs/<int:run_id>/edit
-
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -852,7 +772,6 @@ def edit_run_submission(payload, run_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
     run = Run.query.filter(Run.id == run_id).one_or_none()
     if run is None:
@@ -894,26 +813,14 @@ def edit_run_submission(payload, run_id):
 def run_submission(run_id):
     """
         **Exec Run**
-
         Run ML Training based upon run record attributes
-
         
-
         - Sample Call to display::
-
             curl -X POST http://localhost:5000/rutrainns/<int:run_id>
-
-
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -921,9 +828,6 @@ def run_submission(run_id):
                 "message": "Unauthorized",
                 "success": false
             }
-
-
-
     """
 
     run = Run.query.filter(Run.id == run_id).one_or_none()
@@ -976,22 +880,13 @@ def run_submission(run_id):
 def index():
     """
         **Home Page**
-
         Display the home page
-
         - Sample Call::
-
             curl -X GET http://localhost:5000/
-
         - Expected Success Response::
-
             HTTP Status Code: 200
-
             <!doctype html>...</html>
-
-
         - Expected Fail Response::
-
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -999,7 +894,6 @@ def index():
                 "message": "Unauthorized",
                 "success": false
             }
-
     """
     return render_template('pages/index.html')
 

@@ -71,8 +71,6 @@ class RunForm(FlaskForm):
                             ('adaboost','adaboost'),('gaussiannb','gaussiannb'),('etc','etc'),('svc','svc'),
                             ('xgbc','xgbc'),('stack','stack'),('vote','vote')])
 
-
-    # Booleans
     
     basicAutoMethod = BooleanField('basicAutoMethod', default=False)
 
