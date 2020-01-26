@@ -356,7 +356,7 @@ def callback_handling():
     except Exception:
         abort(401)
     # Get the premission from requires_auth (which will call the callback in a redirect)
-    # Pages that do not have redirercts will go to the unprotected home page, so no need to check permissions
+    # Pages that do not have redirercts will go to the unprotected home page, so no need to check p
     if 'redirect_url' in session:
         permission = session['permission']
         check_permissions(permission, payload)
@@ -916,6 +916,10 @@ def not_found_error(error):
 def server_error(error):
     return render_template('errors/500.html'), 500
 
+@app.errorhandler(401)
+def premission_error(error):
+    return render_template('errors/500.html'), 401
+
 @app.errorhandler(400)
 def bad_request(error):
     return (jsonify({
@@ -924,16 +928,6 @@ def bad_request(error):
         'message': 'Bad Request',
         'description': str(error),
         }), 400)
-
-@app.errorhandler(401)
-def unauthorized_user(error):
-    return (jsonify({
-        'success': False,
-        'error': 401,
-        'message': 'Unauthorized',
-        'description': str(error),
-        }), 401)
-
 
 
 @app.errorhandler(405)
