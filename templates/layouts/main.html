@@ -56,7 +56,7 @@
               {% if (request.endpoint == 'projects') or
                 (request.endpoint == 'search_projects') or
                 (request.endpoint == 'show_projects') %}
-              <form class="search" method="post" action="/project/search">
+              <form class="search" method="post" action="/projects/search">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input class="form-control"
                   type="search"

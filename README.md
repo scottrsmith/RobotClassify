@@ -1,9 +1,15 @@
 ## Introduction
 
-The RobotClassify app does stuff.....
+The RobotClassify app allows for non-data scientest such as citizen developers and other operational people incolced with analizing and
+reporting on numbers.  THe goal is to automate the entire ML process (featwure-engineering, training, perediction). This cversion of the app
+is optimized for loading datafiles to train with, and test files for predctiona, optimzed for submission in Kaggle comoetitions
 
-- Motivation for project
-- Project dependencies, local development and hosting instructions,
+MymMotivation for project centers around my interest in machine learning for citizen developers. Taking the complecated tasked of feature engineering, model selection, and training and makeing it a simple point anc click excersie 2without any prior ML Training.
+
+
+## Project dependencies, local development and hosting instructions,
+
+
 - Detailed instructions for scripts to install any project dependencies, and to run the development server.
 - Documentation of API behavior and RBAC controls
 

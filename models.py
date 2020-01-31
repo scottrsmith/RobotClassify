@@ -8,9 +8,9 @@ There are three models:
 
 """
 
-#----------------------------------------------------------------------------#
+# ---------------------------------------------------------------------------#
 # Models..
-#----------------------------------------------------------------------------#
+# ---------------------------------------------------------------------------#
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask import session
@@ -19,6 +19,7 @@ import pickle
 
 db = SQLAlchemy()
 
+
 # ------- Commect and configure the connection to the DB ----------
 def connectToDB(app):
     app.config.from_object('config')
@@ -26,11 +27,13 @@ def connectToDB(app):
     db.init_app(app)
     return db
 
+
 # ----- Define the Project Table Class
 class Project(db.Model):
     '''
     Project
-    An ML Project. Projects are the top-orginizing layer for running ML problems
+    An ML Project. Projects are the top-orginizing layer for
+    running ML problems
     '''
     __tablename__ = 'Project'
 
@@ -38,29 +41,35 @@ class Project(db.Model):
     account_id = db.Column(db.String(100))
     name = db.Column(db.String)
     description = db.Column(db.String(120))
-    trainingFile = db.Column(db.String(120)) # './Data/titanic_train.csv',
-    testingFile = db.Column(db.String(120)) #'./Data/titanic_test.csv',
+    trainingFile = db.Column(db.String(120))
+    testingFile = db.Column(db.String(120))
     savedTrainingFile = db.Column(db.PickleType)
     savedTestingFile = db.Column(db.PickleType)
     columns = db.Column(db.ARRAY(db.String))
     runs = db.relationship('Run', backref='project', lazy=True)
 
-
     @property
     def projectPage(self):
-            return {
-                'id': self.id,
-                'name': self.name,
-                'description': self.description,
-                'trainingFile': self.trainingFile,
-                'testingFile': self.testingFile,
-                'runCount': 
-                    Run.query.filter(Run.project_id == self.id).count(),
-                'runs': [r.runList for r in Run.query.filter(
-                    Run.project_id == self.id,
-                    Run.account_id == session['account_id'])],
-            }
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'trainingFile': self.trainingFile,
+            'testingFile': self.testingFile,
+            'runCount':
+                Run.query.filter(Run.project_id == self.id).count(),
+            'runs': [r.runList for r in Run.query.filter(
+                Run.project_id == self.id,
+                Run.account_id == session['account_id'])],
+        }
 
+    @property
+    def projectSearch(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+        }
 
     def insert(self):
         '''
@@ -122,25 +131,30 @@ class Run(db.Model):
     description = db.Column(db.String(120))
     results = db.Column(db.PickleType)
     account_id = db.Column(db.String(100))
-    project_id = db.Column(db.Integer, db.ForeignKey('Project.id', ondelete='CASCADE'),  nullable=False)
-   
+    project_id = db.Column(db.Integer,
+                           db.ForeignKey('Project.id', ondelete='CASCADE'),
+                           nullable=False)
 
-    targetVariable= db.Column(db.String(120)) #'Survived',
-    key= db.Column(db.String(120)) #'PassengerId',
-    predictSetOut = db.Column(db.ARRAY(db.String)) # predictSetOut=['Survived','PassengerId'],
+    targetVariable = db.Column(db.String(120))
+    key = db.Column(db.String(120))
 
+    # example:predictSetOut=['Survived','PassengerId'],
+    predictSetOut = db.Column(db.ARRAY(db.String))
+    predictFile = db.Column(db.PickleType)
 
-    #confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
+    # confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
     modelList = db.Column(db.ARRAY(db.String))
 
     scoring = db.Column(db.String(120), default='f1')
-    setProjectGoals=db.Column(db.Float, default=0.9)     # {'F1': (0.9,'>')},
-   
+
     # Booleans
     basicAutoMethod = db.Column(db.Boolean(), default=True)
-    
-    Project = db.relationship('Project', backref=db.backref('Run', cascade='all, delete-orphan'))
- 
+
+    Project = db.relationship('Project',
+                              backref=db.backref(
+                                  'Run',
+                                  cascade='all, delete-orphan'))
+
     # List out the runs for display on the project page
     @property
     def runList(self):
@@ -157,8 +171,7 @@ class Run(db.Model):
                 "targetVariable": self.targetVariable,
                 "basicAutoMethod": self.basicAutoMethod,
                 "scoring": self.scoring,
-                "modelList" : self.modelList,
-                "setProjectGoals" : self.setProjectGoals,
+                "modelList": self.modelList,
                 "results": results
                 }
 
@@ -208,4 +221,3 @@ class Run(db.Model):
 
         '''
         db.session.commit()
-

@@ -573,7 +573,11 @@ class exploreData(object):
         
         
         # Init explore heatmap to zeros
-        self.heatMap = pd.DataFrame(np.zeros([len(exploreHeatMap),len(df.columns)], dtype=float), index=exploreHeatMap, columns=df.columns)
+        self.heatMap = pd.DataFrame(np.zeros([len(exploreHeatMap),
+                                             len(df.columns)],
+                                             dtype=float),
+                                             index=exploreHeatMap,
+                                             columns=df.columns)
 
         
         d  = np.zeros([len(exploreHeatMap),len(df.columns)], dtype=float)
@@ -1255,11 +1259,15 @@ class exploreData(object):
     def plotExploreHeatMap(self, toWeb=False):           
             
         # Make the figsize 9 x 8
-        plt.figure(figsize=(14,10))
-        
+        plt.figure(figsize=(12,8))
+       
         # Plot heatmap of correlations
-        sns.heatmap(self.heatMap, annot=False, cbar=True, cmap='Reds', fmt='.0f')
-        
+        sns.heatmap(self.heatMap, annot=False, cbar=False, cmap='Reds', fmt='.0f')
+        plt.xticks(
+            rotation=45, 
+            horizontalalignment='right'
+        )
+         
         if toWeb:
             #
             # Convert plot to PNG image

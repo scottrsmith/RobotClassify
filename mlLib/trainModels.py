@@ -38,7 +38,7 @@ from sklearn.linear_model import ElasticNet, Ridge, Lasso, LinearRegression
 
 # Import Random Forest and Gradient Boosted Trees
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-
+from sklearn.metrics import SCORERS
 #  classification
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import SGDClassifier
@@ -94,6 +94,16 @@ availableModels = { TRAIN_REGRESSION : ['lasso', 'ridge', 'enet', 'rf', 'gb', 'd
                     TRAIN_CLASSIFICATION: ['l2', 'rfc', 'gbc', 'decisiontree', 'kneighbors', 'sgd', 'bagging',
                                          'adaboost', 'gaussiannb', 'etc','svc', 'xgbc', 'stack', 'vote'],
                     TRAIN_CLUSTERING: ['kmeans']}
+
+def mapScoring(score):
+    map = { 'Precision': 'precision',
+            'Recall': 'recall',
+            'Accuracy': 'accuracy'}
+            
+    if score in map:
+        return map[score]
+    else:
+        return score
 
 
 def getModelPreferences(name, project, forBase=True, forMeta=False):
@@ -1222,12 +1232,13 @@ class trainModels (object):
                 model = GridSearchCV(pipelineRun, self.hyperparameters[name], 
                                 cv=self.crossValidationSplits, 
                                 n_jobs=self.parallelJobs, verbose=self.project.gridSearchVerbose,
-                                scoring=self.project.gridSearchScoring, refit=True)
+                                scoring=mapScoring(self.project.gridSearchScoring), refit=True)
                 
                 if self.project.useStandardScaler:
                     mlUtility.runLog( 'Using Standard Scaler')
                     model.fit(StandardScaler().fit_transform(self.X_train),self.y_train)
                 else:
+                    # print ('\n\n\nform.scoring..{}.\n\n'.format(SCORERS.keys()))
                     model.fit(self.X_train, self.y_train)
 
     
@@ -1265,7 +1276,6 @@ class trainModels (object):
     @ignore_warnings(category=DataConversionWarning)        
     def scoreModels(self, name, model):
         
-        
         confusionMatrix = None
         fpr, tpr, thresholds = None, None, None
         
@@ -1283,7 +1293,7 @@ class trainModels (object):
             
         f1, recall, precision = None, None, None
                     
-            
+        
         try:
                                        
             # Get each score based upon the scorelist initilized for the model
@@ -1367,11 +1377,21 @@ class trainModels (object):
 
                                 
                 # Record the scores
-            self.modelScores[name]= {'r2':r2, 'MAE':MAE, 'Best':best, 'AUROC': auroc, 'Accuracy': accuracy, 
-                                    'rocauc_score': rocauc_score,'fbeta': fbeta, 'roc_curve':(fpr, tpr, thresholds),
-                                    'CM':confusionMatrix, 'Score':score, 'f1':f1, 'Recall': recall,
-                                    'Precision': precision, 'RunTime': self.runTimes[name],
-                                    'COEF':coef, 'FI':fi} 
+            self.modelScores[name]= {'r2': r2,
+                                     'MAE': MAE,
+                                     'Best': best,
+                                     'AUROC': auroc,
+                                     'Accuracy': accuracy,
+                                     'rocauc_score': rocauc_score,
+                                     'fbeta': fbeta,
+                                     'roc_curve':(fpr, tpr, thresholds),
+                                     'CM': confusionMatrix, 'Score': score,
+                                     'f1': f1,
+                                     'Recall': recall,
+                                     'Precision': precision,
+                                     'RunTime': self.runTimes[name],
+                                     'COEF':coef,
+                                     'FI':fi}
                                     
             self.shortModelScoresColumns = ['r2','MAE','Best','AUROC','Accuracy','fbeta',
                                             'Score','f1', 'Recall', 'Precision', 'RunTime']

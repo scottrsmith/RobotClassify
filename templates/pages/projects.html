@@ -30,7 +30,7 @@
 				{% if project.runCount>0 %}
 					{%for run in project.runs %}
 						{% if run.results %}
-							<h5><u>Run: <a href="/runs/{{ run.id }}">{{ run.name }}</a></u></h5>
+							<h5><u>Run: <a href="/runs/{{ run.id }}/edit">{{ run.name }} <i class="fas fa-edit"></i></a></u></h5>
 						{% else %}
 							<h5><u>Run: {{ run.name }}</u></h5>
 						{% endif %}
