@@ -1,0 +1,1021 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Robot Classify’s documentation! &#8212; Robot Classify Alpha documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Robot Classify Alpha documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Robot Classify’s documentation!</a></li>
+<li><a class="reference internal" href="#instalation-and-overview">Instalation and Overview</a><ul>
+<li><a class="reference internal" href="#intoduction">Intoduction</a></li>
+<li><a class="reference internal" href="#getting-started-backend">Getting Started - Backend</a><ul>
+<li><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a><ul>
+<li><a class="reference internal" href="#pip-dependencies">PIP Dependencies</a><ul>
+<li><a class="reference internal" href="#key-dependencies">Key Dependencies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-setup">Database Setup</a></li>
+<li><a class="reference internal" href="#running-the-server">Running the server</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li><a class="reference internal" href="#opening-the-api-documentation">Opening the API Documentation</a></li>
+<li><a class="reference internal" href="#html-documentation">HTML Documentation</a><ul>
+<li><a class="reference internal" href="#pdf-documentation">PDF Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generating-documentation">Generating documentation</a><ul>
+<li><a class="reference internal" href="#installing-sphinx-and-support-tools">Installing Sphinx and support tools</a></li>
+<li><a class="reference internal" href="#generating-the-documentation">Generating the documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api-end-points">API End Points</a></li>
+<li><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#full-stack-robotclassify-api-frontend">Full Stack RobotClassify API Frontend</a><ul>
+<li><a class="reference internal" href="#id1">Installing Dependencies</a><ul>
+<li><a class="reference internal" href="#installing-node-and-npm">Installing Node and NPM</a></li>
+<li><a class="reference internal" href="#installing-ionic-client">Installing Ionic Client</a></li>
+<li><a class="reference internal" href="#installing-project-dependencies">Installing project dependencies</a></li>
+<li><a class="reference internal" href="#running-the-frontend">Running the Frontend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app">Robot Classify’s API Controllers</a><ul>
+<li><a class="reference internal" href="#introduction"><strong>Introduction</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-models">Robot Classigy’s API Model</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-robot-classify-s-documentation">
+<h1>Welcome to Robot Classify’s documentation!<a class="headerlink" href="#welcome-to-robot-classify-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="instalation-and-overview">
+<h1>Instalation and Overview<a class="headerlink" href="#instalation-and-overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intoduction">
+<h2>Intoduction<a class="headerlink" href="#intoduction" title="Permalink to this headline">¶</a></h2>
+<p>The RobotClassify app does stuff…..</p>
+</div>
+<div class="section" id="getting-started-backend">
+<h2>Getting Started - Backend<a class="headerlink" href="#getting-started-backend" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-dependencies">
+<h3>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Python 3.7</p>
+<p>This project uses python 3.7.</p>
+<p>To Install: <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
+<div class="section" id="pip-dependencies">
+<h4>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h4>
+<p>Once you have your virtual environment setup and running, install dependencies by navigating to the root directory and running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+</div>
+<p>This will install all of the required packages we selected within the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
+<div class="section" id="key-dependencies">
+<h5>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><p><a class="reference external" href="http://flask.pocoo.org/">Flask</a>  is a lightweight backend microservices framework.</p></li>
+<li><p><a class="reference external" href="https://www.sqlalchemy.org/">SQLAlchemy</a> is the Python SQL toolkit and ORM.</p></li>
+<li><p><a class="reference external" href="https://flask-cors.readthedocs.io/en/latest/#">Flask-CORS</a> is the extension used to handle cross-origin requests from the frontend server.</p></li>
+<li><p><a class="reference external" href="https://auth0.com/docs/getting-started/overview">Auth0</a> Provides authentication and authorization as a service</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="database-setup">
+<h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
+<p>The app is running with SQLite. No setup needs to be performed.</p>
+</div>
+<div class="section" id="running-the-server">
+<h2>Running the server<a class="headerlink" href="#running-the-server" title="Permalink to this headline">¶</a></h2>
+<p>From within the <code class="docutils literal notranslate"><span class="pre">backend/src</span></code> directory to run the server, execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>api.py
+<span class="nb">export</span> <span class="nv">FLASK_ENV</span><span class="o">=</span>development
+flask run
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opening-the-api-documentation">
+<h3>Opening the API Documentation<a class="headerlink" href="#opening-the-api-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Documentation is generated with Sphinx.</p>
+</div>
+<div class="section" id="html-documentation">
+<h3>HTML Documentation<a class="headerlink" href="#html-documentation" title="Permalink to this headline">¶</a></h3>
+<p>From the root folder, open the index file in a browser</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docs/build/html/index.html
+</pre></div>
+</div>
+</div></blockquote>
+<div class="section" id="pdf-documentation">
+<h4>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h4>
+<p>The PDF version of the documentation is located in the root project directory. Named RobotClassifyapi.pdf</p>
+</div>
+</div>
+<div class="section" id="generating-documentation">
+<h3>Generating documentation<a class="headerlink" href="#generating-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Documentation is generated with Sphinx.</p>
+<div class="section" id="installing-sphinx-and-support-tools">
+<h4>Installing Sphinx and support tools<a class="headerlink" href="#installing-sphinx-and-support-tools" title="Permalink to this headline">¶</a></h4>
+<p>To install Sphinx, reference the documents at <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/installation.html">https://www.sphinx-doc.org/en/master/usage/installation.html</a></p>
+<p>For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -U sphinx
+</pre></div>
+</div>
+<p>Install dependencies by navigating to the <code class="docutils literal notranslate"><span class="pre">root</span></code> project directory and running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docs
+pip install m2r
+pip install recommonmark
+pip install rinohtype
+pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-the-documentation">
+<h4>Generating the documentation<a class="headerlink" href="#generating-the-documentation" title="Permalink to this headline">¶</a></h4>
+<p>Generate the documentation with the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From the root project directory</span>
+<span class="c1"># Convert readme to rst to be included in generated docs</span>
+m2r README.md README.rst --overwrite
+cp -R README.rst ./docs/source
+<span class="nb">cd</span> ./docs
+make html
+<span class="c1"># Make pdf</span>
+make latexpdf
+<span class="nb">cd</span> ..
+cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="api-end-points">
+<h2>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h2>
+<p>The following APIs are available. Detailed html documentation can be found in the ‘docs’ folder.</p>
+<ul class="simple">
+<li><p>GET /drinks</p></li>
+<li><p>GET /drinks-detail</p></li>
+<li><p>POST /drinks</p></li>
+<li><p>PATCH /drinks/<span class="raw-html-m2r"><id></span></p></li>
+<li><p>DELETE /drinks/<span class="raw-html-m2r"><id></span></p></li>
+</ul>
+</div>
+<div class="section" id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>Errors are returned as JSON objects in the following format:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+    <span class="s2">&quot;success&quot;</span>: False,
+    <span class="s2">&quot;error&quot;</span>: <span class="m">400</span>,
+    <span class="s2">&quot;message&quot;</span>: <span class="s2">&quot;Bad Request&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The API will return three error types when requests fail:</p>
+<ul class="simple">
+<li><p>400: Bad Request</p></li>
+<li><p>404: Resource Not Found</p></li>
+<li><p>405: Method Not Allowed</p></li>
+<li><p>422: Not Processable</p></li>
+<li><p>500: Internal Server Error</p></li>
+</ul>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Testing is done with Postman. Load and run the test collection:
+.backend/udacity-fsnd-udaspicelatte.postman_collection.json</p>
+</div>
+<div class="section" id="full-stack-robotclassify-api-frontend">
+<h2>Full Stack RobotClassify API Frontend<a class="headerlink" href="#full-stack-robotclassify-api-frontend" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Installing Dependencies<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installing-node-and-npm">
+<h4>Installing Node and NPM<a class="headerlink" href="#installing-node-and-npm" title="Permalink to this headline">¶</a></h4>
+<p>This app depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from <a class="reference external" href="https://nodejs.org/en/download/">https://nodejs.com/en/download</a>.</p>
+</div>
+<div class="section" id="installing-ionic-client">
+<h4>Installing Ionic Client<a class="headerlink" href="#installing-ionic-client" title="Permalink to this headline">¶</a></h4>
+<p>The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI  is in the <a class="reference external" href="https://ionicframework.com/docs/installation/cli">Ionic Framework Docs</a>.</p>
+</div>
+<div class="section" id="installing-project-dependencies">
+<h4>Installing project dependencies<a class="headerlink" href="#installing-project-dependencies" title="Permalink to this headline">¶</a></h4>
+<p>This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory of this repository. After cloning, open your terminal and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-frontend">
+<h4>Running the Frontend<a class="headerlink" href="#running-the-frontend" title="Permalink to this headline">¶</a></h4>
+<p>To run Ionic from the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ionic serve
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="module-app">
+<span id="robot-classify-s-api-controllers"></span><h1>Robot Classify’s API Controllers<a class="headerlink" href="#module-app" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Robot Classify does stuff…</p>
+<ul class="simple">
+<li><p>GET /XXX</p></li>
+<li><p>GET /XXX-detail</p></li>
+<li><p>POST /XXX</p></li>
+<li><p>PATCH /XXX/&lt;id&gt;</p></li>
+<li><p>DELETE /XXX/&lt;id&gt;</p></li>
+</ul>
+<p>With the following API permissions:
+- <cite>get:drinks-detail</cite> (Barista and Manager)
+- <cite>post:drinks</cite> (Manager)
+- <cite>patch:drinks</cite> (Manager)
+- <cite>delete:drinks</cite> (Manager)</p>
+<dl class="function">
+<dt id="app.index">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Home Page</strong></p>
+<p>Display the home page</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.venues">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">venues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.venues" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>List Venues</strong></p>
+<p>Display a list of venues</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.search_venues">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_venues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.search_venues" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Search Venues</strong></p>
+<p>Display the hoime page</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">search</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.show_venue">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_venue</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_venue" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Venue</strong></p>
+<p>Display a single venue</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_venue_form">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_venue_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_venue_form" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create Venue</strong></p>
+<p>Create a venue</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_venue_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_venue_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_venue_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create Venue</strong></p>
+<p>Create Venue</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.delete_venue">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_venue</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_venue" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Delete Venue</strong></p>
+<p>Delete Venue</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">delete</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.edit_venue_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_venue_submission</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_venue_submission" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p><strong>Edit Venue</strong></p>
+<p>Edit Venue</p>
+<ul>
+<li><p>Sample Call to edit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p>Sample Call to display:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.artists">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">artists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.artists" title="Permalink to this definition">¶</a></dt>
+<dd><p>** List Artists**</p>
+<p>List Artists</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.search_artists">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_artists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.search_artists" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Search Artists</strong></p>
+<p>Search Artists</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">search</span> 
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.show_artist">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_artist</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_artist" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Show single Artistt</strong></p>
+<p>Show single artist details</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_artist_form">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_artist_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_artist_form" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Artist</strong></p>
+<p>Display an Artist’s info</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_artist_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_artist_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_artist_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create an Artist</strong></p>
+<p>Create an Artist</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.edit_artist_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_artist_submission</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_artist_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Edit Artists Information</strong></p>
+<p>Edit Artists Information</p>
+<ul>
+<li><p>Sample Call to display:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+</pre></div>
+</div>
+</li>
+<li><p>Sample Call to edit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.delete_artist">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_artist</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_artist" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Delete an artist</strong></p>
+<p>Delete an artist</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">delete</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.shows">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">shows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.shows" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>List of Shows</strong></p>
+<p>Display a list of shows</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_shows">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_shows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_shows" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Show a show</strong></p>
+<p>Display a show</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_show_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_show_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_show_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create Show submission</strong></p>
+<p>Create a new show submission</p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span><span class="o">/</span><span class="n">create</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-models">
+<span id="robot-classigy-s-api-model"></span><h1>Robot Classigy’s API Model<a class="headerlink" href="#module-models" title="Permalink to this headline">¶</a></h1>
+<p><strong>Introduction</strong></p>
+<p>There are three models:
+- Venue
+- Artists
+- Shows</p>
+<dl class="class">
+<dt id="models.Venue">
+<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Venue</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Venue" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of venues that artist can play at.</p>
+<dl class="attribute">
+<dt id="models.Venue.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#models.Venue.id" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>id</em> is the auto assigned primary key.
+Type: Integer, Primary key. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Venue.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#models.Venue.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name, String, Required
+The name of the venue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Venue.city">
+<code class="sig-name descname">city</code><a class="headerlink" href="#models.Venue.city" title="Permalink to this definition">¶</a></dt>
+<dd><p>City, String, Required
+The name of the city</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="models.Artist">
+<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Artist</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Artist" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of Artist that can play at venues.</p>
+<dl class="attribute">
+<dt id="models.Artist.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#models.Artist.id" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>id</em> is the auto assigned primary key.
+Type: Integer, Primary key. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Artist.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#models.Artist.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name, String, Required
+The name of the Artist</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Artist.city">
+<code class="sig-name descname">city</code><a class="headerlink" href="#models.Artist.city" title="Permalink to this definition">¶</a></dt>
+<dd><p>city, String, Required
+The city of the artist</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Artist.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#models.Artist.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>state, String, Required
+The state of the artist</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="models.Show">
+<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Show</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Show" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of Shows for venues and artists.</p>
+<dl class="attribute">
+<dt id="models.Show.venue_id">
+<code class="sig-name descname">venue_id</code><a class="headerlink" href="#models.Show.venue_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>venue_id, Integer, Required, part of the primary key
+The auto-assigned id of the venue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Show.artist_id">
+<code class="sig-name descname">artist_id</code><a class="headerlink" href="#models.Show.artist_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>artist_id, Integer, Required, part of the primary key
+The auto-assigned id of the artist</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Robot Classify Alpha documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Scott R Smith.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+    </div>
+  </body>
+</html>

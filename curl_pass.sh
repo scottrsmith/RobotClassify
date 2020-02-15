@@ -3,10 +3,14 @@ export FLASK_ENV=development
 export FLASK_DEBUG=true
 export FLASK_APP=app.py
 
+echo "Set Host"
+export HOST='http://localhost:5000'
+# export HOST='http://robotclassify.herokuapp.com'
+
 #
 # Set the env variables for the Auth0 API test user
 echo
-echo "Set Auth0 Environment Variables for testing"
+echo "Set Auth0 Environment Variables for Curl"
 export DATABASE_URL="postgresql://localhost:5432/robotclassify_test"
 export AUTH0_CLIENT_ID=XbF8BXBWausifCDdGz9fgh3slknCjrQx
 export AUTH0_DOMAIN=dev-p35ewo73.auth0.com
@@ -29,42 +33,42 @@ echo
 echo "TOKEN=$TOKEN"
 
 echo "Home Page"
-curl http://localhost:5000/
+curl $HOST/
 
 echo "Docs"
-curl -X GET http://localhost:5000/docs/index.html
+curl -X GET $HOST/docs/index.html
 
 echo "Projects"
-curl -X GET http://localhost:5000/projects \
+curl -X GET $HOST/projects \
      -H "Authorization: Bearer $TOKEN"
 
-curl -X GET http://localhost:5000/projects/1 \
+curl -X GET $HOST/projects/1 \
                  -H "Authorization: Bearer $TOKEN"
 
-curl -X POST http://localhost:5000/projects/create \
+curl -X POST $HOST/projects/create \
                  -H "Authorization: Bearer $TOKEN" \
                  -F "form-project-name=New Test Project" \
                  -F "form-project-description=Testing Project Create" \
                  -F "form-project-trainingFile=@examples/titanic_train.csv" \
                  -F "form-project-testingFile=@examples/titanic_test.csv"
 
-curl -X PATCH http://localhost:5000/projects/1/edit \
+curl -X PATCH $HOST/projects/1/edit \
                  -H "Authorization: Bearer $TOKEN" \
                  -F "form-project-name=Titanic Disaster Patch"
 
-curl -X POST http://localhost:5000/projects/search \
+curl -X POST $HOST/projects/search \
                  -H "Authorization: Bearer $TOKEN" \
                  -F "search_term=Titanic"
 
-curl -X DELETE http://localhost:5000/projects/3/delete \
+curl -X DELETE $HOST/projects/3/delete \
                  -H "Authorization: Bearer $TOKEN"
 
 echo "Runs"
 
-curl -X GET http://localhost:5000/runs/1 \
+curl -X GET $HOST/runs/1 \
                  -H "Authorization: Bearer $TOKEN"
 
-curl -X POST http://localhost:5000/runs/create/1 \
+curl -X POST $HOST/runs/create/1 \
                  -H "Authorization: Bearer $TOKEN" \
                  -F "form-run-name=New Curl Run" \
                  -F "form-run-description=Via curl" \
@@ -76,11 +80,20 @@ curl -X POST http://localhost:5000/runs/create/1 \
                  -F "form-run-modelList=xgbc" \
                  -F "form-run-basicAutoMethod=True"
 
-curl -X DELETE http://localhost:5000/runs/5/delete \
+curl -X DELETE $HOST/runs/5/delete \
                  -H "Authorization: Bearer $TOKEN"
 
+curl -X PATCH $HOST/runs/6/edit \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "form-run-name=Updated Curl Run Patch"
 
+echo "Training"
 
+curl -X GET $HOST/train/1000 \
+                 -H "Authorization: Bearer $TOKEN"
+
+curl -X GET $HOST/train/1/download \
+                 -H "Authorization: Bearer $TOKEN"
 
 
 
