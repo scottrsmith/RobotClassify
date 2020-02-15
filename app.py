@@ -3,17 +3,31 @@
 """
 **Introduction**
 ----------------
-Robot Classify does stuff...
-- GET /XXX
-- GET /XXX-detail
-- POST /XXX
-- PATCH /XXX/<id>
-- DELETE /XXX/<id>
-With the following API permissions:
-- `get:drinks-detail` (Barista and Manager)
-- `post:drinks` (Manager)
-- `patch:drinks` (Manager)
-- `delete:drinks` (Manager)
+-- Home Page
+- GET / (home)
+
+-- Documentation Page
+- GET /docs/index.html
+
+--- Projects ---
+- GET /projects (List all projects) - get:project
+- GET /projects/<int:project_id> (Project page) - get:project
+- POST/GET /projects/create (create a new project) - post:project
+- PATCH /projects/<int:project_id>/edit (edit a project) - patch:project
+- DELETE /projects/<project_id>/delete (Delete a project) - delete:project
+
+--- Runs ---
+- GET /runs/<int:run_id>  (Display a run results) - get:run
+- GET/POST /runs/create/<int:project_id> (Create a run) - get:post
+- DELETE /runs/<int:run_id>/delete (Delete a run) - delete:post
+- PATCH /run/<int:run_id>/edit (edit a run) - patch:run
+
+--- Train ---
+- GET /train/<int:run_id>  (run ML training for a run) post:train
+- GET /train/<int:run_id>/download  (download testing results file,
+      kaggle file) get:train
+
+
 """
 
 # ---------------------------------------------------------------------------#
@@ -26,13 +40,13 @@ from os import environ as env
 from werkzeug.exceptions import HTTPException
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
-from authlib.flask.client import OAuth
+from authlib.integrations.flask_client import OAuth
 
 import dateutil.parser
 import babel
 import sys
 from flask import Flask, render_template, request, Response, flash, \
-    redirect, make_response
+    redirect, make_response, send_from_directory
 from flask import url_for, abort, session, jsonify, Blueprint, Request
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -44,11 +58,12 @@ from flask_wtf import Form
 from flask_cors import CORS
 from flask_session import Session
 from flask_uploads import UploadSet, configure_uploads, DATA, IMAGES, \
-    patch_request_class
+    patch_request_class, TestingFileStorage
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField
 import pandas as pd
 import pickle
+import http.client
+
 
 # Machine learning libraries
 
@@ -87,54 +102,53 @@ def makePickList(columns):
     return [(c, c) for c in columns]
 
 
+def dumpSession(name=None):
+    print('\n\nDump of the session Object at location: ', name)
+    print('  SESSION_COOKIE_NAME={}'.format(app.config['SESSION_COOKIE_NAME']))
+    print('  session.sid={}'.format(session.sid))
+    print('  SESSION_TYPE={}'.format(app.config['SESSION_TYPE']))
+    print('  Session dump..', session)
+    print('\n\n')
+
+
+def dumpHeader(name=None):
+    print('\nHeader Object dump at location: ', name)
+    # dumpObj(request,'request')
+    dumpObj(request.headers, 'request.headers')
+    # print('  request.header={}'.format(request))
+    print('\n')
+    pass
+
+
 # ---------------------------------------------------------------------------#
 # App Config.
 # ---------------------------------------------------------------------------#
-def create_app(testing=False):
-    app = Flask(__name__)
+# def create_app(testing=False):
+app = Flask(__name__)
 
-    # modus = Modus(app)
+moment = Moment(app)
+app.secret_key = config.SECRET_KEY
+app.config.from_object('config')
+app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
 
-    # app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
-
-    moment = Moment(app)
-    app.secret_key = config.SECRET_KEY
-    app.config.from_object('config')
-
-    # app.config['WTF_CSRF_CHECK_DEFAULT'] = False
-
-    app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
-
-    # define file uploadss
-
-    configure_uploads(app, config.dataFiles)
-    patch_request_class(app, 1024 * 1024)  # set maximum file size to 1 mb
-    app.secret_key = config.SECRET_KEY
-
-    # app.config['SESSION_TYPE'] = 'sqlalchemy'
-
-    app.config['SESSION_TYPE'] = 'filesystem'
-
-    # Setup for mllib
-
-    os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-
-    # open/Connect to a local postgresql database
-
-    # CORS(app, supports_credentials=True)
-    
-    CORS(app)
-    Session(app)
-    db = connectToDB(app)
-    migrate = Migrate(app, db)
-    csrf = CSRFProtect(app)
-    return app, db
+# define file uploads
+configure_uploads(app, config.dataFiles)
+patch_request_class(app, 1024 * 1024)  # set maximum file size to 1 mb
+app.secret_key = config.SECRET_KEY
+app.config['SESSION_TYPE'] = 'filesystem'
 
 
-app, db = create_app()
+# Setup for mllib
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
+# open/Connect to a postgresql database
+CORS(app)
+Session(app)
+db = connectToDB(app)
+migrate = Migrate(app, db)
+csrf = CSRFProtect(app)
 
 # CORS Headers
-
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
@@ -144,89 +158,75 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+    # return app, db
 
-# Auth0 security setup
+# Function to get the values for UnitTests
+def return_app():
+    return app, db
 
-def getEnvVars(first=None, second=None, third=None):
-
-    # print ('first={}, second={}, third={}'.format(first,second,third))
-
-    if first is None:
-        if second is None:
-            return third
-        else:
-            return second
-    else:
-        return first
-
-
-# Get environment variables, priority order: OS Env, .env, config.opy
-
-AUTH0_CALLBACK_URL = getEnvVars(os.getenv('AUTH0_CALLBACK_URL'),
-                                env.get('AUTH0_CALLBACK_URL'),
-                                config.AUTH0_CALLBACK_URL)
-
-AUTH0_CLIENT_ID = getEnvVars(os.getenv('AUTH0_CLIENT_ID'),
-                             env.get('AUTH0_CLIENT_ID'),
-                             config.AUTH0_CLIENT_ID)
-
-AUTH0_DOMAIN = getEnvVars(os.getenv('AUTH0_DOMAIN'),
-                          env.get('AUTH0_DOMAIN'), config.AUTH0_DOMAIN)
-
-AUTH0_AUDIENCE = getEnvVars(os.getenv('AUTH0_AUDIENCE'),
-                            env.get('AUTH0_AUDIENCE'),
-                            config.AUTH0_AUDIENCE)
-
-AUTH0_CLIENT_SECRET = getEnvVars(os.getenv('AUTH0_CLIENT_SECRET'),
-                                 env.get('AUTH0_CLIENT_SECRET'),
-                                 config.AUTH0_CLIENT_SECRET)
-
-AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
-
+# Register Auth0 for user authentication
+AUTH0_BASE_URL = 'https://' + config.AUTH0_DOMAIN
 oauth = OAuth(app)
-
 auth0 = oauth.register(
     'auth0',
-    client_id=AUTH0_CLIENT_ID,
-    client_secret=AUTH0_CLIENT_SECRET,
+    client_id=config.AUTH0_CLIENT_ID,
+    client_secret=config.AUTH0_CLIENT_SECRET,
     api_base_url=AUTH0_BASE_URL,
     access_token_url=AUTH0_BASE_URL + '/oauth/token',
     authorize_url=AUTH0_BASE_URL + '/authorize',
     client_kwargs={'scope': 'openid profile email'},
-    )
+)
 
 
-# ---------------------------------------------------------------------------#
-# auth setup
-# ---------------------------------------------------------------------------#
-
-# Auth Header
-
-# def get_token_auth_header():
-#   raise Exception('Not Implemented')
-# This is executed from thr callback
-
-def get_token_auth_header():
-    """Obtains the Access Token from the Authorization Header
+# When using auth0's implementation for web apps, the token is
+# in the Oauth object (auth0 object)
+def get_token_from_auth0():
+    """Obtains the Access Token from the oAuth object
     """
-
-    # auth = request.headers.get('Authorization', None)
-
     auth = auth0.token
-
-    # print ('\n\n\nAuth=',auth)
-    # dumpObj(auth0)
-
     if not auth:
         abort(401, 'Authorization header is expected.')
 
     if 'access_token' not in auth:
         abort(401, 'Token not found.')
-    elif auth['token_type'] != 'Bearer':
 
+    elif auth['token_type'] != 'Bearer':
         abort(401, 'Authorization header must start with "Bearer".')
 
     return auth['access_token']
+
+# Use this to check for authentication via Curl or UnitTest Calls
+def get_token_from_header():
+    """Obtains the Access Token from the Authorization Header
+    """
+    auth = request.headers.get('Authorization', None)
+    if not auth:
+        abort(401, 'Authorization header is expected.')
+
+    parts = auth.split()
+    if parts[0].lower() != 'bearer':
+        abort(401, 'Authorization header must start with "Bearer".')
+    elif len(parts) == 1:
+
+        abort(401, 'Token not found.')
+    elif len(parts) > 2:
+
+        abort(401, 'Authorization header must be bearer token.')
+
+    token = parts[1]
+    return token
+
+# When authenticated, set the user's session data for later reference
+def set_session_at_auth(userinfo, payload):
+    session[config.JWT_PAYLOAD] = userinfo
+    if 'name' in userinfo:
+        session[config.PROFILE_KEY] = {'user_id': userinfo['sub'],
+                                       'name': userinfo['name']}
+    else:
+        session[config.PROFILE_KEY] = {'user_id': userinfo['sub']}
+    session['account_id'] = userinfo['sub']
+    session['payload'] = payload
+    session.modified = True
 
 
 # ---------------------------------------------------------------------------#
@@ -256,25 +256,14 @@ def check_permissions(permission, payload):
 
 def verify_decode_jwt(token):
 
-    # jsonurl = urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
-    # print ('\n\nToken=', token)
-    # dumpObj(token,'Token')
-
     unverified_header = jwt.get_unverified_header(token)
-
-    # print ('unverified_header',unverified_header)
-
     jsonurl = \
         urlopen(f'https://dev-p35ewo73.auth0.com/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
-
-    # print ('jwks=',jwks)
-
     rsa_key = {}
-
     if 'kid' not in unverified_header:
         raise AuthError({'code': 'invalid_header',
-                        'description': 'Authorization malformed.'}, 401)
+                         'description': 'Authorization malformed.'}, 401)
 
     for key in jwks['keys']:
         if key['kid'] == unverified_header['kid']:
@@ -284,25 +273,21 @@ def verify_decode_jwt(token):
                 'use': key['use'],
                 'n': key['n'],
                 'e': key['e'],
-                }
+            }
     if rsa_key:
         try:
             payload = jwt.decode(token, rsa_key,
                                  algorithms=config.ALGORITHMS,
-                                 audience=AUTH0_AUDIENCE,
-                                 issuer='https://' + AUTH0_DOMAIN + '/')
-
+                                 audience=config.AUTH0_AUDIENCE,
+                                 issuer='https://' + config.AUTH0_DOMAIN + '/')
             return payload
         except jwt.ExpiredSignatureError:
-
             abort(401, 'Token expired.')
         except jwt.JWTClaimsError:
-
             abort(401,
                   'Incorrect claims. Please, check the audience and issuer.'
                   )
         except Exception:
-
             abort(400, 'Unable to parse authentication token.')
 
     abort(400, 'Unable to find the appropriate key.')
@@ -322,18 +307,29 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
 
-            # Save the URL 'redirect_url'
-
+            # Save the URL for redirect & premissions for auth check
             session['redirect_url'] = request.path
             session['permission'] = permission
+            WebSession = False  # get web friendly error messages
             session.modified = True
 
+            # Test if a session is active
+            # tokens are verified in the /callback api for logins
+            # This is the default method provided by Auth0
             if config.PROFILE_KEY not in session:
-                return redirect('/login')
+                # Machine to machine API (testing/curl/etc) look for the token
+                # in the header since it will not be in the sessions
+                if 'Authorization' in request.headers:
+                    token = get_token_from_header()
+                    payload = verify_decode_jwt(token)
+                    session['account_id'] = payload['sub']
+                    session['payload'] = payload
+                    session.modified = True
+                    app.config['WTF_CSRF_ENABLED'] = False
+                else:
+                    return redirect('/login')
             else:
-
                 # check premissions in an active session
-
                 payload = session['payload']
                 check_permissions(permission, payload)
 
@@ -357,21 +353,8 @@ def requires_auth(permission=''):
 @app.route('/callback')
 def callback_handling():
 
-    # tries = 0
-    # failed = False
-    # while tries < 10:
-    #    try:
-    #        auth0.authorize_access_token()
-    #        tries = 10
-    #        failed = False
-    #    except:
-    #        tries += 1
-    #        failed = True
-    # if failed:
-    #    abort(500)
-
     auth0.authorize_access_token()
-    token = get_token_auth_header()
+    token = get_token_from_auth0()
     try:
         payload = verify_decode_jwt(token)
     except Exception:
@@ -381,7 +364,6 @@ def callback_handling():
     # in a redirect)
     # Pages that do not have redirercts will go to the unprotected home page,
     # so no need to check permissions
-
     if 'redirect_url' in session:
         permission = session['permission']
         check_permissions(permission, payload)
@@ -390,16 +372,11 @@ def callback_handling():
 
     resp = auth0.get('userinfo')
     userinfo = resp.json()
-    session[config.JWT_PAYLOAD] = userinfo
-    session[config.PROFILE_KEY] = {'user_id': userinfo['sub'],
-                                   'name': userinfo['name'],
-                                   'picture': userinfo['picture']}
-    session['account_id'] = userinfo['sub']
-    session['payload'] = payload
-    session.modified = True
+    set_session_at_auth(userinfo, payload)
 
     # Check to see of the redirected URL was saved to redirect back after login
 
+    flash('You are now logged in!')
     if 'redirect_url' in session:
         return redirect(session.get('redirect_url'))
     else:
@@ -408,19 +385,18 @@ def callback_handling():
 
 @app.route('/login')
 def login():
-    flash('You are now logged in!')
     if 'permission' not in session:
         session['permission'] = None
-    session['request_uri'] = AUTH0_CALLBACK_URL
-    return auth0.authorize_redirect(redirect_uri=AUTH0_CALLBACK_URL,
-                                    audience=AUTH0_AUDIENCE)
+    session['request_uri'] = config.AUTH0_CALLBACK_URL
+    return auth0.authorize_redirect(redirect_uri=config.AUTH0_CALLBACK_URL,
+                                    audience=config.AUTH0_AUDIENCE)
 
 
 @app.route('/logout')
 def logout():
     session.clear()
     params = {'returnTo': url_for('index', _external=True),
-              'client_id': AUTH0_CLIENT_ID}
+              'client_id': config.AUTH0_CLIENT_ID}
     flash('You are now logged out')
     return redirect(auth0.api_base_url + '/v2/logout?'
                     + urlencode(params))
@@ -430,28 +406,51 @@ def logout():
 # Home Page
 # ----------------------------------------------------------------------------
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     """
         **Home Page**
         Display the home page
         - Sample Call::
-            curl -X GET http://localhost:5000/
+            curl http://localhost:5000/
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
         - Expected Fail Response::
-            HTTP Status Code: 401
+            HTTP Status Code: 404
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "404 Not Found: The requested URL..."
+             "error": 404, 
+             "message": "Not Found",
+             "success": false
             }
     """
 
     return render_template('pages/index.html')
 
+# ----------------------------------------------------------------------------
+# Display Documentation Pages (Generated from sphinx)
+# ----------------------------------------------------------------------------
+@app.route('/docs/<path:path>')
+def send_documents(path):
+    """
+        **Documentation Page**
+        Display the documetnation pages
+        - Sample Call::
+            curl -X GET http://localhost:5000/docs/index.html
+        - Expected Success Response::
+            HTTP Status Code: 200
+            <!doctype html>...</html>
+        - Expected Fail Response::
+             HTTP Status Code: 404
+            {
+             "description": "404 Not Found: The requested URL..."
+             "error": 404, 
+             "message": "Not Found",
+             "success": false
+            }
+     """
+    return send_from_directory('docs/build/html', path)
 
 
 # ----------------------------------------------------------------------------
@@ -465,17 +464,24 @@ def projects(payload):
         **List Projects**
         Display a list of projects
         - Sample Call::
-            curl -X GET http://localhost:5000/projects
+            export TOKEN=...
+            curl -X GET http://localhost:5000/projects \
+                 -H "Authorization: Bearer $TOKEN"
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
         - Expected Fail Response::
-            HTTP Status Code: 401
+            HTTP Status Code: 302
+            Redirecting:
+                <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+                <title>Redirecting...</title>
+
+        - Expected Fail Response::
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "405 Method Not Allowed...", 
+             "error": 405, 
+             "message": "Method Not Allowed", 
+             "success": false
             }
     """
 
@@ -499,17 +505,18 @@ def show_project(payload, project_id):
         **Project**
         Display a single projects
         - Sample Call::
-            curl -X GET http://localhost:5000/projects/<id>
+            curl -X GET http://localhost:5000/projects/1 \
+                 -H "Authorization: Bearer $TOKEN"
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
         - Expected Fail Response::
-            HTTP Status Code: 401
+             HTTP Status Code: 404
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "404 Not Found: The requested URL..."
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
             }
     """
 
@@ -545,7 +552,6 @@ def populateProjectFiles(project, form):
 
     # Last, get the column namesto be saved (from the training file)
     # These are to be used later in the runs to help select attributes.
-
     project.columns = [c for c in training.columns.tolist()]
 
 
@@ -553,14 +559,22 @@ def populateProjectFiles(project, form):
 #  Create project
 # ----------------------------------------------------------------------------
 
-@app.route('/projects/create', methods=['POST', 'GET'])
+@app.route('/projects/create', methods=['GET', 'POST'])
+@csrf.exempt
 @requires_auth('post:project')
 def create_projects_submission(payload):
     """
         **Create Project**
         Create Project
         - Sample Call::
-            curl -X POST http://localhost:5000/project/create
+            export TOKEN="edfgdfgd..."
+            curl -X POST http://localhost:5000/projects/create \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "form-project-name=New Test Project" \
+                 -F "form-project-description=Testing Project Create" \
+                 -F "form-project-trainingFile=@examples/titanic_train.csv" \
+                 -F "form-project-testingFile=@examples/titanic_test.csv"
+
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
@@ -574,7 +588,14 @@ def create_projects_submission(payload):
             }
     """
 
-    form = ProjectForm()  # request.form
+    form = ProjectForm(prefix='form-project-')  # request.form
+ 
+    # print('\n\nform.validate=',form.validate())
+    # print('form.is_submitted=',form.is_submitted())
+    # print('form.name.data=',form.name.data)
+    # print('form.description.data=',form.description.data)
+    # print('form.trainingFile.data=',form.trainingFile.data)
+    # print('form.testingFile.data=',form.testingFile.data)
 
     if form.validate_on_submit():
         project = Project()
@@ -602,18 +623,18 @@ def create_projects_submission(payload):
 #  Edit Project
 # ----------------------------------------------------------------------------
 
-@app.route('/projects/<int:project_id>/edit', methods=['GET', 'POST',
-           'PATCH'])
-# @csrf.exempt
+@app.route('/projects/<int:project_id>/edit', methods=['GET', 'PATCH'])
+@csrf.exempt
 @requires_auth('patch:project')
 def edit_project_submission(payload, project_id):
     """
         **Edit Project**
         Edit Project
         - Sample Call to edit::
-            curl -X POST http://localhost:5000/projects/<int:project_id>/edit
-       - Sample Call to display::
-            curl -X GET http://localhost:5000/projects/<int:project_id>/edit
+            curl -X PATCH http://localhost:5000/projects/1/edit \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "form-project-name=Titanic Disaster Patch"
+
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
@@ -632,9 +653,9 @@ def edit_project_submission(payload, project_id):
                                    session['account_id']).one_or_none()
     if project is None:
         abort(404)
-    form = ProjectFormEdit(obj=project)
+    form = ProjectFormEdit(obj=project, prefix='form-project-')
 
-    if request.method == 'POST':
+    if request.method == 'PATCH':
         if form.is_submitted() and form.validate():
 
             # form data is posted to venue object for update
@@ -649,15 +670,13 @@ def edit_project_submission(payload, project_id):
 
             flash('Project ' + form['name'].data
                   + ' was successfully Updated!')
-
-            return redirect(url_for('show_project',
-                            project_id=project_id))
         else:
 
             flash('An error occurred. Project ' + form['name'].data
                   + ' could not be Updated.')
 
-        return redirect(url_for('show_project', project_id=project_id))
+        data = project.projectPage
+        return render_template('pages/show_project.html', project=data)
 
     return render_template('forms/edit_project.html', form=form,
                            project=project)
@@ -666,13 +685,35 @@ def edit_project_submission(payload, project_id):
 #  Search projects
 # ----------------------------------------------------------------------------
 @app.route('/projects/search', methods=['POST'])
-def search_projects():
+@csrf.exempt
+@requires_auth('post:project')
+def search_projects(payload):
+    """
+        **Search Projects**
+        Search Project
+        - Sample Call to search::
+            curl -X POST http://localhost:5000/projects/search \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "search_term=Titanic"
+       
+        - Expected Success Response::
+            HTTP Status Code: 200
+            <!doctype html>...</html>
+        - Expected Fail Response::
+            HTTP Status Code: 401
+            {
+                "description": "401: Authorization header is expected.",
+                "error": 401,
+                "message": "Unauthorized",
+                "success": false
+            }
+    """
 
     search_term = request.form.get('search_term', None)
 
     # Search for an included string, case sensitive
     searchResults = Project.query.filter(Project.name.ilike('%{}%'.
-                                         format(search_term)),
+                                                            format(search_term)),
                                          Project.account_id ==
                                          session['account_id']).all()
     count_items = len(searchResults)
@@ -689,41 +730,44 @@ def search_projects():
 # ----------------------------------------------------------------------------
 #  Delete Project
 # ----------------------------------------------------------------------------
-
-@app.route('/projects/<project_id>/delete', methods=['GET', 'DELETE'])
+@app.route('/projects/<project_id>/delete', methods=['DELETE'])
+@csrf.exempt
 @requires_auth('delete:project')
 def delete_project(payload, project_id):
     """
         **Delete Project**
         Delete Project
         - Sample Call::
-            curl -X GET http://localhost:5000/project/<project_id>/delete
+            curl -X DELETE http://localhost:5000/projects/3/delete \
+                 -H "Authorization: Bearer $TOKEN"
         - Expected Success Response::
             HTTP Status Code: 200
-            <!doctype html>...</html>
+            {"success"}
         - Expected Fail Response::
-            HTTP Status Code: 401
+            HTTP Status Code: 404
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "404 Not Found:  If you entered....", 
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
             }
     """
 
+    project = Project.query.filter(Project.id == project_id,
+                                   Project.account_id ==
+                                   session['account_id']).one_or_none()
+ 
+    if project is None:
+        abort(404)
+
     try:
-        Project.query.filter_by(id=project_id,
-                                account_id=session['account_id']).delete()
-        db.session.commit()
+        project.delete()
     except Exception as e:
         db.session.rollback()
-        flash('Oh Snap! Project with ID of "' + project_id
-              + '" was not deleted')
-        return redirect(url_for('index'))
+        abort(405)
 
-    flash('Project with ID of "' + project_id
-          + '" was successfully deleted!')
-    return redirect(url_for('index'))
+    return '{"success"}'
+
 
 
 # ----------------------------------------------------------------------------
@@ -735,8 +779,6 @@ def delete_project(payload, project_id):
 # ----------------------------------------------------------------------------
 #  Show single run
 # ----------------------------------------------------------------------------
-
-
 @app.route('/runs/<int:run_id>', methods=['GET'])
 @requires_auth('get:run')
 def show_run(payload, run_id):
@@ -744,17 +786,18 @@ def show_run(payload, run_id):
         **Runs**
         Display a single run
         - Sample Call::
-            curl -X GET http://localhost:5000/runs/<id>
+            curl -X GET http://localhost:5000/runs/1 \
+                 -H "Authorization: Bearer $TOKEN"
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
         - Expected Fail Response::
-            HTTP Status Code: 401
+            HTTP Status Code: 404
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "404 Not Found:  If you entered....", 
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
             }
     """
 
@@ -768,8 +811,10 @@ def show_run(payload, run_id):
         abort(404)
 
     if isinstance(run.results, type(None)):
+
         flash('No Run Results for ' + run.name)
-        redirect(url_for('show_project', project_id=run.Project.id))
+        data = project.projectPage
+        return render_template('pages/show_project.html', project=data)
     else:
         return render_template('pages/results.html', run=run,
                                results=pickle.loads(run.results))
@@ -778,17 +823,26 @@ def show_run(payload, run_id):
 # ----------------------------------------------------------------------------
 #  Create Run
 # ----------------------------------------------------------------------------
-
-# Process the create request
-
 @app.route('/runs/create/<int:project_id>', methods=['GET', 'POST'])
+@csrf.exempt
 @requires_auth('post:run')
 def create_run_submission(payload, project_id):
     """
         **Create Run**
         Create Run
         - Sample Call::
-            curl -X POST http://localhost:5000/run/create
+            curl -X POST http://localhost:5000/runs/create/1 \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "form-run-name=New Curl Run" \
+                 -F "form-run-description=Via curl" \
+                 -F "form-run-targetVariable=Survived" \
+                 -F "form-run-key=PassengerId"\
+                 -F "form-run-predictSetOut=PassengerId" \
+                 -F "form-run-predictSetOut=Survived" \
+                 -F "form-run-scoring=f1"\
+                 -F "form-run-modelList=xgbc" \
+                 -F "form-run-basicAutoMethod=True"
+                   
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
@@ -806,13 +860,23 @@ def create_run_submission(payload, project_id):
                                    == project_id).one_or_none()
     if project is None:
         abort(404)
-    form = RunForm()
+    form = RunForm(prefix='form-run-')
     pickList = makePickList(project.columns)
     form.targetVariable.choices = pickList
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
-    # form.scoring.choices = makePickList(getMLScoringFunctions())
 
+    print('\n\nform.validate=',form.validate())
+    print('form.is_submitted=',form.is_submitted())
+    print('form.name.data=',form.name.data)
+    print('form.description.data=',form.description.data)
+    print('form.targetVariable.data=',form.targetVariable.data)
+    print('form.key.data=',form.key.data)
+    print('form.predictSetOut.data=',form.predictSetOut.data)
+    print('form.scoring.data=',form.scoring.data)
+    print('form.modelList.data=',form.modelList.data)
+    print('form.basicAutoMethod.data=',form.basicAutoMethod.data)
+ 
     if form.validate_on_submit():
         run = Run()
         form.populate_obj(run)
@@ -825,16 +889,36 @@ def create_run_submission(payload, project_id):
     else:
         return render_template('forms/new_run.html', form=form)
 
-    return redirect(url_for('show_project', project_id=project_id))
+    data = project.projectPage
+    return render_template('pages/show_project.html', project=data)
+
 
 
 # ----------------------------------------------------------------------------
 #  Delete Runs
 # ----------------------------------------------------------------------------
-
-@app.route('/runs/<int:run_id>/delete', methods=['GET', 'DELETE'])
+@app.route('/runs/<int:run_id>/delete', methods=['DELETE'])
+@csrf.exempt
 @requires_auth('delete:run')
 def delete_run(payload, run_id):
+    """
+        **Delete SRun**
+        Delete Run
+        - Sample Call::
+            curl -X DELETE http://localhost:5000/runs//delete \
+                 -H "Authorization: Bearer $TOKEN"
+        - Expected Success Response::
+            HTTP Status Code: 200
+           {'success'}
+        - Expected Fail Response::
+            HTTP Status Code: 401
+            {
+             "description": "404 Not Found: The requested URL was....", 
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
+            }
+    """
 
     run = Run.query.filter(Run.id == run_id,
                            Run.account_id ==
@@ -844,33 +928,35 @@ def delete_run(payload, run_id):
         abort(404)
 
     try:
-        project_id = run.project_id
         run.delete()
     except Exception as e:
         db.session.rollback()
-        flash('Oh Snap! Run with ID of "' + str(run_id)
-              + '" was not deleted')
-        return redirect(url_for('show_project', project_id=project_id))
+        abort(405)
+        # flash('Oh Snap! Run with ID of "' + str(run_id)
+        #      + '" was not deleted')
+        # return redirect(url_for('show_project', project_id=project_id))
 
-    flash('Run with ID of "' + str(run_id)
-          + '" was successfully deleted!')
-    return redirect(url_for('show_project', project_id=project_id))
+    # flash('Run with ID of "' + str(run_id)
+    #      + '" was successfully deleted!')
+    # return redirect(url_for('show_project', project_id=project_id))
+    return '{"success"}'
 
 
 # ----------------------------------------------------------------------------
 #  Edit Runs
 # ----------------------------------------------------------------------------
 
-@app.route('/runs/<int:run_id>/edit', methods=['GET', 'POST', 'PATCH'])
+@app.route('/runs/<int:run_id>/edit', methods=['GET', 'PATCH'])
+@csrf.exempt
 @requires_auth('patch:run')
 def edit_run_submission(payload, run_id):
     """
         **Edit Run**
         Edit Run
         - Sample Call to edit::
-            curl -X POST http://localhost:5000/runs/<int:run_id>/edit
-       - Sample Call to display::
-            curl -X GET http://localhost:5000/runs/<int:run_id>/edit
+            curl -X PATCH http://localhost:5000/runs/6/edit \
+                 -H "Authorization: Bearer $TOKEN" \
+                 -F "form-run-name=Updated Curl Run Patch" \
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
@@ -891,14 +977,14 @@ def edit_run_submission(payload, run_id):
     if run is None:
         abort(404)
 
-    form = RunForm(obj=run)
+    form = RunForm(obj=run, prefix='form-run-')
     pickList = makePickList(run.Project.columns)
     form.targetVariable.choices = pickList
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
     # form.scoring.choices = makePickList(getMLScoringFunctions())
- 
-    if request.method == 'POST':
+
+    if request.method == 'PATCH':
         if form.is_submitted() and form.validate():
             # form data is posted to run object for update
             try:
@@ -913,12 +999,11 @@ def edit_run_submission(payload, run_id):
                 flash('An DB error occurred. Run ' + form['name'].data
                       + ' could not be Updated.')
         else:
-            # print (form.errors.items())
             flash('An error occurred. Run ' + form['name'].data
                   + ' could not be Updated.')
 
-        return redirect(url_for('show_project',
-                        project_id=run.Project.id))
+        data = run.Project.projectPage
+        return render_template('pages/show_project.html', project=data)
 
     return render_template('forms/edit_run.html', form=form, run=run)
 
@@ -936,17 +1021,18 @@ def run_submission(payload, run_id):
         Run ML Training based upon run record attributes
 
         - Sample Call to display::
-            curl -X POST http://localhost:5000/rutrainns/<int:run_id>
+            curl -X GET http://localhost:5000/train/1 \
+                 -H "Authorization: Bearer $TOKEN"
         - Expected Success Response::
             HTTP Status Code: 200
             <!doctype html>...</html>
         - Expected Fail Response::
-            HTTP Status Code: 401
+            HTTP Status Code: 404
             {
-                "description": "401: Authorization header is expected.",
-                "error": 401,
-                "message": "Unauthorized",
-                "success": false
+             "description": "404 Not Found: The requested URL... try again.", 
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
             }
     """
 
@@ -983,7 +1069,8 @@ def run_submission(payload, run_id):
         doTrain=True,
         doPredict=True,
         toTerminal=True,
-        )
+    )
+
     run.results = pickle.dumps(results)
     run.predictFile = pickle.dumps(pred)
     run.update()
@@ -993,8 +1080,31 @@ def run_submission(payload, run_id):
 
 
 @app.route('/train/<int:run_id>/download', methods=['GET'])
-def download(run_id):
-   
+@requires_auth('get:train')
+def download(payload, run_id):
+    """
+        **download results file**
+        Run ML Training based upon run record attributes
+
+        - Sample Call to display::
+            curl -X GET http://localhost:5000/train/1/download \
+                 -H "Authorization: Bearer $TOKEN"
+        - Expected Success Response::
+            HTTP Status Code: 200
+            File Download. Example:
+                PassengerId,Survived
+                892,0
+                893,0
+                894,1
+        - Expected Fail Response::
+            HTTP Status Code: 404
+            {
+             "description": "404 Not Found: The requested URL... try again.", 
+             "error": 404, 
+             "message": "Not Found", 
+             "success": false
+            }
+    """
     run = Run.query.filter(Run.id == run_id,
                            Run.account_id ==
                            session['account_id']).one_or_none()
@@ -1013,7 +1123,6 @@ def download(run_id):
     return resp
 
 
-
 # ----------------------------------------------------------------------------
 #  error handlers and other support code
 # ----------------------------------------------------------------------------
@@ -1021,17 +1130,37 @@ def download(run_id):
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return (render_template('errors/404.html'), 404)
+    return (jsonify({
+        'success': False,
+        'error': 404,
+        'message': 'Not Found',
+        'description': str(error),
+    }), 404)
+    # return (render_template('errors/404.html'), 404)
 
 
 @app.errorhandler(500)
 def server_error(error):
-    return (render_template('errors/500.html'), 500)
+
+    return (jsonify({
+        'success': False,
+        'error': 500,
+        'message': 'Server Error',
+        'description': str(error),
+    }), 500)
+    # return (render_template('errors/500.html'), 500)
 
 
 @app.errorhandler(401)
 def premission_error(error):
-    return (render_template('errors/500.html'), 401)
+    
+    return (jsonify({
+        'success': False,
+        'error': 401,
+        'message': 'Premission Error',
+        'description': str(error),
+    }), 401)
+    # return (render_template('errors/500.html'), 401)
 
 
 @app.errorhandler(400)
@@ -1041,7 +1170,7 @@ def bad_request(error):
         'error': 400,
         'message': 'Bad Request',
         'description': str(error),
-        }), 400)
+    }), 400)
 
 
 @app.errorhandler(405)
@@ -1051,7 +1180,7 @@ def not_found(error):
         'error': 405,
         'message': 'Method Not Allowed',
         'description': str(error),
-        }), 405)
+    }), 405)
 
 
 @app.errorhandler(422)
@@ -1061,13 +1190,13 @@ def unprocessable(error):
         'error': 422,
         'message': 'Unprocessable',
         'description': str(error),
-        }), 422)
+    }), 422)
 
 
 if not app.debug:
     file_handler = FileHandler('error.log')
     file_handler.setFormatter(Formatter(
-       '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
     app.logger.setLevel(logging.INFO)
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)

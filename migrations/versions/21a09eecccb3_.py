@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9c359cfbbd60
+Revision ID: 21a09eecccb3
 Revises: 
-Create Date: 2020-01-21 15:59:22.464555
+Create Date: 2020-02-06 19:39:31.710085
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9c359cfbbd60'
+revision = '21a09eecccb3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,8 +40,9 @@ def upgrade():
     sa.Column('targetVariable', sa.String(length=120), nullable=True),
     sa.Column('key', sa.String(length=120), nullable=True),
     sa.Column('predictSetOut', sa.ARRAY(sa.String()), nullable=True),
+    sa.Column('predictFile', sa.PickleType(), nullable=True),
+    sa.Column('modelList', sa.ARRAY(sa.String()), nullable=True),
     sa.Column('scoring', sa.String(length=120), nullable=True),
-    sa.Column('setProjectGoals', sa.Float(), nullable=True),
     sa.Column('basicAutoMethod', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['project_id'], ['Project.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

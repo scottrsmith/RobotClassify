@@ -76,6 +76,8 @@ from sklearn.metrics import adjusted_rand_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import DecisionTreeRegressor
 
+# import tracemalloc
+
 
 
 #pd.options.mode.chained_assignment = None  # default='warn'
@@ -95,6 +97,17 @@ availableModels = { TRAIN_REGRESSION : ['lasso', 'ridge', 'enet', 'rf', 'gb', 'd
                                          'adaboost', 'gaussiannb', 'etc','svc', 'xgbc', 'stack', 'vote'],
                     TRAIN_CLUSTERING: ['kmeans']}
 
+def memorySnapshot(log, cnt=25, start=False):
+    #if start:
+    #    tracemalloc.start()
+    #snapshot = tracemalloc.take_snapshot()
+    #top_stats = snapshot.statistics('lineno')
+    #print('\n\nTop {} at {}..............'.format(cnt, log))
+    #for stat in top_stats[:cnt]:
+    #    print(stat)
+    #print ('\n')
+    pass
+    
 def mapScoring(score):
     map = { 'Precision': 'precision',
             'Recall': 'recall',
@@ -1026,6 +1039,7 @@ class trainModels (object):
         
         
         for name in project.modelList:
+            memorySnapshot('Start...', cnt=25)
             mlUtility.runLog('Prepping Model: '+name)
             
             names = name.split('+')
@@ -1149,6 +1163,7 @@ class trainModels (object):
 #            for name, pipeline in self.pipelines.items():
         for name in self.pipelines:
             # Create cross-validation object from pipeline and hyperparameters
+            memorySnapshot('Start...'+name, cnt=25)
             stackNameTest = name.split(':')
             if stackNameTest[0]=='vote':
                 estimators = []

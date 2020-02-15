@@ -61,7 +61,7 @@ class RunForm(FlaskForm):
                   validators=[DataRequired(message='Description Required')])
 
     targetVariable = SelectField(
-                    'state',
+                    'targetVariable',
                     validators=[DataRequired(
                                 message='Target Variable Required')],
                     choices=[])
@@ -108,5 +108,3 @@ class RunForm(FlaskForm):
                         ])
 
     basicAutoMethod = BooleanField('basicAutoMethod', default=False)
-
-   

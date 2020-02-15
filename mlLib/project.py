@@ -82,6 +82,8 @@ def dumpData(obj, name='None'):
         print("    data.%s = %r" % (attr, obj[attr]))
 
 
+# ----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 def autoFlaskEvaluateClassifier(projectName=None,
                                 trainingFile=None,
                                 testingFile=None,
@@ -135,6 +137,8 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
     TRAININGFILENAME = 'Training'
     TESTINGFILENAME = 'Testing'
+    
+    tm.memorySnapshot('Start...', cnt=25, start=True)
 
     results = {}
 

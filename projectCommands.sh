@@ -198,9 +198,13 @@ aws ssm put-parameter --name JWT_SECRET --value "52ace7f12f7c56819fe30b97defe66d
 #URL=a3f1824a02c4711ea84d80e7a7f67a8c-582421803.us-west-2.elb.amazonaws.com
 URL=a178ffc472dc811ea875a0ef2971c77d-1793567985.us-west-2.elb.amazonaws.com
 curl -H "Content-Type: application/json" -X POST ${URL}/
-export TOKEN=`curl -d '{"email":"scott@scott.com","password":"passwrd!!!"}' -H "Content-Type: application/json" -X POST ${URL}/auth  | jq -r '.token'`
+export TOKEN=` | jq -r '.token'`
 curl --request GET ${URL}/contents -H "Authorization: Bearer ${TOKEN}" | jq
 curl -H "Content-Type: application/json" -X POST ${URL}/
+export TTOKEN=`python3 get_credentials.py | jq -r '.token'`
+
+export TUSER=`python3 get_credentials.py | grep 'APP_TESTING_USERID'`
+export TTOKEN=`python3 get_credentials.py | grep 'TOKEN'`
 
 
 

@@ -25,6 +25,7 @@ def connectToDB(app):
     app.config.from_object('config')
     db.app = app
     db.init_app(app)
+    # db.create_all()
     return db
 
 
@@ -70,6 +71,15 @@ class Project(db.Model):
             'name': self.name,
             'description': self.description
         }
+
+    def __str__(self):
+        return 'Project Record\n' +\
+               '  id={}\n'.format(self.id) +\
+               '  name={}\n'.format(self.name) +\
+               '  description={}\n'.format(self.description) +\
+               '  trainingFile={}\n'.format(self.trainingFile) +\
+               '  testingFile={}\n'.format(self.testingFile) 
+
 
     def insert(self):
         '''
@@ -174,6 +184,21 @@ class Run(db.Model):
                 "modelList": self.modelList,
                 "results": results
                 }
+
+    def __str__(self):
+        return "Run Record\n" +\
+               "  id={}\n".format(self.id) +\
+               "  name={}\n".format(self.name) +\
+               "  description={}\n".format(self.description) +\
+               "  account_id={}\n".format(self.account_id) +\
+               "  project_id={}\n".format(self.project_id) +\
+               "  targetVariable={}\n".format(self.targetVariable) +\
+               "  basicAutoMethod={}\n".format(self.basicAutoMethod) +\
+               "  scoring={}\n".format(self.scoring) +\
+               "  modelList={}\n".format(self.modelList)  
+                
+       
+        
 
     def insert(self):
         '''

@@ -69,6 +69,7 @@
           </ul>
           <ul class="nav navbar-nav">
             <li {% if request.endpoint == 'projects' %} class="active" {% endif %}><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="./docs/index.html" target="_blank">Docs</a></li>
             <li {% if request.endpoint == 'login' %} class="active" {% endif %}><a href="{{ url_for('login') }}">Login</a></li>
             <li {% if request.endpoint == 'logout' %} class="active" {% endif %}><a href="{{ url_for('logout') }}">Logout</a></li>
           </ul>

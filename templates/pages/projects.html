@@ -13,8 +13,8 @@
 </style>
 
 <ul class="items">
-	<h1 class="monospace">PROJECTS<h1>
 	{% if count > 0 %}
+	    <h1 class="monospace">{{ count }} PROJECTS<h1>
 		{% for project in projects %}
 		<div class="row row-striped">
 			<div class="col-sm-6">
@@ -50,6 +50,7 @@
 		</div>
 		{% endfor %}
 	{% else %}
+  	    <h1 class="monospace">PROJECTS<h1>
 	    <h5>No Projects.</h5>
 	{% endif %}
 	<br>
