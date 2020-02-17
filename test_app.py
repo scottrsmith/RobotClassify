@@ -48,6 +48,7 @@ import config
 # helper functions
 # ----------------------------------------------------------------------------#
 
+
 def dumpObj(obj, name='None'):
     print('\n\nDump of object...{}'.format(name))
     for attr in dir(obj):
@@ -131,17 +132,16 @@ class RobotClassifyTestCase(unittest.TestCase):
     def test_home_page_fail(self):
         res = self.client().post('/')
         self.assertEqual(res.status_code, 405)
-  
 
     # ------------------------------------------------------------------------#
     # Documentation Page (Get /docs)
     # ------------------------------------------------------------------------#
+
     def test_docs_page(self):
         # dumpObj(self)
         res = self.client().get('/docs/index.html')
         self.assertEqual(res.status_code, 200)
         self.assertTrue(isHTML(res.data))
-
 
     def test_docs_page_fail(self):
         # dumpObj(self)
@@ -173,12 +173,11 @@ class RobotClassifyTestCase(unittest.TestCase):
                                  config.APP_TESTING_USERID).count()
         self.assertTrue(isFound(res.data, '{} PROJECTS'.format(c)))
 
-
     def test_get_multiple_projects_fail(self):
         self.header = testing_auth()
         res = self.client().post('/projects', headers=self.header)
         self.assertEqual(res.status_code, 405)
- 
+
     # ------------------------------------------------------------------------#
     #   - GET /projects/<int:project_id> (Project page) - get:project
     #
@@ -201,8 +200,6 @@ class RobotClassifyTestCase(unittest.TestCase):
         path = '/projects/{}'.format(project_id)
         res = self.client().get(path, headers=self.header)
         self.assertEqual(res.status_code, 404)
-        self.assertTrue(isHTML(res.data))
-
 
     # ------------------------------------------------------------------------#
     #   - POST /projects/search (search projects for user) - post:project
@@ -216,7 +213,7 @@ class RobotClassifyTestCase(unittest.TestCase):
         res = self.client().post('/projects/search',
                                  data={'search_term': search_term},
                                  headers=self.header)
-        
+
         self.assertEqual(res.status_code, 200)
         self.assertTrue(isHTML(res.data))
 
@@ -233,12 +230,10 @@ class RobotClassifyTestCase(unittest.TestCase):
         search_term = 'Titanic'
         self.header = testing_auth()
         res = self.client().get('/projects/search',
-                                 data={'search_term': search_term},
-                                 headers=self.header)
-        
+                                data={'search_term': search_term},
+                                headers=self.header)
+
         self.assertEqual(res.status_code, 405)
-
-
 
     # ------------------------------------------------------------------------#
     #   - POST/GET /projects/create (create a new project) - post:project
@@ -265,14 +260,12 @@ class RobotClassifyTestCase(unittest.TestCase):
             content_type='multipart/form-data',
             follow_redirects=True)
 
-
         # Test that the record was created
         proj = Project.query.filter(Project.name == theName).one_or_none()
         self.assertIsNotNone(proj)
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(isHTML(res.data))
-
 
     def test_post_projects_bad_content_type(self):
 
@@ -302,7 +295,7 @@ class RobotClassifyTestCase(unittest.TestCase):
     def test_patch_projects(self):
         self.header = testing_auth()
         project_id = 2
-        
+
         project = Project.query.filter_by(id=project_id).one_or_none()
         self.assertIsNotNone(project)
         patchName = project.name + ' Patched'
@@ -323,12 +316,12 @@ class RobotClassifyTestCase(unittest.TestCase):
         self.assertIsNotNone(proj)
 
         # Test flask message
-        self.assertTrue(isFound(res.data,'successfully Updated!'))
+        self.assertTrue(isFound(res.data, 'successfully Updated!'))
 
     def test_patch_projects_fail(self):
         self.header = testing_auth()
         project_id = 2
-        
+
         project = Project.query.filter_by(id=project_id).one_or_none()
         self.assertIsNotNone(project)
         patchName = project.name + ' Patched'
@@ -355,7 +348,7 @@ class RobotClassifyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
         # Test that the record was actually deleted
-        self.assertEqual(Project.query.filter_by(id=project_id).count(),0)
+        self.assertEqual(Project.query.filter_by(id=project_id).count(), 0)
 
     def test_delete_project_not_Found(self):
         self.header = testing_auth()
@@ -470,7 +463,7 @@ class RobotClassifyTestCase(unittest.TestCase):
                 'form-run-modelList': run.modelList,
                 'form-run-scoring': run.scoring,
                 'form-run-basicAutoMethod': run.basicAutoMethod,
-                },
+            },
             follow_redirects=True)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(isHTML(res.data))
@@ -480,8 +473,7 @@ class RobotClassifyTestCase(unittest.TestCase):
         self.assertIsNotNone(run)
 
         # Test flask message
-        self.assertTrue(isFound(res.data,'successfully Updated!'))
-
+        self.assertTrue(isFound(res.data, 'successfully Updated!'))
 
     def test_patch_run_fail(self):
         self.header = testing_auth()
@@ -509,7 +501,7 @@ class RobotClassifyTestCase(unittest.TestCase):
                 'form-run-modelList': run.modelList,
                 'form-run-scoring': run.scoring,
                 'form-run-basicAutoMethod': run.basicAutoMethod,
-                },
+            },
             follow_redirects=True)
         self.assertEqual(res.status_code, 405)
 
@@ -526,7 +518,7 @@ class RobotClassifyTestCase(unittest.TestCase):
 
         # Test that the record was actually deleted
         self.assertEqual(Run.query.filter_by(id=run_id).count(), 0)
- 
+
     def test_delete_run_not_found(self):
         self.header = testing_auth()
         run_id = 6000

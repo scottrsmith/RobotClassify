@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Intoduction &#8212; Robot Classify Alpha documentation</title>
+    <title>Introduction &#8212; Robot Classify Alpha documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -38,45 +38,40 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Intoduction</a></li>
-<li><a class="reference internal" href="#getting-started-backend">Getting Started - Backend</a><ul>
-<li><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a><ul>
-<li><a class="reference internal" href="#pip-dependencies">PIP Dependencies</a><ul>
-<li><a class="reference internal" href="#key-dependencies">Key Dependencies</a></li>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)</a></li>
+<li><a class="reference internal" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:</a></li>
+<li><a class="reference internal" href="#run-the-training">. Run the training</a></li>
+<li><a class="reference internal" href="#review-the-results">. Review the results</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#implementation-ovweview">Implementation Ovweview</a></li>
+<li><a class="reference internal" href="#project-dependencies-local-development-and-hosting-instructions">Project dependencies, local development and hosting instructions</a></li>
+<li><a class="reference internal" href="#runing-and-testing-instrunctions">Runing and Testing Instrunctions</a><ul>
+<li><a class="reference internal" href="#web">. Web</a></li>
+<li><a class="reference internal" href="#unittest">. UnitTest</a></li>
+<li><a class="reference internal" href="#curl">. Curl</a><ul>
+<li><a class="reference internal" href="#running-on-the-web">Running on the Web</a></li>
+<li><a class="reference internal" href="#id1">UnitTest</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-the-robotclassiy-test-database">. Create the robotclassiy_test database</a></li>
+<li><a class="reference internal" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">. Get a Token and User ID for the API user (placed into environment variables)</a></li>
+<li><a class="reference internal" href="#populate-the-test-database-with-data-for-the-api-user">. Populate the test database with data for the API user</a></li>
+<li><a class="reference internal" href="#run-the-tests">. Run the tests</a><ul>
+<li><a class="reference internal" href="#id2">Curl</a></li>
+<li><a class="reference internal" href="#getting-updated-tokens">Getting updated tokens</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#database-setup">Database Setup</a></li>
 <li><a class="reference internal" href="#running-the-server">Running the server</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a><ul>
-<li><a class="reference internal" href="#opening-the-api-documentation">Opening the API Documentation</a></li>
-<li><a class="reference internal" href="#html-documentation">HTML Documentation</a><ul>
-<li><a class="reference internal" href="#pdf-documentation">PDF Documentation</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#generating-documentation">Generating documentation</a><ul>
-<li><a class="reference internal" href="#installing-sphinx-and-support-tools">Installing Sphinx and support tools</a></li>
-<li><a class="reference internal" href="#generating-the-documentation">Generating the documentation</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#api-end-points">API End Points</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#error-handling">Error Handling</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
-<li><a class="reference internal" href="#full-stack-robotclassify-api-frontend">Full Stack RobotClassify API Frontend</a><ul>
-<li><a class="reference internal" href="#id1">Installing Dependencies</a><ul>
-<li><a class="reference internal" href="#installing-node-and-npm">Installing Node and NPM</a></li>
-<li><a class="reference internal" href="#installing-ionic-client">Installing Ionic Client</a></li>
-<li><a class="reference internal" href="#installing-project-dependencies">Installing project dependencies</a></li>
-<li><a class="reference internal" href="#running-the-frontend">Running the Frontend</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#development-notes">Development Notes</a></li>
 </ul>
 
   <div role="note" aria-label="source link">
@@ -104,44 +99,172 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="intoduction">
-<h1>Intoduction<a class="headerlink" href="#intoduction" title="Permalink to this headline">¶</a></h1>
-<p>The RobotClassify app does stuff…..</p>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>RobotClassify allows for non-data scientest such as citizen developers and other operational people involved with analizing and
+reporting on business data.  The goal is to automate the entire ML process (feature-engineering, training, prediction).</p>
+<p>This version of the app is optimized for loading datafiles to train with, and test files for predctiona, optimzed for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created to put into code, techniques I have learning during my ML course work. T</p>
+<p>My motivation for project centers around my interest in machine learning for citizen developers. Taking the complecated tasked of feature engineering, model selection, and training and makeing it a simple point and click excersie without any prior machine learning training.</p>
+<p>Using RobotClassify requires four simple steps that can all be accomplished via the RobotClassify.herokuapp.com.</p>
+<div class="section" id="load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">
+<h2>. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)<a class="headerlink" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="getting-started-backend">
-<h1>Getting Started - Backend<a class="headerlink" href="#getting-started-backend" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="installing-dependencies">
-<h2>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Python 3.7</p>
-<p>This project uses python 3.7.</p>
-<p>To Install: <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
-<div class="section" id="pip-dependencies">
-<h3>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">
+<h2>. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:<a class="headerlink" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>The target variable that is to be predicted</p></li>
+<li><p>Record Key column</p></li>
+<li><p>Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle comopetition</p></li>
+<li><p>Classification model to train</p></li>
+<li><p>Scoring method</p></li>
+<li><p>Algoritym type (There are two approaches used to automate feature engineering)</p></li>
+</ul>
+</div>
+<div class="section" id="run-the-training">
+<h2>. Run the training<a class="headerlink" href="#run-the-training" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="review-the-results">
+<h2>. Review the results<a class="headerlink" href="#review-the-results" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="implementation-ovweview">
+<h1>Implementation Ovweview<a class="headerlink" href="#implementation-ovweview" title="Permalink to this headline">¶</a></h1>
+<p>The application is build with Flask and Flask What-the-forms for the frontend.</p>
+<p>Roles
+There are two roles:
+Editor: Able to create, update, train and delete projects and training runs
+Viewer: Only able to view results</p>
+<p>The following APIs endpoints are available. Detailed html documentation can be found at
+<a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+<p>– Home Page –</p>
+<ul class="simple">
+<li><p>GET / (home)</p></li>
+</ul>
+<p>– Documentation Page –</p>
+<ul class="simple">
+<li><p>GET /docs/index.html</p></li>
+</ul>
+<p>— Projects —</p>
+<ul class="simple">
+<li><p>GET /projects (List all projects) - get:project</p></li>
+<li><p>GET /projects/int:project_id (Project page) - get:project</p></li>
+<li><p>POST/GET /projects/create (create a new project) - post:project</p></li>
+<li><p>PATCH /projects/int:project_id/edit (edit a project) - patch:project</p></li>
+<li><p>DELETE /projects/<span class="raw-html-m2r"><project_id></span>/delete (Delete a project) - delete:project</p></li>
+</ul>
+<p>— Runs —</p>
+<ul class="simple">
+<li><p>GET /runs/int:run_id  (Display a run results) - get:run</p></li>
+<li><p>GET/POST /runs/create/int:project_id (Create a run) - get:post</p></li>
+<li><p>DELETE /runs/int:run_id/delete (Delete a run) - delete:post</p></li>
+<li><p>PATCH /run/int:run_id/edit (edit a run) - patch:run</p></li>
+</ul>
+<p>— Train —</p>
+<ul>
+<li><p>GET /train/int:run_id  (run ML training for a run) post:train</p></li>
+<li><p>GET /train/int:run_id/download  (download testing results file,
+.. code-block:</p>
+<blockquote>
+<div><p>kaggle file) get:train</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="project-dependencies-local-development-and-hosting-instructions">
+<h1>Project dependencies, local development and hosting instructions<a class="headerlink" href="#project-dependencies-local-development-and-hosting-instructions" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Detailed instructions for scripts to install any project dependencies, and to run the development server.</p></li>
+<li><p>Documentation of API behavior and RBAC controls</p></li>
+</ul>
+</div>
+<div class="section" id="runing-and-testing-instrunctions">
+<h1>Runing and Testing Instrunctions<a class="headerlink" href="#runing-and-testing-instrunctions" title="Permalink to this headline">¶</a></h1>
+<p>URL: <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a></p>
+<p>There are three approaches to running and evaluating RobotClassify:</p>
+<div class="section" id="web">
+<h2>. Web<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="unittest">
+<h2>. UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="curl">
+<h2>. Curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h2>
+<p>There are scripts to help with each one.</p>
+<div class="section" id="running-on-the-web">
+<h3>Running on the Web<a class="headerlink" href="#running-on-the-web" title="Permalink to this headline">¶</a></h3>
+<p>For example, the Titanic Kaggle competeition (<a class="reference external" href="https://www.kaggle.com/c/titanic.com">https://www.kaggle.com/c/titanic.com</a>), provides two data sets, the Training set and test set. Loading these into Robot Classify, we would set the run paramatgers as follows:</p>
+<ul class="simple">
+<li><p>Target Variable: Survived</p></li>
+<li><p>Record Key: PassengerID</p></li>
+<li><p>Predict set out: Survuved, PassengerID</p></li>
+<li><p>Classification model: xgbc</p></li>
+<li><p>Scoring method: f1</p></li>
+<li><p>Use Algorithm I for feature engineering: True</p></li>
+</ul>
+<p>This will give a training result that would put you in the top 8% of competitors.</p>
+</div>
+<div class="section" id="id1">
+<h3>UnitTest<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Unittests are run using the script <code class="docutils literal notranslate"><span class="pre">test.sh</span></code>. This script requires Postgress on the local machine where the test is being run.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">test.sh</span></code> script will:</p>
+</div>
+</div>
+<div class="section" id="create-the-robotclassiy-test-database">
+<h2>. Create the robotclassiy_test database<a class="headerlink" href="#create-the-robotclassiy-test-database" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">
+<h2>. Get a Token and User ID for the API user (placed into environment variables)<a class="headerlink" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="populate-the-test-database-with-data-for-the-api-user">
+<h2>. Populate the test database with data for the API user<a class="headerlink" href="#populate-the-test-database-with-data-for-the-api-user" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="run-the-tests">
+<h2>. Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>Curl<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Amazon/Heroku)</p>
+<p>curl_pass.sh
+curl_fail.sh
+curl.sh (setup the environment variables to run Curl manually)</p>
+</div>
+<div class="section" id="getting-updated-tokens">
+<h3>Getting updated tokens<a class="headerlink" href="#getting-updated-tokens" title="Permalink to this headline">¶</a></h3>
+<p>If you need to get an updated token, you need to login to the Web app and issue the following URL:</p>
+<p><a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a></p>
+<p>This will retrive the current jwt token for the logged in user.</p>
+</div>
+</div>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>This project uses python 3.7</p>
+<p>To Install <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
 <p>Once you have your virtual environment setup and running, install dependencies by navigating to the root directory and running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
 </pre></div>
 </div>
 <p>This will install all of the required packages we selected within the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
-<div class="section" id="key-dependencies">
-<h4>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p><a class="reference external" href="http://flask.pocoo.org/">Flask</a>  is a lightweight backend microservices framework.</p></li>
 <li><p><a class="reference external" href="https://www.sqlalchemy.org/">SQLAlchemy</a> is the Python SQL toolkit and ORM.</p></li>
 <li><p><a class="reference external" href="https://flask-cors.readthedocs.io/en/latest/#">Flask-CORS</a> is the extension used to handle cross-origin requests from the frontend server.</p></li>
 <li><p><a class="reference external" href="https://auth0.com/docs/getting-started/overview">Auth0</a> Provides authentication and authorization as a service</p></li>
+<li><p><a class="reference external" href="http://example.com">Postgres</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">Heroku</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">Flask-WTF</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">mlLib</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">InitTest</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">FlaskMigrate</a> DOES XXX</p></li>
 </ul>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="database-setup">
 <h1>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h1>
-<p>The app is running with SQLite. No setup needs to be performed.</p>
+<p>The app is running Postgres SQL.</p>
 </div>
 <div class="section" id="running-the-server">
 <h1>Running the server<a class="headerlink" href="#running-the-server" title="Permalink to this headline">¶</a></h1>
-<p>From within the <code class="docutils literal notranslate"><span class="pre">backend/src</span></code> directory to run the server, execute:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>api.py
+<p>From within the <code class="docutils literal notranslate"><span class="pre">root</span></code> directory to run the server, execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py
 <span class="nb">export</span> <span class="nv">FLASK_ENV</span><span class="o">=</span>development
 flask run
 </pre></div>
@@ -149,70 +272,32 @@ flask run
 </div>
 <div class="section" id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="opening-the-api-documentation">
-<h2>Opening the API Documentation<a class="headerlink" href="#opening-the-api-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Live documentation, including this readme, can be found at <a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+<p>The PDF version of the documentation is located in the root project directory. Named robotclassify.pdf</p>
 <p>Documentation is generated with Sphinx.</p>
-</div>
-<div class="section" id="html-documentation">
-<h2>HTML Documentation<a class="headerlink" href="#html-documentation" title="Permalink to this headline">¶</a></h2>
-<p>From the root folder, open the index file in a browser</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docs/build/html/index.html
+<p>Installing Sphinx and support tools</p>
+<div class="highlight-~~~~~~~~~~~ notranslate"><div class="highlight"><pre><span></span>To install Sphinx, reference the documents at https://www.sphinx-doc.org/en/master/usage/installation.html
+
+For example:
+
+.. code-block:: bash
+
+   pip install -U sphinx
+
+Install dependencies by navigating to the ``root`` project directory and running:
+
+.. code-block:: bash
+
+   cd docs
+   pip install m2r
+   pip install recommonmark
+   pip install rinohtype
+   pip install -r requirements.txt
+
+Generating documentation
 </pre></div>
 </div>
-</div></blockquote>
-<div class="section" id="pdf-documentation">
-<h3>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h3>
-<p>The PDF version of the documentation is located in the root project directory. Named RobotClassifyapi.pdf</p>
-</div>
-</div>
-<div class="section" id="generating-documentation">
-<h2>Generating documentation<a class="headerlink" href="#generating-documentation" title="Permalink to this headline">¶</a></h2>
-<p>Documentation is generated with Sphinx.</p>
-<div class="section" id="installing-sphinx-and-support-tools">
-<h3>Installing Sphinx and support tools<a class="headerlink" href="#installing-sphinx-and-support-tools" title="Permalink to this headline">¶</a></h3>
-<p>To install Sphinx, reference the documents at <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/installation.html">https://www.sphinx-doc.org/en/master/usage/installation.html</a></p>
-<p>For example:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -U sphinx
-</pre></div>
-</div>
-<p>Install dependencies by navigating to the <code class="docutils literal notranslate"><span class="pre">root</span></code> project directory and running:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docs
-pip install m2r
-pip install recommonmark
-pip install rinohtype
-pip install -r requirements.txt
-</pre></div>
-</div>
-</div>
-<div class="section" id="generating-the-documentation">
-<h3>Generating the documentation<a class="headerlink" href="#generating-the-documentation" title="Permalink to this headline">¶</a></h3>
-<p>Generate the documentation with the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From the root project directory</span>
-<span class="c1"># Convert readme to rst to be included in generated docs</span>
-m2r README.md README.rst --overwrite
-cp -R README.rst ./docs/source
-<span class="nb">cd</span> ./docs
-make html
-<span class="c1"># Make pdf</span>
-make latexpdf
-<span class="nb">cd</span> ..
-cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="api-end-points">
-<h1>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h1>
-<p>The following APIs are available. Detailed html documentation can be found in the ‘docs’ folder.</p>
-<ul class="simple">
-<li><p>GET /drinks</p></li>
-<li><p>GET /drinks-detail</p></li>
-<li><p>POST /drinks</p></li>
-<li><p>PATCH /drinks/<span class="raw-html-m2r"><id></span></p></li>
-<li><p>DELETE /drinks/<span class="raw-html-m2r"><id></span></p></li>
-</ul>
+<p>Documentation is generated with Sphinx. Use <code class="docutils literal notranslate"><span class="pre">docs.sh</span></code> in the docs folder to generate the documentation</p>
 </div>
 <div class="section" id="error-handling">
 <h1>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h1>
@@ -224,7 +309,7 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>The API will return three error types when requests fail:</p>
+<p>The API returns multiple error types when requests fail:</p>
 <ul class="simple">
 <li><p>400: Bad Request</p></li>
 <li><p>404: Resource Not Found</p></li>
@@ -235,36 +320,19 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </div>
 <div class="section" id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
-<p>Testing is done with Postman. Load and run the test collection:
-.backend/udacity-fsnd-udaspicelatte.postman_collection.json</p>
+<p>Testing is done with UnitTest and curl.  UnitTest is setup to create and use a local Postgres database while Curl is setup to  run commands against the</p>
 </div>
-<div class="section" id="full-stack-robotclassify-api-frontend">
-<h1>Full Stack RobotClassify API Frontend<a class="headerlink" href="#full-stack-robotclassify-api-frontend" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2>Installing Dependencies<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="installing-node-and-npm">
-<h3>Installing Node and NPM<a class="headerlink" href="#installing-node-and-npm" title="Permalink to this headline">¶</a></h3>
-<p>This app depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from <a class="reference external" href="https://nodejs.org/en/download/">https://nodejs.com/en/download</a>.</p>
-</div>
-<div class="section" id="installing-ionic-client">
-<h3>Installing Ionic Client<a class="headerlink" href="#installing-ionic-client" title="Permalink to this headline">¶</a></h3>
-<p>The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI  is in the <a class="reference external" href="https://ionicframework.com/docs/installation/cli">Ionic Framework Docs</a>.</p>
-</div>
-<div class="section" id="installing-project-dependencies">
-<h3>Installing project dependencies<a class="headerlink" href="#installing-project-dependencies" title="Permalink to this headline">¶</a></h3>
-<p>This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory of this repository. After cloning, open your terminal and run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install
-</pre></div>
-</div>
-</div>
-<div class="section" id="running-the-frontend">
-<h3>Running the Frontend<a class="headerlink" href="#running-the-frontend" title="Permalink to this headline">¶</a></h3>
-<p>To run Ionic from the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ionic serve
-</pre></div>
-</div>
-</div>
-</div>
+<div class="section" id="development-notes">
+<h1>Development Notes<a class="headerlink" href="#development-notes" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon</p></li>
+<li><p>CSRF protection is disabled for certain REST calls to faciliate testing cia CuRL.</p></li>
+<li><p>Patch and Delete functions are only avialable via API calls</p></li>
+<li><p>UnitTest uses a local postgres database</p></li>
+<li><p>UnitTest uses API App Auth0 credentials (verses using Auth0 Web App quickstart code)
+Auth0 Management API (Test Application)</p></li>
+<li><p>Tokens in the headers are used for API authentication</p></li>
+</ul>
 </div>
 
 

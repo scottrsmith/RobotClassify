@@ -78,8 +78,7 @@ class Project(db.Model):
                '  name={}\n'.format(self.name) +\
                '  description={}\n'.format(self.description) +\
                '  trainingFile={}\n'.format(self.trainingFile) +\
-               '  testingFile={}\n'.format(self.testingFile) 
-
+               '  testingFile={}\n'.format(self.testingFile)
 
     def insert(self):
         '''
@@ -195,10 +194,7 @@ class Run(db.Model):
                "  targetVariable={}\n".format(self.targetVariable) +\
                "  basicAutoMethod={}\n".format(self.basicAutoMethod) +\
                "  scoring={}\n".format(self.scoring) +\
-               "  modelList={}\n".format(self.modelList)  
-                
-       
-        
+               "  modelList={}\n".format(self.modelList)
 
     def insert(self):
         '''

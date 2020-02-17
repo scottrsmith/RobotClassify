@@ -45,8 +45,9 @@
 						 </li>
 					  {% endif %}
 		              <li class="active"><a href="/train/{{ run.id }}"><button>Train</button></a></li>
-					  <li class="active"><a href="/runs/{{ run.id }}/edit"><button>Edit</button></a></li>
-					  <li class="active"><a href="/runs/{{ run.id }}/delete"><button>Delete</button></a></li>
+					  <!-- FUTURE <li class="active"><a href="/runs/{{ run.id }}/edit"><button>Edit</button></a></li>
+					  <li class="active"><a href="/runs/{{ run.id }}/delete"><button>Delete</button></a></li> -->
+
 					  <!-- ><li class="active"><a onclick="DeleteRun({{run.id}})" href="javascript:void(0);">Delete</li> -->
 		           </ul>
 				</div>
@@ -64,7 +65,7 @@ Add Delete and Edit project Buttons
 -->
 <section>
 	<div class="row">
-		<h3>
+		<h3><!-- FUTURE 
 			<div class="col-sm-2">
 				<a href="/projects/{{ project.id }}/edit"><button class="btn btn-primary btn-lg">Edit Project</button></a>
 			</div>
@@ -72,7 +73,7 @@ Add Delete and Edit project Buttons
 				<form action="/projects/{{ project.id }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
 					<button type="submit" class="btn btn-primary btn-lg">Delete Project</button>
 				</form>
-			</div>
+			</div> -->
 			<div class="col-sm-2">
 				<a href="/runs/create/{{ project.id }}"><button class="btn btn-primary btn-lg">New Run</button></a>
 			</div>

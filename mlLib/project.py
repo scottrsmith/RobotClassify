@@ -137,7 +137,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
     TRAININGFILENAME = 'Training'
     TESTINGFILENAME = 'Testing'
-    
+
     tm.memorySnapshot('Start...', cnt=25, start=True)
 
     results = {}
@@ -219,7 +219,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
         pass
         results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
-                                    plotExploreHeatMap(toWeb=True)
+            plotExploreHeatMap(toWeb=True)
 
         # project.explore[TRAININGFILENAME].plotFeatureImportance()
         # project.explore[TRAININGFILENAME].plotColumnImportance()
@@ -445,6 +445,7 @@ def autoEvaluateClassifier(projectName=None,
         predict.exportPredictFile(resultsFile)
 
     mlUtility.closeLogs()
+
 
 def getMLScoringFunctions():
     return sorted(SCORERS.keys())
@@ -1967,7 +1968,6 @@ class predictProject (object):
 
         mlUtility.runLog('Writing predict file {}'.format(filename))
         pred.to_csv(filename, index=False)
-        
 
     def getPredictFileDF(self):
         """
@@ -1984,7 +1984,6 @@ class predictProject (object):
         elif self.predictSet is not None:
             pred = self.predictSet
         return pred
-
 
     @ignore_warnings(category=ConvergenceWarning)
     @ignore_warnings(category=DataConversionWarning)

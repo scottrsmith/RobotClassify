@@ -1,33 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-**Introduction**
-----------------
--- Home Page
+
+## Introduction
+
+
+**Home Page**
+
 - GET / (home)
 
--- Documentation Page
+**Documentation Page**
+
 - GET /docs/index.html
 
---- Projects ---
+**Projects**
+
 - GET /projects (List all projects) - get:project
 - GET /projects/<int:project_id> (Project page) - get:project
 - POST/GET /projects/create (create a new project) - post:project
 - PATCH /projects/<int:project_id>/edit (edit a project) - patch:project
 - DELETE /projects/<project_id>/delete (Delete a project) - delete:project
 
---- Runs ---
+**Runs**
+
 - GET /runs/<int:run_id>  (Display a run results) - get:run
 - GET/POST /runs/create/<int:project_id> (Create a run) - get:post
 - DELETE /runs/<int:run_id>/delete (Delete a run) - delete:post
 - PATCH /run/<int:run_id>/edit (edit a run) - patch:run
 
---- Train ---
+**Train**
+
 - GET /train/<int:run_id>  (run ML training for a run) post:train
 - GET /train/<int:run_id>/download  (download testing results file,
       kaggle file) get:train
-
-
 """
 
 # ---------------------------------------------------------------------------#
@@ -37,14 +42,20 @@
 import os
 import json
 from os import environ as env
-from werkzeug.exceptions import HTTPException
-from werkzeug.utils import secure_filename
+# from werkzeug.exceptions import HTTPException
+# from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
 from authlib.integrations.flask_client import OAuth
 
-import dateutil.parser
-import babel
+# import dateutil.parser
+# import babel
+# System libraries
 import sys
+import pandas as pd
+import pickle
+import http.client
+
+# Flask
 from flask import Flask, render_template, request, Response, flash, \
     redirect, make_response, send_from_directory
 from flask import url_for, abort, session, jsonify, Blueprint, Request
@@ -52,33 +63,30 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
-import logging
-from logging import Formatter, FileHandler
 from flask_wtf import Form
 from flask_cors import CORS
-from flask_session import Session
-from flask_uploads import UploadSet, configure_uploads, DATA, IMAGES, \
-    patch_request_class, TestingFileStorage
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-import pandas as pd
-import pickle
-import http.client
 
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 # Machine learning libraries
-
 from xgboost import XGBClassifier
 from mlLib.project import autoFlaskEvaluateClassifier, getMLScoringFunctions
 
+# System libraries
+import logging
+from logging import Formatter, FileHandler
 from six.moves.urllib.parse import urlencode
-
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
+# Robot Classify Libraries
 from forms import *
 from models import *
 import config
+
+import flask_uploads as fu
+from flask_session import Session
 
 
 # ---------------------------------------------------------------------------#
@@ -132,8 +140,10 @@ app.config.from_object('config')
 app.config['WTF_CSRF_HEADERS'] = ['X-CSRFToken', 'X-CSRF-Token']
 
 # define file uploads
-configure_uploads(app, config.dataFiles)
-patch_request_class(app, 1024 * 1024)  # set maximum file size to 1 mb
+fu.configure_uploads(app, config.dataFiles)
+
+# set maximum file size to 1 mb
+fu.patch_request_class(app, 1024 * 1024 * config.MAX_FILE_SIZE_MB)
 app.secret_key = config.SECRET_KEY
 app.config['SESSION_TYPE'] = 'filesystem'
 
@@ -158,11 +168,11 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-    # return app, db
 
 # Function to get the values for UnitTests
 def return_app():
     return app, db
+
 
 # Register Auth0 for user authentication
 AUTH0_BASE_URL = 'https://' + config.AUTH0_DOMAIN
@@ -195,6 +205,7 @@ def get_token_from_auth0():
 
     return auth['access_token']
 
+
 # Use this to check for authentication via Curl or UnitTest Calls
 def get_token_from_header():
     """Obtains the Access Token from the Authorization Header
@@ -215,6 +226,7 @@ def get_token_from_header():
 
     token = parts[1]
     return token
+
 
 # When authenticated, set the user's session data for later reference
 def set_session_at_auth(userinfo, payload):
@@ -373,6 +385,7 @@ def callback_handling():
     resp = auth0.get('userinfo')
     userinfo = resp.json()
     set_session_at_auth(userinfo, payload)
+    session['jwttoken'] = token
 
     # Check to see of the redirected URL was saved to redirect back after login
 
@@ -402,6 +415,15 @@ def logout():
                     + urlencode(params))
 
 
+@app.route('/jwt')
+@requires_auth('get:project')
+def getjwttoken(payload):
+    if 'jwttoken' in session:
+        return session['jwttoken']
+    else:
+        return 'None'
+
+
 # ----------------------------------------------------------------------------
 # Home Page
 # ----------------------------------------------------------------------------
@@ -410,17 +432,23 @@ def logout():
 def index():
     """
         **Home Page**
+
         Display the home page
+
         - Sample Call::
             curl http://localhost:5000/
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 404
             {
              "description": "404 Not Found: The requested URL..."
-             "error": 404, 
+             "error": 404,
              "message": "Not Found",
              "success": false
             }
@@ -435,20 +463,28 @@ def index():
 def send_documents(path):
     """
         **Documentation Page**
+
         Display the documetnation pages
+
         - Sample Call::
+
             curl -X GET http://localhost:5000/docs/index.html
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
-             HTTP Status Code: 404
+
+            HTTP Status Code: 404
             {
              "description": "404 Not Found: The requested URL..."
-             "error": 404, 
+             "error": 404,
              "message": "Not Found",
              "success": false
             }
+
      """
     return send_from_directory('docs/build/html', path)
 
@@ -462,27 +498,36 @@ def send_documents(path):
 def projects(payload):
     """
         **List Projects**
+
         Display a list of projects
+
         - Sample Call::
+
             export TOKEN=...
-            curl -X GET http://localhost:5000/projects \
+            curl -X GET http://localhost:5000/projects
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
-        - Expected Fail Response::
-            HTTP Status Code: 302
-            Redirecting:
-                <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-                <title>Redirecting...</title>
 
         - Expected Fail Response::
+
+            HTTP Status Code: 302
+            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+            <title>Redirecting...</title>
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 405
             {
-             "description": "405 Method Not Allowed...", 
-             "error": 405, 
-             "message": "Method Not Allowed", 
+             "description": "405 Method Not Allowed...",
+             "error": 405,
+             "message": "Method Not Allowed",
              "success": false
             }
+
     """
 
     # List the projects
@@ -503,21 +548,28 @@ def projects(payload):
 def show_project(payload, project_id):
     """
         **Project**
+
         Display a single projects
+
         - Sample Call::
-            curl -X GET http://localhost:5000/projects/1 \
+            curl -X GET http://localhost:5000/projects/1
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
              HTTP Status Code: 404
             {
              "description": "404 Not Found: The requested URL..."
-             "error": 404, 
-             "message": "Not Found", 
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
 
     # Query and show a single project
@@ -565,20 +617,26 @@ def populateProjectFiles(project, form):
 def create_projects_submission(payload):
     """
         **Create Project**
+
         Create Project
+
         - Sample Call::
+
             export TOKEN="edfgdfgd..."
-            curl -X POST http://localhost:5000/projects/create \
-                 -H "Authorization: Bearer $TOKEN" \
-                 -F "form-project-name=New Test Project" \
-                 -F "form-project-description=Testing Project Create" \
-                 -F "form-project-trainingFile=@examples/titanic_train.csv" \
+            curl -X POST http://localhost:5000/projects/create
+                 -H "Authorization: Bearer $TOKEN"
+                 -F "form-project-name=New Test Project"
+                 -F "form-project-description=Testing Project Create"
+                 -F "form-project-trainingFile=@examples/titanic_train.csv"
                  -F "form-project-testingFile=@examples/titanic_test.csv"
 
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -586,10 +644,11 @@ def create_projects_submission(payload):
                 "message": "Unauthorized",
                 "success": false
             }
+
     """
 
     form = ProjectForm(prefix='form-project-')  # request.form
- 
+
     # print('\n\nform.validate=',form.validate())
     # print('form.is_submitted=',form.is_submitted())
     # print('form.name.data=',form.name.data)
@@ -629,16 +688,22 @@ def create_projects_submission(payload):
 def edit_project_submission(payload, project_id):
     """
         **Edit Project**
+
         Edit Project
+
         - Sample Call to edit::
-            curl -X PATCH http://localhost:5000/projects/1/edit \
-                 -H "Authorization: Bearer $TOKEN" \
+
+            curl -X PATCH http://localhost:5000/projects/1/edit
+                 -H "Authorization: Bearer $TOKEN"
                  -F "form-project-name=Titanic Disaster Patch"
 
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -646,6 +711,7 @@ def edit_project_submission(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
+
     """
 
     project = Project.query.filter(Project.id == project_id,
@@ -690,16 +756,22 @@ def edit_project_submission(payload, project_id):
 def search_projects(payload):
     """
         **Search Projects**
+
         Search Project
+
         - Sample Call to search::
-            curl -X POST http://localhost:5000/projects/search \
-                 -H "Authorization: Bearer $TOKEN" \
+
+            curl -X POST http://localhost:5000/projects/search
+                 -H "Authorization: Bearer $TOKEN"
                  -F "search_term=Titanic"
-       
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -707,13 +779,14 @@ def search_projects(payload):
                 "message": "Unauthorized",
                 "success": false
             }
+
     """
 
     search_term = request.form.get('search_term', None)
 
     # Search for an included string, case sensitive
     searchResults = Project.query.filter(Project.name.ilike('%{}%'.
-                                                            format(search_term)),
+                                         format(search_term)),
                                          Project.account_id ==
                                          session['account_id']).all()
     count_items = len(searchResults)
@@ -736,27 +809,35 @@ def search_projects(payload):
 def delete_project(payload, project_id):
     """
         **Delete Project**
+
         Delete Project
+
         - Sample Call::
-            curl -X DELETE http://localhost:5000/projects/3/delete \
+
+            curl -X DELETE http://localhost:5000/projects/3/delete
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             {"success"}
+
         - Expected Fail Response::
+
             HTTP Status Code: 404
             {
-             "description": "404 Not Found:  If you entered....", 
-             "error": 404, 
-             "message": "Not Found", 
+             "description": "404 Not Found:  If you entered....",
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
 
     project = Project.query.filter(Project.id == project_id,
                                    Project.account_id ==
                                    session['account_id']).one_or_none()
- 
+
     if project is None:
         abort(404)
 
@@ -767,7 +848,6 @@ def delete_project(payload, project_id):
         abort(405)
 
     return '{"success"}'
-
 
 
 # ----------------------------------------------------------------------------
@@ -784,21 +864,29 @@ def delete_project(payload, project_id):
 def show_run(payload, run_id):
     """
         **Runs**
+
         Display a single run
+
         - Sample Call::
-            curl -X GET http://localhost:5000/runs/1 \
+
+            curl -X GET http://localhost:5000/runs/1
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 404
             {
-             "description": "404 Not Found:  If you entered....", 
-             "error": 404, 
-             "message": "Not Found", 
+             "description": "404 Not Found:  If you entered....",
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
 
     # Query and show a single project
@@ -829,24 +917,30 @@ def show_run(payload, run_id):
 def create_run_submission(payload, project_id):
     """
         **Create Run**
+
         Create Run
+
         - Sample Call::
-            curl -X POST http://localhost:5000/runs/create/1 \
-                 -H "Authorization: Bearer $TOKEN" \
-                 -F "form-run-name=New Curl Run" \
-                 -F "form-run-description=Via curl" \
-                 -F "form-run-targetVariable=Survived" \
-                 -F "form-run-key=PassengerId"\
-                 -F "form-run-predictSetOut=PassengerId" \
-                 -F "form-run-predictSetOut=Survived" \
-                 -F "form-run-scoring=f1"\
-                 -F "form-run-modelList=xgbc" \
+
+            curl -X POST http://localhost:5000/runs/create/1
+                 -H "Authorization: Bearer $TOKEN"
+                 -F "form-run-name=New Curl Run"
+                 -F "form-run-description=Via curl"
+                 -F "form-run-targetVariable=Survived"
+                 -F "form-run-key=PassengerId"
+                 -F "form-run-predictSetOut=PassengerId"
+                 -F "form-run-predictSetOut=Survived"
+                 -F "form-run-scoring=f1"
+                 -F "form-run-modelList=xgbc"
                  -F "form-run-basicAutoMethod=True"
-                   
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -854,6 +948,7 @@ def create_run_submission(payload, project_id):
                 "message": "Unauthorized",
                 "success": false
             }
+
     """
 
     project = Project.query.filter(Project.id
@@ -866,17 +961,17 @@ def create_run_submission(payload, project_id):
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
 
-    print('\n\nform.validate=',form.validate())
-    print('form.is_submitted=',form.is_submitted())
-    print('form.name.data=',form.name.data)
-    print('form.description.data=',form.description.data)
-    print('form.targetVariable.data=',form.targetVariable.data)
-    print('form.key.data=',form.key.data)
-    print('form.predictSetOut.data=',form.predictSetOut.data)
-    print('form.scoring.data=',form.scoring.data)
-    print('form.modelList.data=',form.modelList.data)
-    print('form.basicAutoMethod.data=',form.basicAutoMethod.data)
- 
+    print('\n\nform.validate=', form.validate())
+    print('form.is_submitted=', form.is_submitted())
+    print('form.name.data=', form.name.data)
+    print('form.description.data=', form.description.data)
+    print('form.targetVariable.data=', form.targetVariable.data)
+    print('form.key.data=', form.key.data)
+    print('form.predictSetOut.data=', form.predictSetOut.data)
+    print('form.scoring.data=', form.scoring.data)
+    print('form.modelList.data=', form.modelList.data)
+    print('form.basicAutoMethod.data=', form.basicAutoMethod.data)
+
     if form.validate_on_submit():
         run = Run()
         form.populate_obj(run)
@@ -893,7 +988,6 @@ def create_run_submission(payload, project_id):
     return render_template('pages/show_project.html', project=data)
 
 
-
 # ----------------------------------------------------------------------------
 #  Delete Runs
 # ----------------------------------------------------------------------------
@@ -902,22 +996,30 @@ def create_run_submission(payload, project_id):
 @requires_auth('delete:run')
 def delete_run(payload, run_id):
     """
-        **Delete SRun**
+        **Delete Run**
+
         Delete Run
+
         - Sample Call::
-            curl -X DELETE http://localhost:5000/runs//delete \
+
+            curl -X DELETE http://localhost:5000/runs//delete
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
            {'success'}
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
-             "description": "404 Not Found: The requested URL was....", 
-             "error": 404, 
-             "message": "Not Found", 
+             "description": "404 Not Found: The requested URL was....",
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
 
     run = Run.query.filter(Run.id == run_id,
@@ -952,15 +1054,22 @@ def delete_run(payload, run_id):
 def edit_run_submission(payload, run_id):
     """
         **Edit Run**
+
         Edit Run
+
         - Sample Call to edit::
-            curl -X PATCH http://localhost:5000/runs/6/edit \
-                 -H "Authorization: Bearer $TOKEN" \
-                 -F "form-run-name=Updated Curl Run Patch" \
+
+            curl -X PATCH http://localhost:5000/runs/6/edit
+                 -H "Authorization: Bearer $TOKEN"
+                 -F "form-run-name=Updated Curl Run Patch"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 401
             {
                 "description": "401: Authorization header is expected.",
@@ -968,6 +1077,7 @@ def edit_run_submission(payload, run_id):
                 "message": "Unauthorized",
                 "success": false
             }
+
     """
 
     run = Run.query.filter(Run.id == run_id,
@@ -1018,22 +1128,29 @@ def edit_run_submission(payload, run_id):
 def run_submission(payload, run_id):
     """
         **Exec Run**
+
         Run ML Training based upon run record attributes
 
         - Sample Call to display::
-            curl -X GET http://localhost:5000/train/1 \
+
+            curl -X GET http://localhost:5000/train/1
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             <!doctype html>...</html>
+
         - Expected Fail Response::
+
             HTTP Status Code: 404
             {
-             "description": "404 Not Found: The requested URL... try again.", 
-             "error": 404, 
-             "message": "Not Found", 
+             "description": "404 Not Found: The requested URL... try again.",
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
 
     run = Run.query.filter(Run.id == run_id,
@@ -1087,23 +1204,29 @@ def download(payload, run_id):
         Run ML Training based upon run record attributes
 
         - Sample Call to display::
-            curl -X GET http://localhost:5000/train/1/download \
+
+            curl -X GET http://localhost:5000/train/1/download
                  -H "Authorization: Bearer $TOKEN"
+
         - Expected Success Response::
+
             HTTP Status Code: 200
             File Download. Example:
                 PassengerId,Survived
                 892,0
                 893,0
                 894,1
+
         - Expected Fail Response::
+
             HTTP Status Code: 404
             {
-             "description": "404 Not Found: The requested URL... try again.", 
-             "error": 404, 
-             "message": "Not Found", 
+             "description": "404 Not Found: The requested URL... try again.",
+             "error": 404,
+             "message": "Not Found",
              "success": false
             }
+
     """
     run = Run.query.filter(Run.id == run_id,
                            Run.account_id ==
@@ -1118,7 +1241,8 @@ def download(payload, run_id):
                                results=results)
     predict = pickle.loads(run.predictFile)
     resp = make_response(predict.to_csv(index=False))
-    resp.headers["Content-Disposition"] = "attachment; filename=kaggleSubmit.csv"
+    resp.headers["Content-Disposition"] =\
+        "attachment; filename=kaggleSubmit.csv"
     resp.headers["Content-Type"] = "text/csv"
     return resp
 
@@ -1153,7 +1277,7 @@ def server_error(error):
 
 @app.errorhandler(401)
 def premission_error(error):
-    
+
     return (jsonify({
         'success': False,
         'error': 401,

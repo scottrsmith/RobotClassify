@@ -40,52 +40,57 @@
   <ul>
 <li><a class="reference internal" href="#">Welcome to Robot Classify’s documentation!</a></li>
 <li><a class="reference internal" href="#instalation-and-overview">Instalation and Overview</a><ul>
-<li><a class="reference internal" href="#intoduction">Intoduction</a></li>
-<li><a class="reference internal" href="#getting-started-backend">Getting Started - Backend</a><ul>
-<li><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a><ul>
-<li><a class="reference internal" href="#pip-dependencies">PIP Dependencies</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)</a></li>
+<li><a class="reference internal" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:</a></li>
+<li><a class="reference internal" href="#run-the-training">. Run the training</a></li>
+<li><a class="reference internal" href="#review-the-results">. Review the results</a><ul>
+<li><a class="reference internal" href="#implementation-ovweview">Implementation Ovweview</a><ul>
+<li><a class="reference internal" href="#api-end-points">API End Points</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#project-dependencies-local-development-and-hosting-instructions">Project dependencies, local development and hosting instructions</a></li>
+<li><a class="reference internal" href="#runing-and-testing-instrunctions">Runing and Testing Instrunctions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web">. Web</a></li>
+<li><a class="reference internal" href="#unittest">. UnitTest</a></li>
+<li><a class="reference internal" href="#curl">. Curl</a></li>
+<li><a class="reference internal" href="#create-the-robotclassiy-test-database">. Create the robotclassiy_test database</a></li>
+<li><a class="reference internal" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">. Get a Token and User ID for the API user (placed into environment variables)</a></li>
+<li><a class="reference internal" href="#populate-the-test-database-with-data-for-the-api-user">. Populate the test database with data for the API user</a></li>
+<li><a class="reference internal" href="#run-the-tests">. Run the tests</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#python-3-7">Python 3.7</a></li>
+<li><a class="reference internal" href="#pip-dependencies">PIP Dependencies</a></li>
 <li><a class="reference internal" href="#key-dependencies">Key Dependencies</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#database-setup">Database Setup</a></li>
 <li><a class="reference internal" href="#running-the-server">Running the server</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
-<li><a class="reference internal" href="#opening-the-api-documentation">Opening the API Documentation</a></li>
-<li><a class="reference internal" href="#html-documentation">HTML Documentation</a><ul>
+<li><a class="reference internal" href="#html-documentation">HTML Documentation</a></li>
 <li><a class="reference internal" href="#pdf-documentation">PDF Documentation</a></li>
+<li><a class="reference internal" href="#generating-documentation">Generating documentation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#generating-documentation">Generating documentation</a><ul>
-<li><a class="reference internal" href="#installing-sphinx-and-support-tools">Installing Sphinx and support tools</a></li>
-<li><a class="reference internal" href="#generating-the-documentation">Generating the documentation</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#api-end-points">API End Points</a></li>
 <li><a class="reference internal" href="#error-handling">Error Handling</a></li>
-<li><a class="reference internal" href="#testing">Testing</a></li>
-<li><a class="reference internal" href="#full-stack-robotclassify-api-frontend">Full Stack RobotClassify API Frontend</a><ul>
-<li><a class="reference internal" href="#id1">Installing Dependencies</a><ul>
-<li><a class="reference internal" href="#installing-node-and-npm">Installing Node and NPM</a></li>
-<li><a class="reference internal" href="#installing-ionic-client">Installing Ionic Client</a></li>
-<li><a class="reference internal" href="#installing-project-dependencies">Installing project dependencies</a></li>
-<li><a class="reference internal" href="#running-the-frontend">Running the Frontend</a></li>
+<li><a class="reference internal" href="#testing">Testing</a><ul>
+<li><a class="reference internal" href="#testing-with-unittest">Testing with UnitTest</a></li>
+<li><a class="reference internal" href="#testing-with-curl">Testing with Curl</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#development-notes">Development Notes</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-app">Robot Classify’s API Controllers</a></li>
+<li><a class="reference internal" href="#module-models">Robot Classify’s API Model</a></li>
+<li><a class="reference internal" href="#module-mlLib.project">ML Lib</a><ul>
+<li><a class="reference internal" href="#id1"><strong>Introduction</strong></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-app">Robot Classify’s API Controllers</a><ul>
-<li><a class="reference internal" href="#introduction"><strong>Introduction</strong></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-models">Robot Classigy’s API Model</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
@@ -121,44 +126,172 @@
 </div>
 <div class="section" id="instalation-and-overview">
 <h1>Instalation and Overview<a class="headerlink" href="#instalation-and-overview" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="intoduction">
-<h2>Intoduction<a class="headerlink" href="#intoduction" title="Permalink to this headline">¶</a></h2>
-<p>The RobotClassify app does stuff…..</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>RobotClassify allows for non-data scientest such as citizen developers and other operational people involved with analizing and
+reporting on business data.  The goal is to automate the entire ML process (feature-engineering, training, prediction).</p>
+<p>This version of the app is optimized for loading datafiles to train with, and test files for predctiona, optimzed for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created to put into code, techniques I have learning during my ML course work. T</p>
+<p>My motivation for project centers around my interest in machine learning for citizen developers. Taking the complecated tasked of feature engineering, model selection, and training and makeing it a simple point and click excersie without any prior machine learning training.</p>
+<p>Using RobotClassify requires four simple steps that can all be accomplished via the RobotClassify.herokuapp.com.</p>
 </div>
-<div class="section" id="getting-started-backend">
-<h2>Getting Started - Backend<a class="headerlink" href="#getting-started-backend" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="installing-dependencies">
-<h3>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h3>
-<p>Python 3.7</p>
-<p>This project uses python 3.7.</p>
-<p>To Install: <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
+</div>
+<div class="section" id="load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">
+<h1>. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)<a class="headerlink" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">
+<h1>. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:<a class="headerlink" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>The target variable that is to be predicted</p></li>
+<li><p>Record Key column</p></li>
+<li><p>Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle comopetition</p></li>
+<li><p>Classification model to train</p></li>
+<li><p>Scoring method</p></li>
+<li><p>Algoritym type (There are two approaches used to automate feature engineering)</p></li>
+</ul>
+</div>
+<div class="section" id="run-the-training">
+<h1>. Run the training<a class="headerlink" href="#run-the-training" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="review-the-results">
+<h1>. Review the results<a class="headerlink" href="#review-the-results" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="implementation-ovweview">
+<h2>Implementation Ovweview<a class="headerlink" href="#implementation-ovweview" title="Permalink to this headline">¶</a></h2>
+<p>The application is build with Flask and Flask What-the-forms for the frontend.</p>
+<p>Roles
+There are two roles:
+Editor: Able to create, update, train and delete projects and training runs
+Viewer: Only able to view results</p>
+<div class="section" id="api-end-points">
+<h3>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h3>
+<p>The following APIs endpoints are available. Detailed html documentation can be found at
+<a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+<p>– Home Page –</p>
+<ul class="simple">
+<li><p>GET / (home)</p></li>
+</ul>
+<p>– Documentation Page –</p>
+<ul class="simple">
+<li><p>GET /docs/index.html</p></li>
+</ul>
+<p>— Projects —</p>
+<ul class="simple">
+<li><p>GET /projects (List all projects) - get:project</p></li>
+<li><p>GET /projects/int:project_id (Project page) - get:project</p></li>
+<li><p>POST/GET /projects/create (create a new project) - post:project</p></li>
+<li><p>PATCH /projects/int:project_id/edit (edit a project) - patch:project</p></li>
+<li><p>DELETE /projects/<span class="raw-html-m2r"><project_id></span>/delete (Delete a project) - delete:project</p></li>
+</ul>
+<p>— Runs —</p>
+<ul class="simple">
+<li><p>GET /runs/int:run_id  (Display a run results) - get:run</p></li>
+<li><p>GET/POST /runs/create/int:project_id (Create a run) - get:post</p></li>
+<li><p>DELETE /runs/int:run_id/delete (Delete a run) - delete:post</p></li>
+<li><p>PATCH /run/int:run_id/edit (edit a run) - patch:run</p></li>
+</ul>
+<p>— Train —</p>
+<ul>
+<li><p>GET /train/int:run_id  (run ML training for a run) post:train</p></li>
+<li><p>GET /train/int:run_id/download  (download testing results file,
+.. code-block:</p>
+<blockquote>
+<div><p>kaggle file) get:train</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="project-dependencies-local-development-and-hosting-instructions">
+<h2>Project dependencies, local development and hosting instructions<a class="headerlink" href="#project-dependencies-local-development-and-hosting-instructions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Detailed instructions for scripts to install any project dependencies, and to run the development server.</p></li>
+<li><p>Documentation of API behavior and RBAC controls</p></li>
+</ul>
+</div>
+<div class="section" id="runing-and-testing-instrunctions">
+<h2>Runing and Testing Instrunctions<a class="headerlink" href="#runing-and-testing-instrunctions" title="Permalink to this headline">¶</a></h2>
+<p>URL: <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a></p>
+<p>There are three approaches to running and evaluating RobotClassify:</p>
+</div>
+</div>
+<div class="section" id="web">
+<h1>. Web<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="unittest">
+<h1>. UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="curl">
+<h1>. Curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h1>
+<p>There are scripts to help with each one.</p>
+<p>For example, the Titanic Kaggle competeition (<a class="reference external" href="https://www.kaggle.com/c/titanic.com">https://www.kaggle.com/c/titanic.com</a>), provides two data sets, the Training set and test set. Loading these into Robot Classify, we would set the run paramatgers as follows:</p>
+<ul class="simple">
+<li><p>Target Variable: Survived</p></li>
+<li><p>Record Key: PassengerID</p></li>
+<li><p>Predict set out: Survuved, PassengerID</p></li>
+<li><p>Classification model: xgbc</p></li>
+<li><p>Scoring method: f1</p></li>
+<li><p>Use Algorithm I for feature engineering: True</p></li>
+</ul>
+<p>This will give a training result that would put you in the top 8% of competitors.</p>
+<p>Unittests are run using the script <code class="docutils literal notranslate"><span class="pre">test.sh</span></code>. This script requires Postgress on the local machine where the test is being run.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">test.sh</span></code> script will:</p>
+</div>
+<div class="section" id="create-the-robotclassiy-test-database">
+<h1>. Create the robotclassiy_test database<a class="headerlink" href="#create-the-robotclassiy-test-database" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">
+<h1>. Get a Token and User ID for the API user (placed into environment variables)<a class="headerlink" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="populate-the-test-database-with-data-for-the-api-user">
+<h1>. Populate the test database with data for the API user<a class="headerlink" href="#populate-the-test-database-with-data-for-the-api-user" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="run-the-tests">
+<h1>. Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h1>
+<p>The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Amazon/Heroku)</p>
+<p>curl_pass.sh
+curl_fail.sh
+curl.sh (setup the environment variables to run Curl manually)</p>
+<p>If you need to get an updated token, you need to login to the Web app and issue the following URL:</p>
+<p><a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a></p>
+<p>This will retrive the current jwt token for the logged in user.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-3-7">
+<h3>Python 3.7<a class="headerlink" href="#python-3-7" title="Permalink to this headline">¶</a></h3>
+<p>This project uses python 3.7</p>
+<p>To Install <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
+</div>
 <div class="section" id="pip-dependencies">
-<h4>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h4>
+<h3>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>Once you have your virtual environment setup and running, install dependencies by navigating to the root directory and running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
 </pre></div>
 </div>
 <p>This will install all of the required packages we selected within the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
+</div>
 <div class="section" id="key-dependencies">
-<h5>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h5>
+<h3>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="http://flask.pocoo.org/">Flask</a>  is a lightweight backend microservices framework.</p></li>
 <li><p><a class="reference external" href="https://www.sqlalchemy.org/">SQLAlchemy</a> is the Python SQL toolkit and ORM.</p></li>
 <li><p><a class="reference external" href="https://flask-cors.readthedocs.io/en/latest/#">Flask-CORS</a> is the extension used to handle cross-origin requests from the frontend server.</p></li>
 <li><p><a class="reference external" href="https://auth0.com/docs/getting-started/overview">Auth0</a> Provides authentication and authorization as a service</p></li>
+<li><p><a class="reference external" href="http://example.com">Postgres</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">Heroku</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">Flask-WTF</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">mlLib</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">InitTest</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="http://example.com">FlaskMigrate</a> DOES XXX</p></li>
 </ul>
-</div>
-</div>
 </div>
 </div>
 <div class="section" id="database-setup">
 <h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
-<p>The app is running with SQLite. No setup needs to be performed.</p>
+<p>The app is running Postgres SQL.</p>
 </div>
 <div class="section" id="running-the-server">
 <h2>Running the server<a class="headerlink" href="#running-the-server" title="Permalink to this headline">¶</a></h2>
-<p>From within the <code class="docutils literal notranslate"><span class="pre">backend/src</span></code> directory to run the server, execute:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>api.py
+<p>From within the <code class="docutils literal notranslate"><span class="pre">root</span></code> directory to run the server, execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py
 <span class="nb">export</span> <span class="nv">FLASK_ENV</span><span class="o">=</span>development
 flask run
 </pre></div>
@@ -166,70 +299,41 @@ flask run
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="opening-the-api-documentation">
-<h3>Opening the API Documentation<a class="headerlink" href="#opening-the-api-documentation" title="Permalink to this headline">¶</a></h3>
-<p>Documentation is generated with Sphinx.</p>
-</div>
 <div class="section" id="html-documentation">
 <h3>HTML Documentation<a class="headerlink" href="#html-documentation" title="Permalink to this headline">¶</a></h3>
-<p>From the root folder, open the index file in a browser</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docs/build/html/index.html
-</pre></div>
+<p>Live documentation, including this readme, can be found at <a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
 </div>
-</div></blockquote>
 <div class="section" id="pdf-documentation">
-<h4>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h4>
-<p>The PDF version of the documentation is located in the root project directory. Named RobotClassifyapi.pdf</p>
-</div>
+<h3>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The PDF version of the documentation is located in the root project directory. Named robotclassify.pdf</p>
 </div>
 <div class="section" id="generating-documentation">
 <h3>Generating documentation<a class="headerlink" href="#generating-documentation" title="Permalink to this headline">¶</a></h3>
 <p>Documentation is generated with Sphinx.</p>
-<div class="section" id="installing-sphinx-and-support-tools">
-<h4>Installing Sphinx and support tools<a class="headerlink" href="#installing-sphinx-and-support-tools" title="Permalink to this headline">¶</a></h4>
-<p>To install Sphinx, reference the documents at <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/installation.html">https://www.sphinx-doc.org/en/master/usage/installation.html</a></p>
-<p>For example:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -U sphinx
+<p>Installing Sphinx and support tools</p>
+<div class="highlight-~~~~~~~~~~~ notranslate"><div class="highlight"><pre><span></span>To install Sphinx, reference the documents at https://www.sphinx-doc.org/en/master/usage/installation.html
+
+For example:
+
+.. code-block:: bash
+
+   pip install -U sphinx
+
+Install dependencies by navigating to the ``root`` project directory and running:
+
+.. code-block:: bash
+
+   cd docs
+   pip install m2r
+   pip install recommonmark
+   pip install rinohtype
+   pip install -r requirements.txt
+
+Generating documentation
 </pre></div>
 </div>
-<p>Install dependencies by navigating to the <code class="docutils literal notranslate"><span class="pre">root</span></code> project directory and running:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docs
-pip install m2r
-pip install recommonmark
-pip install rinohtype
-pip install -r requirements.txt
-</pre></div>
+<p>Documentation is generated with Sphinx. Use <code class="docutils literal notranslate"><span class="pre">docs.sh</span></code> in the docs folder to generate the documentation</p>
 </div>
-</div>
-<div class="section" id="generating-the-documentation">
-<h4>Generating the documentation<a class="headerlink" href="#generating-the-documentation" title="Permalink to this headline">¶</a></h4>
-<p>Generate the documentation with the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From the root project directory</span>
-<span class="c1"># Convert readme to rst to be included in generated docs</span>
-m2r README.md README.rst --overwrite
-cp -R README.rst ./docs/source
-<span class="nb">cd</span> ./docs
-make html
-<span class="c1"># Make pdf</span>
-make latexpdf
-<span class="nb">cd</span> ..
-cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="api-end-points">
-<h2>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h2>
-<p>The following APIs are available. Detailed html documentation can be found in the ‘docs’ folder.</p>
-<ul class="simple">
-<li><p>GET /drinks</p></li>
-<li><p>GET /drinks-detail</p></li>
-<li><p>POST /drinks</p></li>
-<li><p>PATCH /drinks/<span class="raw-html-m2r"><id></span></p></li>
-<li><p>DELETE /drinks/<span class="raw-html-m2r"><id></span></p></li>
-</ul>
 </div>
 <div class="section" id="error-handling">
 <h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
@@ -241,7 +345,7 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>The API will return three error types when requests fail:</p>
+<p>The API returns multiple error types when requests fail:</p>
 <ul class="simple">
 <li><p>400: Bad Request</p></li>
 <li><p>404: Resource Not Found</p></li>
@@ -252,80 +356,98 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Testing is done with Postman. Load and run the test collection:
-.backend/udacity-fsnd-udaspicelatte.postman_collection.json</p>
+<p>Testing is done with UnitTest and curl.  UnitTest is setup to create and use a local Postgres database while Curl is setup to  run commands against the</p>
+<div class="section" id="testing-with-unittest">
+<h3>Testing with UnitTest<a class="headerlink" href="#testing-with-unittest" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="full-stack-robotclassify-api-frontend">
-<h2>Full Stack RobotClassify API Frontend<a class="headerlink" href="#full-stack-robotclassify-api-frontend" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Installing Dependencies<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="installing-node-and-npm">
-<h4>Installing Node and NPM<a class="headerlink" href="#installing-node-and-npm" title="Permalink to this headline">¶</a></h4>
-<p>This app depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from <a class="reference external" href="https://nodejs.org/en/download/">https://nodejs.com/en/download</a>.</p>
-</div>
-<div class="section" id="installing-ionic-client">
-<h4>Installing Ionic Client<a class="headerlink" href="#installing-ionic-client" title="Permalink to this headline">¶</a></h4>
-<p>The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI  is in the <a class="reference external" href="https://ionicframework.com/docs/installation/cli">Ionic Framework Docs</a>.</p>
-</div>
-<div class="section" id="installing-project-dependencies">
-<h4>Installing project dependencies<a class="headerlink" href="#installing-project-dependencies" title="Permalink to this headline">¶</a></h4>
-<p>This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory of this repository. After cloning, open your terminal and run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install
-</pre></div>
+<div class="section" id="testing-with-curl">
+<h3>Testing with Curl<a class="headerlink" href="#testing-with-curl" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
-<div class="section" id="running-the-frontend">
-<h4>Running the Frontend<a class="headerlink" href="#running-the-frontend" title="Permalink to this headline">¶</a></h4>
-<p>To run Ionic from the <code class="docutils literal notranslate"><span class="pre">frontend</span></code> directory run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ionic serve
-</pre></div>
-</div>
-</div>
-</div>
+<div class="section" id="development-notes">
+<h2>Development Notes<a class="headerlink" href="#development-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon</p></li>
+<li><p>CSRF protection is disabled for certain REST calls to faciliate testing cia CuRL.</p></li>
+<li><p>Patch and Delete functions are only avialable via API calls</p></li>
+<li><p>UnitTest uses a local postgres database</p></li>
+<li><p>UnitTest uses API App Auth0 credentials (verses using Auth0 Web App quickstart code)
+Auth0 Management API (Test Application)</p></li>
+<li><p>Tokens in the headers are used for API authentication</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="module-app">
 <span id="robot-classify-s-api-controllers"></span><h1>Robot Classify’s API Controllers<a class="headerlink" href="#module-app" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="introduction">
-<h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Robot Classify does stuff…</p>
+<p>## Introduction</p>
+<p><strong>Home Page</strong></p>
 <ul class="simple">
-<li><p>GET /XXX</p></li>
-<li><p>GET /XXX-detail</p></li>
-<li><p>POST /XXX</p></li>
-<li><p>PATCH /XXX/&lt;id&gt;</p></li>
-<li><p>DELETE /XXX/&lt;id&gt;</p></li>
+<li><p>GET / (home)</p></li>
 </ul>
-<p>With the following API permissions:
-- <cite>get:drinks-detail</cite> (Barista and Manager)
-- <cite>post:drinks</cite> (Manager)
-- <cite>patch:drinks</cite> (Manager)
-- <cite>delete:drinks</cite> (Manager)</p>
+<p><strong>Documentation Page</strong></p>
+<ul class="simple">
+<li><p>GET /docs/index.html</p></li>
+</ul>
+<p><strong>Projects</strong></p>
+<ul class="simple">
+<li><p>GET /projects (List all projects) - get:project</p></li>
+<li><p>GET /projects/&lt;int:project_id&gt; (Project page) - get:project</p></li>
+<li><p>POST/GET /projects/create (create a new project) - post:project</p></li>
+<li><p>PATCH /projects/&lt;int:project_id&gt;/edit (edit a project) - patch:project</p></li>
+<li><p>DELETE /projects/&lt;project_id&gt;/delete (Delete a project) - delete:project</p></li>
+</ul>
+<p><strong>Runs</strong></p>
+<ul class="simple">
+<li><p>GET /runs/&lt;int:run_id&gt;  (Display a run results) - get:run</p></li>
+<li><p>GET/POST /runs/create/&lt;int:project_id&gt; (Create a run) - get:post</p></li>
+<li><p>DELETE /runs/&lt;int:run_id&gt;/delete (Delete a run) - delete:post</p></li>
+<li><p>PATCH /run/&lt;int:run_id&gt;/edit (edit a run) - patch:run</p></li>
+</ul>
+<p><strong>Train</strong></p>
+<ul class="simple">
+<li><p>GET /train/&lt;int:run_id&gt;  (run ML training for a run) post:train</p></li>
+<li><dl class="simple">
+<dt>GET /train/&lt;int:run_id&gt;/download  (download testing results file,</dt><dd><p>kaggle file) get:train</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="function">
+<dt id="app.get_token_from_auth0">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">get_token_from_auth0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_token_from_auth0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the Access Token from the oAuth object</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.get_token_from_header">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">get_token_from_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_token_from_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the Access Token from the Authorization Header</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="app.index">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Home Page</strong></p>
 <p>Display the home page</p>
 <ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span>
-</pre></div>
-</div>
+<li><dl class="simple">
+<dt>Sample Call::</dt><dd><p>curl <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a></p>
+</dd>
+</dl>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL...&quot;</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -334,30 +456,29 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.venues">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">venues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.venues" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>List Venues</strong></p>
-<p>Display a list of venues</p>
+<dt id="app.send_documents">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">send_documents</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#app.send_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Documentation Page</strong></p>
+<p>Display the documetnation pages</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL...&quot;</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -366,30 +487,38 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.search_venues">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_venues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.search_venues" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Search Venues</strong></p>
-<p>Display the hoime page</p>
+<dt id="app.projects">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">projects</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.projects" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>List Projects</strong></p>
+<p>Display a list of projects</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">search</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TOKEN</span><span class="o">=...</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 302
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">405</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;405 Method Not Allowed...&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">405</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Method Not Allowed&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -398,19 +527,58 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.show_venue">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_venue</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_venue" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Venue</strong></p>
-<p>Display a single venue</p>
+<dt id="app.show_project">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_project</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_project" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Project</strong></p>
+<p>Display a single projects</p>
+<ul>
+<li><dl class="simple">
+<dt>Sample Call::</dt><dd><dl class="simple">
+<dt>curl -X GET <a class="reference external" href="http://localhost:5000/projects/1">http://localhost:5000/projects/1</a></dt><dd><p>-H “Authorization: Bearer $TOKEN”</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
+<span class="p">{</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL...&quot;</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.create_projects_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_projects_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.create_projects_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create Project</strong></p>
+<p>Create Project</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">id</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TOKEN</span><span class="o">=</span><span class="s2">&quot;edfgdfgd...&quot;</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">create</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-name=New Test Project&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-description=Testing Project Create&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-trainingFile=@examples/titanic_train.csv&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-testingFile=@examples/titanic_test.csv&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
@@ -430,127 +598,20 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.create_venue_form">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_venue_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_venue_form" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Create Venue</strong></p>
-<p>Create a venue</p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.create_venue_submission">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_venue_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_venue_submission" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Create Venue</strong></p>
-<p>Create Venue</p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/</span><span class="n">create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.delete_venue">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_venue</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_venue" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Delete Venue</strong></p>
-<p>Delete Venue</p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">delete</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.edit_venue_submission">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_venue_submission</code><span class="sig-paren">(</span><em class="sig-param">venue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_venue_submission" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p><strong>Edit Venue</strong></p>
-<p>Edit Venue</p>
+<dt id="app.edit_project_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_project_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_project_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Edit Project</strong></p>
+<p>Edit Project</p>
 <ul>
 <li><p>Sample Call to edit:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">edit</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-name=Titanic Disaster Patch&quot;</span>
 </pre></div>
 </div>
 </li>
-</ul>
-</div></blockquote>
-<ul>
-<li><p>Sample Call to display:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">venues</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">venue_id</span><span class="o">&gt;/</span><span class="n">edit</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<blockquote>
-<div><ul>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
@@ -567,34 +628,66 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </div>
 </li>
 </ul>
-</div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="app.artists">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">artists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.artists" title="Permalink to this definition">¶</a></dt>
-<dd><p>** List Artists**</p>
-<p>List Artists</p>
+<dt id="app.search_projects">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_projects</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.search_projects" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Search Projects</strong></p>
+<p>Search Project</p>
+<ul>
+<li><p>Sample Call to search:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">search</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;search_term=Titanic&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
+&lt;!doctype html&gt;...&lt;/html&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.delete_project">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_project</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_project" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Delete Project</strong></p>
+<p>Delete Project</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="mi">3</span><span class="o">/</span><span class="n">delete</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">200</span>
+<span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found:  If you entered....&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -603,30 +696,30 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.search_artists">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_artists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.search_artists" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Search Artists</strong></p>
-<p>Search Artists</p>
+<dt id="app.show_run">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_run</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_run" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Runs</strong></p>
+<p>Display a single run</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">search</span> 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">1</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found:  If you entered....&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -635,19 +728,28 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.show_artist">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_artist</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_artist" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Show single Artistt</strong></p>
-<p>Show single artist details</p>
+<dt id="app.create_run_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.create_run_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Create Run</strong></p>
+<p>Create Run</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">create</span><span class="o">/</span><span class="mi">1</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-name=New Curl Run&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-description=Via curl&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-targetVariable=Survived&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-key=PassengerId&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-predictSetOut=PassengerId&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-predictSetOut=Survived&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-scoring=f1&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-modelList=xgbc&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-basicAutoMethod=True&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
@@ -667,30 +769,30 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.create_artist_form">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_artist_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_artist_form" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Get Artist</strong></p>
-<p>Display an Artist’s info</p>
+<dt id="app.delete_run">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_run</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_run" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Delete Run</strong></p>
+<p>Delete Run</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">create</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">//</span><span class="n">delete</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">200</span>
+<span class="p">{</span><span class="s1">&#39;success&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL was....&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -699,56 +801,20 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.create_artist_submission">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_artist_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_artist_submission" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Create an Artist</strong></p>
-<p>Create an Artist</p>
+<dt id="app.edit_run_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_run_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Edit Run</strong></p>
+<p>Edit Run</p>
 <ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/</span><span class="n">create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.edit_artist_submission">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_artist_submission</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_artist_submission" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Edit Artists Information</strong></p>
-<p>Edit Artists Information</p>
-<ul>
-<li><p>Sample Call to display:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">edit</span>
-</pre></div>
-</div>
-</li>
 <li><p>Sample Call to edit:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="nb">int</span><span class="p">:</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">edit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">6</span><span class="o">/</span><span class="n">edit</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-name=Updated Curl Run Patch&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
@@ -768,30 +834,30 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.delete_artist">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_artist</code><span class="sig-paren">(</span><em class="sig-param">artist_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_artist" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Delete an artist</strong></p>
-<p>Delete an artist</p>
+<dt id="app.run_submission">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.run_submission" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Exec Run</strong></p>
+<p>Run ML Training based upon run record attributes</p>
 <ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">artists</span><span class="o">/&lt;</span><span class="n">artist_id</span><span class="o">&gt;/</span><span class="n">delete</span>
+<li><p>Sample Call to display:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="mi">1</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
 &lt;!doctype html&gt;...&lt;/html&gt;
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL... try again.&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -800,30 +866,34 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </dd></dl>
 
 <dl class="function">
-<dt id="app.shows">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">shows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.shows" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>List of Shows</strong></p>
-<p>Display a list of shows</p>
+<dt id="app.download">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.download" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>download results file</strong>
+Run ML Training based upon run record attributes</p>
 <ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span>
+<li><p>Sample Call to display:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">download</span>
+     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">200</span>
+<span class="n">File</span> <span class="n">Download</span><span class="o">.</span> <span class="n">Example</span><span class="p">:</span>
+    <span class="n">PassengerId</span><span class="p">,</span><span class="n">Survived</span>
+    <span class="mi">892</span><span class="p">,</span><span class="mi">0</span>
+    <span class="mi">893</span><span class="p">,</span><span class="mi">0</span>
+    <span class="mi">894</span><span class="p">,</span><span class="mi">1</span>
 </pre></div>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL... try again.&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -831,160 +901,654 @@ cp -R ./docs/build/latex/RobotClassifyaapi.pdf .
 </ul>
 </dd></dl>
 
-<dl class="function">
-<dt id="app.create_shows">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_shows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_shows" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Show a show</strong></p>
-<p>Display a show</p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span><span class="o">/</span><span class="n">create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.create_show_submission">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_show_submission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.create_show_submission" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Create Show submission</strong></p>
-<p>Create a new show submission</p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">shows</span><span class="o">/</span><span class="n">create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Status Code: 200
-
-&lt;!doctype html&gt;...&lt;/html&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
-<span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-</div>
 </div>
 <div class="section" id="module-models">
-<span id="robot-classigy-s-api-model"></span><h1>Robot Classigy’s API Model<a class="headerlink" href="#module-models" title="Permalink to this headline">¶</a></h1>
+<span id="robot-classify-s-api-model"></span><h1>Robot Classify’s API Model<a class="headerlink" href="#module-models" title="Permalink to this headline">¶</a></h1>
 <p><strong>Introduction</strong></p>
 <p>There are three models:
 - Venue
 - Artists
 - Shows</p>
 <dl class="class">
-<dt id="models.Venue">
-<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Venue</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Venue" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of venues that artist can play at.</p>
-<dl class="attribute">
-<dt id="models.Venue.id">
-<code class="sig-name descname">id</code><a class="headerlink" href="#models.Venue.id" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>id</em> is the auto assigned primary key.
-Type: Integer, Primary key. Required.</p>
+<dt id="models.Project">
+<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>An ML Project. Projects are the top-orginizing layer for
+running ML problems</p>
+<dl class="method">
+<dt id="models.Project.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Project.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a new model into a database.
+The model must have a unique id and title.</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="models.Venue.name">
-<code class="sig-name descname">name</code><a class="headerlink" href="#models.Venue.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>name, String, Required
-The name of the venue</p>
+<dl class="method">
+<dt id="models.Project.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Project.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes a new model into a database
+the model must exist in the database</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="models.Venue.city">
-<code class="sig-name descname">city</code><a class="headerlink" href="#models.Venue.city" title="Permalink to this definition">¶</a></dt>
-<dd><p>City, String, Required
-The name of the city</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="models.Artist">
-<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Artist</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Artist" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of Artist that can play at venues.</p>
-<dl class="attribute">
-<dt id="models.Artist.id">
-<code class="sig-name descname">id</code><a class="headerlink" href="#models.Artist.id" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>id</em> is the auto assigned primary key.
-Type: Integer, Primary key. Required.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="models.Artist.name">
-<code class="sig-name descname">name</code><a class="headerlink" href="#models.Artist.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>name, String, Required
-The name of the Artist</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="models.Artist.city">
-<code class="sig-name descname">city</code><a class="headerlink" href="#models.Artist.city" title="Permalink to this definition">¶</a></dt>
-<dd><p>city, String, Required
-The city of the artist</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="models.Artist.state">
-<code class="sig-name descname">state</code><a class="headerlink" href="#models.Artist.state" title="Permalink to this definition">¶</a></dt>
-<dd><p>state, String, Required
-The state of the artist</p>
+<dl class="method">
+<dt id="models.Project.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Project.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates a new model into a database
+the model must exist in the database</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">one_or_none</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Regression Test&#39;</span>
+<span class="n">p</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="models.Show">
-<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Show</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Show" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of Shows for venues and artists.</p>
-<dl class="attribute">
-<dt id="models.Show.venue_id">
-<code class="sig-name descname">venue_id</code><a class="headerlink" href="#models.Show.venue_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>venue_id, Integer, Required, part of the primary key
-The auto-assigned id of the venue</p>
+<dt id="models.Run">
+<em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Run" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="models.Run.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Run.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a new model into a database.
+The model must have a unique id and title.</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="models.Show.artist_id">
-<code class="sig-name descname">artist_id</code><a class="headerlink" href="#models.Show.artist_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>artist_id, Integer, Required, part of the primary key
-The auto-assigned id of the artist</p>
+<dl class="method">
+<dt id="models.Run.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Run.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>deletes a new model into a database
+the model must exist in the database</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.Run.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Run.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates a new model into a database
+the model must exist in the database</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">one_or_none</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Regression Test&#39;</span>
+<span class="n">p</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
+</div>
+<div class="section" id="module-mlLib.project">
+<span id="ml-lib"></span><h1>ML Lib<a class="headerlink" href="#module-mlLib.project" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><strong>Introduction</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The projects module is is a high-level library to process ML jobs at the
+project level. All interactions can happen with this API</p>
+<ul class="simple">
+<li><p>Manage Projects</p></li>
+<li><p>Load Data</p></li>
+<li><p>Explore Data</p></li>
+<li><p>Auto-execute ML jobs</p></li>
+<li><p>Create cleaning rules</p></li>
+<li><p>Train the data, finding the best model</p></li>
+<li><p>Deploy model, to process ML transactions</p></li>
+</ul>
+<dl class="function">
+<dt id="mlLib.project.autoFlaskEvaluateClassifier">
+<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">autoFlaskEvaluateClassifier</code><span class="sig-paren">(</span><em class="sig-param">projectName=None, trainingFile=None, testingFile=None, trainingFileDF=None, testingFileDF=None, targetVariable=None, key=None, predictSetOut=[None], trainingFileOut=None, logFileOut=None, transcriptFile=None, predictFileOut=None, resultsFile=None, modelList=None, confusionMatrixLabels=[], scoring='f1', useProba=False, bottomImportancePrecentToCut=None, setProjectGoals={'f1': (0.9, '&gt;')}, runVerbose=0, recommendOnly=None, basicAutoMethod=None, doExplore=True, doTrain=True, doPredict=True, skewFactor=None, toTerminal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.autoFlaskEvaluateClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>autoFlaskEvaluateClassifier</strong></p>
+<p>Auto-process an ML job for Flask Servers</p>
+<p><strong>XXXXX</strong></p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Call</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="mlLib.project.autoEvaluateClassifier">
+<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">autoEvaluateClassifier</code><span class="sig-paren">(</span><em class="sig-param">projectName=None, trainingFile=None, testingFile=None, targetVariable=None, key=None, predictSetOut=[None], trainingFileOut=None, logFileOut=None, transcriptFile=None, predictFileOut=None, resultsFile=None, modelList=None, confusionMatrixLabels=[], scoring='f1', useProba=False, bottomImportancePrecentToCut=None, setProjectGoals={'f1': (0.9, '&gt;')}, runVerbose=1, recommendOnly=None, basicAutoMethod=None, doExplore=True, doTrain=True, doPredict=True, skewFactor=None, toTerminal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.autoEvaluateClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>autoEvaluateClassifier</strong></p>
+<p>Auto-process an ML job for</p>
+<p><strong>XXXXX</strong></p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Call</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="mlLib.project.mlProject">
+<em class="property">class </em><code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">mlProject</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>mlProject is the top level object for training and running a ML project.
+Various object mothods are used to load, review, and train the data, as
+well as manage running predictions</p>
+<p>Example:
+project = mlProject(‘Customer Segements’, ‘clustering model should factor
+in both aggregate sales patterns and specific items purchased’)</p>
+<dl class="method">
+<dt id="mlLib.project.mlProject.setTrainingPreferences">
+<code class="sig-name descname">setTrainingPreferences</code><span class="sig-paren">(</span><em class="sig-param">crossValidationSplits=None</em>, <em class="sig-param">parallelJobs=None</em>, <em class="sig-param">modelType=None</em>, <em class="sig-param">modelList=None</em>, <em class="sig-param">testSize=None</em>, <em class="sig-param">randomState=None</em>, <em class="sig-param">uniqueThreshold=None</em>, <em class="sig-param">dropDuplicates=None</em>, <em class="sig-param">clusterDimensionThreshold=None</em>, <em class="sig-param">varianceThreshold=None</em>, <em class="sig-param">kmeansClusters=None</em>, <em class="sig-param">useStandardScaler=None</em>, <em class="sig-param">fbeta=None</em>, <em class="sig-param">runHyperparameters=None</em>, <em class="sig-param">runEstimatorHyperparameters=None</em>, <em class="sig-param">runMetaClassifier=None</em>, <em class="sig-param">runAutoFeaturesMode=None</em>, <em class="sig-param">smallSample=None</em>, <em class="sig-param">highDimensionality=None</em>, <em class="sig-param">gridSearchVerbose=None</em>, <em class="sig-param">gridSearchScoring=None</em>, <em class="sig-param">featuresToReport=None</em>, <em class="sig-param">logTrainingResultsFilename=None</em>, <em class="sig-param">useProbaForPredict=None</em>, <em class="sig-param">recommendOnly=None</em>, <em class="sig-param">basicAutoMethod=None</em>, <em class="sig-param">competitionMode=None</em>, <em class="sig-param">skewFactor=None</em>, <em class="sig-param">bottomImportancePrecentToCut=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTrainingPreferences" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>setTrainingPreferences</strong></p>
+<p>setTrainingPreferences for an ML job</p>
+<p><strong>XXXXX</strong></p>
+<ul>
+<li><p>Sample Call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">sample</span> <span class="n">call</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.setHyperparametersOverride">
+<code class="sig-name descname">setHyperparametersOverride</code><span class="sig-paren">(</span><em class="sig-param">modelName</em>, <em class="sig-param">override</em>, <em class="sig-param">forBaseEstimator=False</em>, <em class="sig-param">forMetaClassifier=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setHyperparametersOverride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:
+Set the hyperparameters to override the defaults for a model</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;lasso__alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+        <span class="p">}</span>
+<span class="n">project</span><span class="o">.</span><span class="n">setHyperparametersOverride</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">)</span>
+
+
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;lasso__alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ridge__alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;elasticnet__alpha&#39;</span><span class="p">:</span>
+        <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;elasticnet__l1_ratio&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;randomforestregressor__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
+    <span class="s1">&#39;randomforestregressor__max_features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;sqrt&#39;</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">]}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;gradientboostingregressor__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
+    <span class="s1">&#39;gradientboostingregressor__learning_rate&#39;</span><span class="p">:</span>
+            <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="s1">&#39;gradientboostingregressor__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">]}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;decisiontreeregressor__max_depth&#39;</span><span class="p">:</span>
+                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">200</span><span class="p">]}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;logisticregression__C&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+        <span class="s1">&#39;logisticregression__max_iter&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+        <span class="p">}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;logisticregression__C&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+        <span class="s1">&#39;logisticregression__max_iter&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+        <span class="p">}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;randomforestclassifier__n_estimators&#39;</span><span class="p">:</span>
+                    <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+                    <span class="s1">&#39;randomforestclassifier__max_features&#39;</span><span class="p">:</span>
+                    <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;sqrt&#39;</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">]}</span>
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gradientboostingclassifier__n_estimators&#39;</span><span class="p">:</span>
+                    <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
+    <span class="s1">&#39;gradientboostingclassifier__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="s1">&#39;gradientboostingclassifier__learning_rate&#39;</span><span class="p">:</span>
+    <span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mi">01</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">,</span><span class="o">.</span><span class="mi">0001</span><span class="p">]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.setConfusionMatrixLabels">
+<code class="sig-name descname">setConfusionMatrixLabels</code><span class="sig-paren">(</span><em class="sig-param">list</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setConfusionMatrixLabels" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Example: project.setConfusionMatrixLabels(</dt><dd><p>[(0,’Paid’), (1, ‘Default’) ])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.setTarget">
+<code class="sig-name descname">setTarget</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">boolean=False</em>, <em class="sig-param">trueValue=None</em>, <em class="sig-param">convertTable=None</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Set the target variable for supervised learning.</p>
+<dl>
+<dt>Call: setTarget(self, value, boolean=False, trueValue=None,</dt><dd><p>convertTable=None, tableName=None):</p>
+</dd>
+<dt>Example:</dt><dd><blockquote>
+<div><p>project.setTarget(‘loan_status’)</p>
+</div></blockquote>
+<p>trueValue = what is the true values
+boolean = is this a boolean value
+convertTable = a table of how to convert values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.importFile">
+<code class="sig-name descname">importFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">fileName=None</em>, <em class="sig-param">sheetName=None</em>, <em class="sig-param">df=None</em>, <em class="sig-param">hasHeaders=False</em>, <em class="sig-param">range=None</em>, <em class="sig-param">isDefault=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.importFile" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>def importFile(self, name, type=None, description=None,</dt><dd><p>location=None, fileName=None, sheetName=None,
+hasHeaders = False,
+range=None, isDefault=False):</p>
+</dd>
+<dt>project.importFile(‘Loan Data’, type=’csv’,</dt><dd><p>description=’Lending Club Data from 2017-2018’,
+fileName=’LendingClub2017_2018ready.csv’,
+hasHeaders = True, isDefault=True)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.exportFile">
+<code class="sig-name descname">exportFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Export the named file. (Projects can have multiuple
+files associated with them)</p>
+<p>Call: def exportFile(self, name, filename):</p>
+<p>Example: project.exportFile(‘Loan Data’, ‘fileout.csv’):</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.getColumn">
+<code class="sig-name descname">getColumn</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.getColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Get a columns from the data file</p>
+<p>Call: def getColumn(self, name, column):</p>
+<p>Example: project.getColumn(‘Loan Data’,’Name’)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.exploreData">
+<code class="sig-name descname">exploreData</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exploreData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Purpose: Run the explore data function. This will review the data</dt><dd><p>and make recommendations</p>
+</dd>
+</dl>
+<p>Call: exploreData(self):</p>
+<p>Example: project.exploreData()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.initCleaningRules">
+<code class="sig-name descname">initCleaningRules</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.initCleaningRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Before adding any cleaning rules you must init</p>
+<p>project.initCleaningRules()</p>
+<dl class="simple">
+<dt>project.addManualRuleForDefault(</dt><dd><p>ed.CLEANDATA_REBUCKET_TO_BINARY,
+‘term’, [[‘36 months’, ‘ 36 months’],
+‘36’])</p>
+</dd>
+<dt>project.addManualRuleForDefault(</dt><dd><p>‘ed.CLEANDATA_REBUCKET_TO_BINARY,
+‘term’, [[‘60 months’, ‘ 60 months’], ‘60’])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.cleanProject">
+<code class="sig-name descname">cleanProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Run the cleaning rules established for a project.</p>
+<p>Call: cleanProject(self)</p>
+<p>Example: project.cleanProject()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.cleanAndExploreProject">
+<code class="sig-name descname">cleanAndExploreProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanAndExploreProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Run clean and explore together</p>
+<p>Call: def cleanAndExploreProject(self)</p>
+<p>Example: project.cleanAndExploreProject()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.prepProjectByName">
+<code class="sig-name descname">prepProjectByName</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em>, <em class="sig-param">outFile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.prepProjectByName" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Purpose: Prepare the ‘table’ for training. This will one-hot encode,</dt><dd><p>for example.</p>
+</dd>
+</dl>
+<p>Call: prepProjectByName(self, tableName=None)</p>
+<p>Example: project.prepProjectByName(‘Loan Data’)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.writePreppedFileByName">
+<code class="sig-name descname">writePreppedFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writePreppedFileByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Once a file has been cleaned and explorred</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.writeTrainingSetFileByName">
+<code class="sig-name descname">writeTrainingSetFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writeTrainingSetFileByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.trainProjectByName">
+<code class="sig-name descname">trainProjectByName</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.prepProjectByBatch">
+<code class="sig-name descname">prepProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.prepProjectByBatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.trainProjectByBatch">
+<code class="sig-name descname">trainProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByBatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.exportBestModel">
+<code class="sig-name descname">exportBestModel</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportBestModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.createPredictFromBestModel">
+<code class="sig-name descname">createPredictFromBestModel</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.createPredictFromBestModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.createPredictFromNamedModel">
+<code class="sig-name descname">createPredictFromNamedModel</code><span class="sig-paren">(</span><em class="sig-param">namedModel</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.createPredictFromNamedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.exportNamedModel">
+<code class="sig-name descname">exportNamedModel</code><span class="sig-paren">(</span><em class="sig-param">namedModel</em>, <em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportNamedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.addManualRuleForTableName">
+<code class="sig-name descname">addManualRuleForTableName</code><span class="sig-paren">(</span><em class="sig-param">tableName</em>, <em class="sig-param">functionName</em>, <em class="sig-param">columnName</em>, <em class="sig-param">value</em>, <em class="sig-param">forPredict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.addManualRuleForTableName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.addManualRuleForDefault">
+<code class="sig-name descname">addManualRuleForDefault</code><span class="sig-paren">(</span><em class="sig-param">functionName</em>, <em class="sig-param">columnName=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">forPredict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.addManualRuleForDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.setGoals">
+<code class="sig-name descname">setGoals</code><span class="sig-paren">(</span><em class="sig-param">goals</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setGoals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<dl class="simple">
+<dt>Example:</dt><dd><dl class="simple">
+<dt>project.setGoals({‘AUROC’:(0.70,’&gt;’),’Precision’:(0.386,’&gt;’),</dt><dd><p>‘fbeta’:(0.44,’&gt;’)})</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.setOngoingReporting">
+<code class="sig-name descname">setOngoingReporting</code><span class="sig-paren">(</span><em class="sig-param">True</em>, <em class="sig-param">'Loan Data'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setOngoingReporting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.displayAllScores">
+<code class="sig-name descname">displayAllScores</code><span class="sig-paren">(</span><em class="sig-param">'Loan Data'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.displayAllScores" title="Permalink to this definition">¶</a></dt>
+<dd><p>def displayAllScores(self, fileName):</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.reportResultsOnTrainedModel">
+<code class="sig-name descname">reportResultsOnTrainedModel</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">modelName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.reportResultsOnTrainedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.showFeatureImportances">
+<code class="sig-name descname">showFeatureImportances</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">modelName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.showFeatureImportances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.logTrainingResultsRunDescription">
+<code class="sig-name descname">logTrainingResultsRunDescription</code><span class="sig-paren">(</span><em class="sig-param">description='None'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.logTrainingResultsRunDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.logTrainingResults">
+<code class="sig-name descname">logTrainingResults</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">outputFileName</em>, <em class="sig-param">inputModelName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.logTrainingResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mlLib.project.predictProject">
+<em class="property">class </em><code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">predictProject</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">tableName=None</em>, <em class="sig-param">namedModel=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: predictProject</p>
+<p>Call:</p>
+<p>Example:</p>
+<dl class="method">
+<dt id="mlLib.project.predictProject.importPredictFile">
+<code class="sig-name descname">importPredictFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">fileName=None</em>, <em class="sig-param">sheetName=None</em>, <em class="sig-param">hasHeaders=False</em>, <em class="sig-param">range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.importPredictFileFromProject">
+<code class="sig-name descname">importPredictFileFromProject</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">tableName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFileFromProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.importPredictFromDF">
+<code class="sig-name descname">importPredictFromDF</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">readyForPredict=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFromDF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.prepPredict">
+<code class="sig-name descname">prepPredict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.prepPredict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.exportPreppedFile">
+<code class="sig-name descname">exportPreppedFile</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">columnName=None</em>, <em class="sig-param">columnData=None</em>, <em class="sig-param">columnName2=None</em>, <em class="sig-param">columnData2=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPreppedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.getColumn">
+<code class="sig-name descname">getColumn</code><span class="sig-paren">(</span><em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.getColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Get a columns from the data file</p>
+<p>Call: def getColumn(self, column):</p>
+<p>Example: prdict.getColumn(‘Name’)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.exportPredictClass">
+<code class="sig-name descname">exportPredictClass</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPredictClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.addToPredictFile">
+<code class="sig-name descname">addToPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columnName</em>, <em class="sig-param">columnData</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.addToPredictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.removeFromPredictFile">
+<code class="sig-name descname">removeFromPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.removeFromPredictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.keepFromPredictFile">
+<code class="sig-name descname">keepFromPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.keepFromPredictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.exportPredictFile">
+<code class="sig-name descname">exportPredictFile</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPredictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.getPredictFileDF">
+<code class="sig-name descname">getPredictFileDF</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.getPredictFileDF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose: Return a datraframe of the predict file.</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.predictProject.runPredict">
+<code class="sig-name descname">runPredict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.runPredict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mlLib.project.loadPredictProject">
+<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">loadPredictProject</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.loadPredictProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mlLib.project.plot_confusion_matrix">
+<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">cm</em>, <em class="sig-param">classes</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">title='Confusion matrix'</em>, <em class="sig-param">cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</div></blockquote>
+<p>This function prints and plots the confusion matrix.
+Normalization can be applied by setting <cite>normalize=True</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mlLib.project.makeStack">
+<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">makeStack</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">list</em>, <em class="sig-param">alias=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.makeStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Purpose:</p>
+<p>Call:</p>
+<p>Example:</p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>

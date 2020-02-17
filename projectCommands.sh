@@ -43,6 +43,7 @@ pycodestyle --show-source --show-pep8 ./backend/src/auth/auth.py
 sphinx-quickstart
 
 #
+cd ..
 m2r README.md README.rst --overwrite
 cp -R README.rst ./docs/source
 cd ./docs
@@ -50,7 +51,7 @@ make html
 # Make pdf
 make latexpdf
 cd ..
-cp -R ./docs/build/latex/coffeeapi.pdf .
+cp -R ./docs/build/latex/robotclassify.pdf .
 #
 #
 # Requirements.txt file
@@ -269,7 +270,6 @@ flask db upgrade
 
 
 curl --request POST --url 'http://127.0.0.1:5000/venues/1/edit' --header 'content-type: application/json' 
-
 
 
 

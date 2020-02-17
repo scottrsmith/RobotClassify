@@ -1,0 +1,38 @@
+echo "Set Flask Environment Variables"
+export FLASK_ENV=development
+export FLASK_DEBUG=true
+export FLASK_APP=app.py
+
+echo "Set Host"
+# export HOST='http://localhost:5000'
+export HOST='http://robotclassify.herokuapp.com'
+
+#
+# Set the env variables for the Auth0 API test user
+
+export DATABASE_URL=postgres://aufhyymyagwkob:ab8afcf071e31c3a3ec92ec9a14c5155d8ff25c243598b75399bd12c718c026c@ec2-52-203-160-194.compute-1.amazonaws.com:5432/d4vsnpfh6qmqt1
+export AUTH0_CLIENT_ID=924mOUHAkgolmjZN1hT30dpkUYQl8EU9
+export AUTH0_DOMAIN=dev-p35ewo73.auth0.com
+export AUTH0_CLIENT_SECRET=1TRVqfE_oVC1yzVKW8rtm1gAWjpBeHxjtKO8qVr21ZlCL0bO4hr_m6jGkiJ3fpwQ
+export AUTH0_CALLBACK_URL=http://127.0.0.1:5000/callback
+export AUTH0_AUDIENCE=robotclassify
+export APP_TESTING=False
+export APP_TESTING_USERID="XbF8BXBWausifCDdGz9fgh3slknCjrQx@clients"
+export WTF_CSRF_ENABLED=True
+
+# Use the following URLS to get the Tokens
+
+export USER_EDIT="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1rUkdRalkyUVRNNU56UTVNemt4UkRZM09UQTFOREU1UXpBeVJUTTNSVGxFUlVZNU9URkZOQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wMzVld283My5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUyYjRiZDdjYzJkYTgwZTk4MTNmM2UzIiwiYXVkIjpbInJvYm90Y2xhc3NpZnkiLCJodHRwczovL2Rldi1wMzVld283My5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTgxNzk0NTUwLCJleHAiOjE1ODE4ODA5NTAsImF6cCI6IjkyNG1PVUhBa2dvbG1qWk4xaFQzMGRwa1VZUWw4RVU5Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpwcm9qZWN0IiwiZGVsZXRlOnJ1biIsImdldDpwcm9qZWN0IiwiZ2V0OnJ1biIsImdldDp0cmFpbiIsInBhdGNoOnByb2plY3QiLCJwYXRjaDpydW4iLCJwb3N0OnByb2plY3QiLCJwb3N0OnJ1biJdfQ.Akxmj7lKHlSFI006vMO24mxqgzGbKf68i7KFSGND0MdISP1tblookuiC7BAFkyle4DTKXAaEYrQUv4HQFZd3LEAlxhjh3tgylNg0jrkmNpKEFwICx92A-LbcXkpF9THtKXIpXFIrFiaIWaOxmoPv8nAQPysOhyALCi2JA3yc0VOfQbUdcZiknzGKP2YtWJru9F3WqwOdwN5AufxQwQlPmag7oyZqb78T3556DzXlo--ZlT8ZenNV2vu2O5uJUb_JLSCs6g8QiqJwZzxJTHyAatkKxYSqdAjfV8PPgLeqgShlJRfLILLwtiGKZCr8ysxDxQx6PKO3ilmTGmKcWQPhww"
+export USER_VIEW=""
+
+export TOKEN="$USER_EDIT"
+echo 
+echo "Set Bearer Token and API userid Envoronment variables:"
+
+# 
+# Set the env variables with the updated
+echo 
+echo "Updated Token environment variables:"
+
+echo
+echo "TOKEN=$TOKEN"
