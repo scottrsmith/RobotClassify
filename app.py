@@ -228,7 +228,7 @@ def get_token_from_header():
     return token
 
 
-#  curl -X GET https://dev-p35ewo73.auth0.com/userinfo      
+#  curl -X GET https://dev-p35ewo73.auth0.com/userinfo
 #       -H "Authorization: Bearer $USER_EDIT_TOKEN"
 #
 # returns: {
@@ -266,6 +266,7 @@ def set_session_at_auth(userinfo, payload):
     session['account_id'] = userinfo['sub']
     session['username'] = userinfo['name']
     session['payload'] = payload
+    session['editor_role'] = test_permissions('post:project', payload)
     session.modified = True
 
 
@@ -283,6 +284,15 @@ def check_permissions(permission, payload):
 
     if permission not in payload['permissions']:
         abort(401, 'Permission not found.')
+    return True
+
+
+# Test permissions
+def test_permissions(permission, payload):
+    if 'permissions' not in payload:
+        return False
+    if permission not in payload['permissions']:
+        return False
     return True
 
 
@@ -365,6 +375,8 @@ def requires_auth(permission=''):
                     session['account_id'] = payload['sub']
                     session['username'] = payload['sub']
                     session['payload'] = payload
+                    session['editor_role'] = test_permissions('post:project',
+                                                              payload)
                     session.modified = True
                     app.config['WTF_CSRF_ENABLED'] = False
                 else:
@@ -453,6 +465,21 @@ def getjwttoken(payload):
         return 'None'
 
 
+# Get user data
+def userData():
+    if 'username' in session:
+        un = session['username']
+    else:
+        un = None
+
+    if 'editor_role' in session:
+        er = session['editor_role']
+    else:
+        er = True
+
+    return {'username': un, 'editor': er}
+
+
 # ----------------------------------------------------------------------------
 # Home Page
 # ----------------------------------------------------------------------------
@@ -462,10 +489,10 @@ def index():
     """
         **Home Page**
 
-        Display the home page
+        Display the home page. No access restrictions.
 
         - Sample Call::
-            curl http://localhost:5000/
+            curl https://robotclassify.herokuapp.com/
 
         - Expected Success Response::
 
@@ -483,11 +510,8 @@ def index():
             }
 
     """
-    if 'username' in session:
-        un = session['username']
-    else:
-        un = None
-    return render_template('pages/index.html', username=un)
+
+    return render_template('pages/index.html', user=userData())
 
 # ----------------------------------------------------------------------------
 # Display Documentation Pages (Generated from sphinx)
@@ -497,11 +521,11 @@ def send_documents(path):
     """
         **Documentation Page**
 
-        Display the documetnation pages
+        Display the documetnation pages. No access restrictions.
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/docs/index.html
+            curl -X GET https://robotclassify.herokuapp.com/docs/index.html
 
         - Expected Success Response::
 
@@ -529,7 +553,8 @@ def projects_list_page():
     return render_template('pages/projects.html',
                            projects=data,
                            count=len(data),
-                           username=session['username'])
+                           user=userData())
+
 
 # ----------------------------------------------------------------------------
 #  List Projects
@@ -541,12 +566,13 @@ def projects(payload):
     """
         **List Projects**
 
-        Display a list of projects
+        Display a list of projects for the current user. Returns as a web page.
+        Requires get:project auth (Editor or viewer roles.)
 
         - Sample Call::
 
             export TOKEN=...
-            curl -X GET http://localhost:5000/projects
+            curl -X GET https://robotclassify.herokuapp.com/projects
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -587,10 +613,12 @@ def show_project(payload, project_id):
     """
         **Project**
 
-        Display a single projects
+        Display a single project. Must be owned by the user.
+
+        Requires get:project auth (Editor or viewer roles.)
 
         - Sample Call::
-            curl -X GET http://localhost:5000/projects/1
+            curl -X GET https://robotclassify.herokuapp.com/projects/4
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -621,7 +649,7 @@ def show_project(payload, project_id):
     data = project.projectPage
     return render_template('pages/show_project.html',
                            project=data,
-                           username=session['username'])
+                           user=userData())
 
 
 # ----------------------------------------------------------------------------
@@ -658,12 +686,15 @@ def create_projects_submission(payload):
     """
         **Create Project**
 
-        Create Project
+        Create Project for the current user. Uploads the files and stores the
+        uploaded files in the database.
+
+        Requires post:project auth (Editors Only). Data is sent as a form.
 
         - Sample Call::
 
             export TOKEN="edfgdfgd..."
-            curl -X POST http://localhost:5000/projects/create
+            curl -X POST https://robotclassify.herokuapp.com/projects/create
                  -H "Authorization: Bearer $TOKEN"
                  -F "form-project-name=New Test Project"
                  -F "form-project-description=Testing Project Create"
@@ -715,11 +746,11 @@ def create_projects_submission(payload):
         data = project.projectPage
         return render_template('pages/show_project.html',
                                project=data,
-                               username=session['username'])
+                               user=userData())
     else:
         return render_template('forms/new_project.html',
                                form=form,
-                               username=session['username'])
+                               user=userData())
 
     return projects_list_page()
 
@@ -735,11 +766,12 @@ def edit_project_submission(payload, project_id):
     """
         **Edit Project**
 
-        Edit Project
+        Edit Project. Data is passed as a form.
+        Requires pacht:project auth (Editors Only). Data is sent as a form.
 
         - Sample Call to edit::
 
-            curl -X PATCH http://localhost:5000/projects/1/edit
+            curl -X PATCH https://robotclassify.herokuapp.com/projects/4/edit
                  -H "Authorization: Bearer $TOKEN"
                  -F "form-project-name=Titanic Disaster Patch"
 
@@ -756,6 +788,17 @@ def edit_project_submission(payload, project_id):
                 "error": 401,
                 "message": "Unauthorized",
                 "success": false
+            }
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 405
+            {
+             "description":
+             "405 Method Not Allowed: The method is not allowed...",
+             "error":405,
+             "message":"Method Not Allowed",
+             "success":false
             }
 
     """
@@ -793,7 +836,7 @@ def edit_project_submission(payload, project_id):
     return render_template('forms/edit_project.html',
                            form=form,
                            project=project,
-                           username=session['username'])
+                           user=userData())
 
 # ----------------------------------------------------------------------------
 #  Search projects
@@ -805,11 +848,13 @@ def search_projects(payload):
     """
         **Search Projects**
 
-        Search Project
+        Search Projects, returning a list of projects with matching criteria.
+        Requires post:project auth (Editors Only). Search is sent as a form
+        post.
 
         - Sample Call to search::
 
-            curl -X POST http://localhost:5000/projects/search
+            curl -X POST https://robotclassify.herokuapp.com/projects/search
                  -H "Authorization: Bearer $TOKEN"
                  -F "search_term=Titanic"
 
@@ -846,7 +891,7 @@ def search_projects(payload):
     return render_template('pages/search_projects.html',
                            results=response,
                            search_term=request.form.get('search_term', ''),
-                           username=session['username'])
+                           user=userData())
 
 
 # ----------------------------------------------------------------------------
@@ -863,7 +908,8 @@ def delete_project(payload, project_id):
 
         - Sample Call::
 
-            curl -X DELETE http://localhost:5000/projects/3/delete
+            curl -X DELETE https://robotclassify.herokuapp.com/\
+                           projects/15/delete\
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -914,11 +960,12 @@ def show_run(payload, run_id):
     """
         **Runs**
 
-        Display a single run
+        Display a single run result.
+        Requires get:run auth (Editors and Viewers).
 
         - Sample Call::
 
-            curl -X GET http://localhost:5000/runs/1
+            curl -X GET https://robotclassify.herokuapp.com/runs/8
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -936,6 +983,15 @@ def show_run(payload, run_id):
              "success": false
             }
 
+        - Expected Fail Response::
+
+            HTTP Status Code: 401
+            {
+                "description": "401 Unauthorized: Token not found.",
+                "error": 401,
+                "message": "Premission Error",
+                "success": false
+            }
     """
 
     # Query and show a single project
@@ -953,11 +1009,11 @@ def show_run(payload, run_id):
         data = run.Project.projectPage
         return render_template('pages/show_project.html',
                                project=data,
-                               username=session['username'])
+                               user=userData())
     else:
         return render_template('pages/results.html', run=run,
                                results=pickle.loads(run.results),
-                               username=session['username'])
+                               user=userData())
 
 
 # ----------------------------------------------------------------------------
@@ -970,11 +1026,12 @@ def create_run_submission(payload, project_id):
     """
         **Create Run**
 
-        Create Run
+        Create Run for a project.
+        Requires post:run auth (Editors Only). Data is sent as a form.
 
         - Sample Call::
 
-            curl -X POST http://localhost:5000/runs/create/1
+            curl -X POST https://robotclassify.herokuapp.com/runs/create/4
                  -H "Authorization: Bearer $TOKEN"
                  -F "form-run-name=New Curl Run"
                  -F "form-run-description=Via curl"
@@ -993,13 +1050,24 @@ def create_run_submission(payload, project_id):
 
         - Expected Fail Response::
 
+            HTTP Status Code: 404
+            {
+             "description": "404 Not Found:  If you entered....",
+             "error": 404,
+             "message": "Not Found",
+             "success": false
+            }
+
+        - Expected Fail Response::
+
             HTTP Status Code: 401
             {
-                "description": "401: Authorization header is expected.",
+                "description": "401 Unauthorized: Token not found.",
                 "error": 401,
-                "message": "Unauthorized",
+                "message": "Premission Error",
                 "success": false
             }
+
 
     """
 
@@ -1036,12 +1104,12 @@ def create_run_submission(payload, project_id):
     else:
         return render_template('forms/new_run.html',
                                form=form,
-                               username=session['username'])
+                               user=userData())
 
     data = project.projectPage
     return render_template('pages/show_project.html',
                            project=data,
-                           username=session['username'])
+                           user=userData())
 
 
 # ----------------------------------------------------------------------------
@@ -1054,11 +1122,12 @@ def delete_run(payload, run_id):
     """
         **Delete Run**
 
-        Delete Run
+        Delete a Run.
+        Requires delete:run auth (Editors Only).
 
         - Sample Call::
 
-            curl -X DELETE http://localhost:5000/runs//delete
+            curl -X DELETE https://robotclassify.herokuapp.com/runs/17/delete
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -1068,7 +1137,7 @@ def delete_run(payload, run_id):
 
         - Expected Fail Response::
 
-            HTTP Status Code: 401
+            HTTP Status Code: 404
             {
              "description": "404 Not Found: The requested URL was....",
              "error": 404,
@@ -1098,7 +1167,7 @@ def delete_run(payload, run_id):
     #      + '" was successfully deleted!')
     # return redirect(url_for('show_project',
     #                         project_id=project_id),
-    #                         username=session['username'])
+    #                         user=userData())
     return '{"success"}'
 
 
@@ -1113,11 +1182,12 @@ def edit_run_submission(payload, run_id):
     """
         **Edit Run**
 
-        Edit Run
+        Edit Run record.
+        Requires pacht:run auth (Editors Only). Data is sent as a form.
 
         - Sample Call to edit::
 
-            curl -X PATCH http://localhost:5000/runs/6/edit
+            curl -X PATCH https://robotclassify.herokuapp.com/runs/15/edit
                  -H "Authorization: Bearer $TOKEN"
                  -F "form-run-name=Updated Curl Run Patch"
 
@@ -1134,6 +1204,16 @@ def edit_run_submission(payload, run_id):
                 "error": 401,
                 "message": "Unauthorized",
                 "success": false
+            }
+
+        - Expected Fail Response::
+
+            HTTP Status Code: 404
+            {
+             "description": "404 Not Found: The requested URL was....",
+             "error": 404,
+             "message": "Not Found",
+             "success": false
             }
 
     """
@@ -1173,12 +1253,12 @@ def edit_run_submission(payload, run_id):
         data = run.Project.projectPage
         return render_template('pages/show_project.html',
                                project=data,
-                               username=session['username'])
+                               user=userData())
 
     return render_template('forms/edit_run.html',
                            form=form,
                            run=run,
-                           username=session['username'])
+                           user=userData())
 
 
 # ----------------------------------------------------------------------------
@@ -1192,11 +1272,12 @@ def run_submission(payload, run_id):
     """
         **Exec Run**
 
-        Run ML Training based upon run record attributes
+        Run ML Training based upon run record attributes.
+        Requires get:train auth (Editors and viewers).
 
         - Sample Call to display::
 
-            curl -X GET http://localhost:5000/train/1
+            curl -X GET https://robotclassify.herokuapp.com/train/13
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::
@@ -1258,7 +1339,7 @@ def run_submission(payload, run_id):
     return render_template('pages/results.html',
                            run=run,
                            results=results,
-                           username=session['username'])
+                           user=userData())
 
 
 @app.route('/train/<int:run_id>/download', methods=['GET'])
@@ -1270,7 +1351,7 @@ def download(payload, run_id):
 
         - Sample Call to display::
 
-            curl -X GET http://localhost:5000/train/1/download
+            curl -X GET https://robotclassify.herokuapp.com//train/13/download
                  -H "Authorization: Bearer $TOKEN"
 
         - Expected Success Response::

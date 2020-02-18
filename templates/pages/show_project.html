@@ -47,7 +47,9 @@
 							  <a href="/runs/{{ run.id }}"><button>Results</button></a>
 						 </li>
 					  {% endif %}
-		              <li class="active"><a href="/train/{{ run.id }}"><button>Train</button></a></li>
+					  {% if user.editor %}
+		              	 <li class="active"><a href="/train/{{ run.id }}"><button>Train</button></a></li>
+					  {% endif %}
 					  <!-- FUTURE <li class="active"><a href="/runs/{{ run.id }}/edit"><button>Edit</button></a></li>
 					  <li class="active"><a href="/runs/{{ run.id }}/delete"><button>Delete</button></a></li> -->
 
@@ -58,7 +60,7 @@
     </div>		
 		{% endfor %}
 	{% else %}
-		<h3>No Runs....<a href="/runs/create/{{ project.id }}">Create a new run.</a> </h3>
+		<h3>No Runs....{% if user.editor %}<a href="/runs/create/{{ project.id }}">Create a new run.</a>{% endif %}</h3>
 	{% endif %}
 	
 </section>
@@ -66,24 +68,25 @@
 <!------
 Add Delete and Edit project Buttons
 -->
-<section>
-	<div class="row">
-		<h3><!-- FUTURE 
-			<div class="col-sm-2">
-				<a href="/projects/{{ project.id }}/edit"><button class="btn btn-primary btn-lg">Edit Project</button></a>
-			</div>
-			<div class="col-sm-2">
-				<form action="/projects/{{ project.id }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
-					<button type="submit" class="btn btn-primary btn-lg">Delete Project</button>
-				</form>
-			</div> -->
-			<div class="col-sm-2">
-				<a href="/runs/create/{{ project.id }}"><button class="btn btn-primary btn-lg">New Run</button></a>
-			</div>
-		</h3>
-	</div>
-</section>
-
+{% if user.editor %}
+	<section>
+		<div class="row">
+			<h3><!-- FUTURE 
+				<div class="col-sm-2">
+					<a href="/projects/{{ project.id }}/edit"><button class="btn btn-primary btn-lg">Edit Project</button></a>
+				</div>
+				<div class="col-sm-2">
+					<form action="/projects/{{ project.id }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
+						<button type="submit" class="btn btn-primary btn-lg">Delete Project</button>
+					</form>
+				</div> -->
+				<div class="col-sm-2">
+					<a href="/runs/create/{{ project.id }}"><button class="btn btn-primary btn-lg">New Run</button></a>
+				</div>
+			</h3>
+		</div>
+	</section>
+{% endif %}
 {% endblock %}
 
 

@@ -39,15 +39,60 @@ class Project(db.Model):
     __tablename__ = 'Project'
 
     id = db.Column(db.Integer, primary_key=True)
+    '''
+    Id
+    Primary Key - Auto assigned
+    '''
     account_id = db.Column(db.String(100))
+    '''
+    account_id
+    Account owner of the record. Restricts viewing from other users.
+    '''
     name = db.Column(db.String)
+    '''
+    name
+    Name of the project
+    '''
     description = db.Column(db.String(120))
+    '''
+    description
+    Description of the project
+    '''
     trainingFile = db.Column(db.String(120))
+    '''
+    Training file.
+    CSV file to be loaded for training as uploaded in the upload folder. 
+    It stored in the project record in 'savedTrainingFile' as a python pickle.
+    '''
     testingFile = db.Column(db.String(120))
+    '''
+    Testing file.
+    CSV file to be loaded for testing the trained model as uploaded in the
+    upload folder. The testing file is designed for Kaggle comperition 
+    submissions. It is stored in the project record in 'savedTestingFile' 
+    as a python pickle
+    '''
     savedTrainingFile = db.Column(db.PickleType)
+    '''
+    savedTrainingFile file.
+    The saved training file stored as a python pickle.
+    Generated automatically.
+    '''
     savedTestingFile = db.Column(db.PickleType)
+    '''
+    savedTestingFile file.
+    The saved testing file stored as a python pickle. Generated automatically.
+    '''
     columns = db.Column(db.ARRAY(db.String))
+    '''
+    The columns of the training table. Used to populate picklist
+    in the UI. Generated automatically.
+    '''
     runs = db.relationship('Run', backref='project', lazy=True)
+    '''
+    Runs associated with the project.
+    Runs have a many to one relationship to projects. 
+    '''
 
     @property
     def projectPage(self):
@@ -136,33 +181,106 @@ class Run(db.Model):
     __tablename__ = 'Run'
 
     id = db.Column(db.Integer, primary_key=True)
+    '''
+    Id
+    Primary Key - Auto assigned
+    '''
+
     name = db.Column(db.String)
+    '''
+    name
+    Name of the run.
+    '''
+
     description = db.Column(db.String(120))
+    '''
+    description
+    Description of the projerunct
+    '''
+
     results = db.Column(db.PickleType)
+    '''
+    results
+    The results data for a run. This contains the output of a run. This
+    includes the feature evaluation, feature engineering, and model training
+    stats.
+    '''
+
     account_id = db.Column(db.String(100))
+    '''
+    account_id
+    Account owner of the record. Restricts viewing from other users.
+    '''
+
     project_id = db.Column(db.Integer,
                            db.ForeignKey('Project.id', ondelete='CASCADE'),
                            nullable=False)
+    '''
+    project_id
+    Parent record of the run.
+    '''
 
     targetVariable = db.Column(db.String(120))
+    '''
+    targetVariable
+    The variable that is to be predicted.
+    '''
+
     key = db.Column(db.String(120))
+    '''
+    key
+    The unique key that defines the training record.
+    '''
 
     # example:predictSetOut=['Survived','PassengerId'],
     predictSetOut = db.Column(db.ARRAY(db.String))
+    '''
+    predictSetOut
+    Defines the sheet columns to be used in the predict file.
+    Usually two, the target variable and key. This is designed 
+    to be used for Kaggle competition submissions.
+    '''
+
     predictFile = db.Column(db.PickleType)
+    '''
+    predictFile
+    Stores the results of the prediction for the test file.
+    Used for downloads. 
+    '''
 
     # confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
     modelList = db.Column(db.ARRAY(db.String))
+    '''
+    modelList
+    List of models used in training. Best is evaluated on the scoreing
+    choice. Valid models can include: l2, rfc, gbc, decisiontree,
+    kneighbors, sgd, bagging, adaboost, gaussiannb, etc, svc, xgbc,
+    stack, vote
+    '''
 
     scoring = db.Column(db.String(120), default='f1')
+    '''
+    scoring
+    Scoring methods for model evaluation.
+    Options include f1, r2, Perecision, Recall, and Accuracy
+    '''
 
     # Booleans
     basicAutoMethod = db.Column(db.Boolean(), default=True)
+    '''
+    basicAutoMethod
+    There are two algorithems for feature engineering and attribute evaliuation. 
+    This selects between the two models. True for Model I False for model II
+    '''
 
     Project = db.relationship('Project',
                               backref=db.backref(
                                   'Run',
                                   cascade='all, delete-orphan'))
+    '''
+    Project
+    Back reference to the parent project
+    '''
 
     # List out the runs for display on the project page
     @property

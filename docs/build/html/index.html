@@ -428,10 +428,10 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.index">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Home Page</strong></p>
-<p>Display the home page</p>
+<p>Display the home page. No access restrictions.</p>
 <ul>
 <li><dl class="simple">
-<dt>Sample Call::</dt><dd><p>curl <a class="reference external" href="http://localhost:5000/">http://localhost:5000/</a></p>
+<dt>Sample Call::</dt><dd><p>curl <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a></p>
 </dd>
 </dl>
 </li>
@@ -442,12 +442,12 @@ Auth0 Management API (Test Application)</p></li>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">405</span>
 <span class="p">{</span>
- <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL...&quot;</span>
- <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
- <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
- <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;405 Method Not Allowed: .... requested URL.&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="mi">405</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Method Not Allowed&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span><span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -459,10 +459,10 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.send_documents">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">send_documents</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#app.send_documents" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Documentation Page</strong></p>
-<p>Display the documetnation pages</p>
+<p>Display the documetnation pages. No access restrictions.</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
 </pre></div>
 </div>
 </li>
@@ -490,11 +490,12 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.projects">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">projects</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.projects" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>List Projects</strong></p>
-<p>Display a list of projects</p>
+<p>Display a list of projects for the current user. Returns as a web page.
+Requires get:project auth (Editor or viewer roles.)</p>
 <ul>
 <li><p>Sample Call:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TOKEN</span><span class="o">=...</span>
-<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">projects</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
@@ -530,11 +531,12 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.show_project">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_project</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_project" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Project</strong></p>
-<p>Display a single projects</p>
+<p>Display a single project. Must be owned by the user.</p>
+<p>Requires get:project auth (Editor or viewer roles.)</p>
 <ul>
 <li><dl class="simple">
 <dt>Sample Call::</dt><dd><dl class="simple">
-<dt>curl -X GET <a class="reference external" href="http://localhost:5000/projects/1">http://localhost:5000/projects/1</a></dt><dd><p>-H “Authorization: Bearer $TOKEN”</p>
+<dt>curl -X GET <a class="reference external" href="https://robotclassify.herokuapp.com/projects/4">https://robotclassify.herokuapp.com/projects/4</a></dt><dd><p>-H “Authorization: Bearer $TOKEN”</p>
 </dd>
 </dl>
 </dd>
@@ -564,11 +566,13 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.create_projects_submission">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_projects_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.create_projects_submission" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Create Project</strong></p>
-<p>Create Project</p>
+<p>Create Project for the current user. Uploads the files and stores the
+uploaded files in the database.</p>
+<p>Requires post:project auth (Editors Only). Data is sent as a form.</p>
 <ul>
 <li><p>Sample Call:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TOKEN</span><span class="o">=</span><span class="s2">&quot;edfgdfgd...&quot;</span>
-<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">create</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">create</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-name=New Test Project&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-description=Testing Project Create&quot;</span>
@@ -601,10 +605,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.edit_project_submission">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_project_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_project_submission" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Edit Project</strong></p>
-<p>Edit Project</p>
+<p>Edit Project. Data is passed as a form.
+Requires pacht:project auth (Editors Only). Data is sent as a form.</p>
 <ul>
 <li><p>Sample Call to edit:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">edit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="mi">4</span><span class="o">/</span><span class="n">edit</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-project-name=Titanic Disaster Patch&quot;</span>
 </pre></div>
@@ -627,6 +632,18 @@ Auth0 Management API (Test Application)</p></li>
 </pre></div>
 </div>
 </li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">405</span>
+<span class="p">{</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span>
+ <span class="s2">&quot;405 Method Not Allowed: The method is not allowed...&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="mi">405</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Method Not Allowed&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span><span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </dd></dl>
 
@@ -634,10 +651,12 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.search_projects">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_projects</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#app.search_projects" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Search Projects</strong></p>
-<p>Search Project</p>
+<p>Search Projects, returning a list of projects with matching criteria.
+Requires post:project auth (Editors Only). Search is sent as a form
+post.</p>
 <ul>
 <li><p>Sample Call to search:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">search</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">search</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;search_term=Titanic&quot;</span>
 </pre></div>
@@ -670,8 +689,7 @@ Auth0 Management API (Test Application)</p></li>
 <p>Delete Project</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="mi">3</span><span class="o">/</span><span class="n">delete</span>
-     <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>                           <span class="n">projects</span><span class="o">/</span><span class="mi">15</span><span class="o">/</span><span class="n">delete</span>                 <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -699,10 +717,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.show_run">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_run</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.show_run" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Runs</strong></p>
-<p>Display a single run</p>
+<p>Display a single run result.
+Requires get:run auth (Editors and Viewers).</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">8</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
@@ -724,6 +743,17 @@ Auth0 Management API (Test Application)</p></li>
 </pre></div>
 </div>
 </li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401 Unauthorized: Token not found.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Premission Error&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </dd></dl>
 
@@ -731,10 +761,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.create_run_submission">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">create_run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.create_run_submission" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Create Run</strong></p>
-<p>Create Run</p>
+<p>Create Run for a project.
+Requires post:run auth (Editors Only). Data is sent as a form.</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">create</span><span class="o">/</span><span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">create</span><span class="o">/</span><span class="mi">4</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-name=New Curl Run&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-description=Via curl&quot;</span>
@@ -755,11 +786,22 @@ Auth0 Management API (Test Application)</p></li>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
+<span class="p">{</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found:  If you entered....&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Expected Fail Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
 <span class="p">{</span>
-    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401: Authorization header is expected.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;401 Unauthorized: Token not found.&quot;</span><span class="p">,</span>
     <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Premission Error&quot;</span><span class="p">,</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
@@ -772,10 +814,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.delete_run">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">delete_run</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.delete_run" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Delete Run</strong></p>
-<p>Delete Run</p>
+<p>Delete a Run.
+Requires delete:run auth (Editors Only).</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">//</span><span class="n">delete</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">DELETE</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">17</span><span class="o">/</span><span class="n">delete</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
@@ -787,7 +830,7 @@ Auth0 Management API (Test Application)</p></li>
 </div>
 </li>
 <li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">401</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
 <span class="p">{</span>
  <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL was....&quot;</span><span class="p">,</span>
  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
@@ -804,10 +847,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.edit_run_submission">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">edit_run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.edit_run_submission" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Edit Run</strong></p>
-<p>Edit Run</p>
+<p>Edit Run record.
+Requires pacht:run auth (Editors Only). Data is sent as a form.</p>
 <ul>
 <li><p>Sample Call to edit:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">6</span><span class="o">/</span><span class="n">edit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PATCH</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="mi">15</span><span class="o">/</span><span class="n">edit</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
      <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;form-run-name=Updated Curl Run Patch&quot;</span>
 </pre></div>
@@ -830,6 +874,17 @@ Auth0 Management API (Test Application)</p></li>
 </pre></div>
 </div>
 </li>
+<li><p>Expected Fail Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span> <span class="n">Status</span> <span class="n">Code</span><span class="p">:</span> <span class="mi">404</span>
+<span class="p">{</span>
+ <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found: The requested URL was....&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Not Found&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </dd></dl>
 
@@ -837,10 +892,11 @@ Auth0 Management API (Test Application)</p></li>
 <dt id="app.run_submission">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">run_submission</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">run_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.run_submission" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Exec Run</strong></p>
-<p>Run ML Training based upon run record attributes</p>
+<p>Run ML Training based upon run record attributes.
+Requires get:train auth (Editors and viewers).</p>
 <ul>
 <li><p>Sample Call to display:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="mi">13</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
@@ -872,7 +928,7 @@ Auth0 Management API (Test Application)</p></li>
 Run ML Training based upon run record attributes</p>
 <ul>
 <li><p>Sample Call to display:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">download</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">robotclassify</span><span class="o">.</span><span class="n">herokuapp</span><span class="o">.</span><span class="n">com</span><span class="o">//</span><span class="n">train</span><span class="o">/</span><span class="mi">13</span><span class="o">/</span><span class="n">download</span>
      <span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Authorization: Bearer $TOKEN&quot;</span>
 </pre></div>
 </div>
@@ -914,6 +970,81 @@ Run ML Training based upon run record attributes</p>
 <em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>An ML Project. Projects are the top-orginizing layer for
 running ML problems</p>
+<dl class="attribute">
+<dt id="models.Project.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#models.Project.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id
+Primary Key - Auto assigned</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.account_id">
+<code class="sig-name descname">account_id</code><a class="headerlink" href="#models.Project.account_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>account_id
+Account owner of the record. Restricts viewing from other users.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#models.Project.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name
+Name of the project</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#models.Project.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>description
+Description of the project</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.trainingFile">
+<code class="sig-name descname">trainingFile</code><a class="headerlink" href="#models.Project.trainingFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training file.
+CSV file to be loaded for training as uploaded in the upload folder. 
+It stored in the project record in ‘savedTrainingFile’ as a python pickle.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.testingFile">
+<code class="sig-name descname">testingFile</code><a class="headerlink" href="#models.Project.testingFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Testing file.
+CSV file to be loaded for testing the trained model as uploaded in the
+upload folder. The testing file is designed for Kaggle comperition 
+submissions. It is stored in the project record in ‘savedTestingFile’ 
+as a python pickle</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.savedTrainingFile">
+<code class="sig-name descname">savedTrainingFile</code><a class="headerlink" href="#models.Project.savedTrainingFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>savedTrainingFile file.
+The saved training file stored as a python pickle.
+Generated automatically.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.savedTestingFile">
+<code class="sig-name descname">savedTestingFile</code><a class="headerlink" href="#models.Project.savedTestingFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>savedTestingFile file.
+The saved testing file stored as a python pickle. Generated automatically.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.columns">
+<code class="sig-name descname">columns</code><a class="headerlink" href="#models.Project.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>The columns of the training table. Used to populate picklist
+in the UI. Generated automatically.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Project.runs">
+<code class="sig-name descname">runs</code><a class="headerlink" href="#models.Project.runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs associated with the project.
+Runs have a many to one relationship to projects.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="models.Project.insert">
 <code class="sig-name descname">insert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Project.insert" title="Permalink to this definition">¶</a></dt>
@@ -956,7 +1087,115 @@ the model must exist in the database</p>
 <dl class="class">
 <dt id="models.Run">
 <em class="property">class </em><code class="sig-prename descclassname">models.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#models.Run" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><dl class="attribute">
+<dt id="models.Run.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#models.Run.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id
+Primary Key - Auto assigned</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#models.Run.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name
+Name of the run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#models.Run.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>description
+Description of the projerunct</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.results">
+<code class="sig-name descname">results</code><a class="headerlink" href="#models.Run.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>results
+The results data for a run. This contains the output of a run. This
+includes the feature evaluation, feature engineering, and model training
+stats.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.account_id">
+<code class="sig-name descname">account_id</code><a class="headerlink" href="#models.Run.account_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>account_id
+Account owner of the record. Restricts viewing from other users.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.project_id">
+<code class="sig-name descname">project_id</code><a class="headerlink" href="#models.Run.project_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>project_id
+Parent record of the run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.targetVariable">
+<code class="sig-name descname">targetVariable</code><a class="headerlink" href="#models.Run.targetVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>targetVariable
+The variable that is to be predicted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.key">
+<code class="sig-name descname">key</code><a class="headerlink" href="#models.Run.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>key
+The unique key that defines the training record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.predictSetOut">
+<code class="sig-name descname">predictSetOut</code><a class="headerlink" href="#models.Run.predictSetOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>predictSetOut
+Defines the sheet columns to be used in the predict file.
+Usually two, the target variable and key. This is designed 
+to be used for Kaggle competition submissions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.predictFile">
+<code class="sig-name descname">predictFile</code><a class="headerlink" href="#models.Run.predictFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>predictFile
+Stores the results of the prediction for the test file.
+Used for downloads.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.modelList">
+<code class="sig-name descname">modelList</code><a class="headerlink" href="#models.Run.modelList" title="Permalink to this definition">¶</a></dt>
+<dd><p>modelList
+List of models used in training. Best is evaluated on the scoreing
+choice. Valid models can include: l2, rfc, gbc, decisiontree,
+kneighbors, sgd, bagging, adaboost, gaussiannb, etc, svc, xgbc,
+stack, vote</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.scoring">
+<code class="sig-name descname">scoring</code><a class="headerlink" href="#models.Run.scoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>scoring
+Scoring methods for model evaluation.
+Options include f1, r2, Perecision, Recall, and Accuracy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.basicAutoMethod">
+<code class="sig-name descname">basicAutoMethod</code><a class="headerlink" href="#models.Run.basicAutoMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>basicAutoMethod
+There are two algorithems for feature engineering and attribute evaliuation. 
+This selects between the two models. True for Model I False for model II</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="models.Run.Project">
+<code class="sig-name descname">Project</code><a class="headerlink" href="#models.Run.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project
+Back reference to the parent project</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="models.Run.insert">
 <code class="sig-name descname">insert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.Run.insert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inserts a new model into a database.

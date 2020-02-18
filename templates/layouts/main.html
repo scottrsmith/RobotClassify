@@ -53,17 +53,19 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {% if (request.endpoint == 'projects') or
-                (request.endpoint == 'search_projects') or
-                (request.endpoint == 'show_projects') %}
-              <form class="search" method="post" action="/projects/search">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <input class="form-control"
-                  type="search"
-                  name="search_term"
-                  placeholder="Find a project"
-                  aria-label="Search">
-              </form>
+			  {% if user.editor %}
+	              {% if (request.endpoint == 'projects') or
+	                (request.endpoint == 'search_projects') or
+	                (request.endpoint == 'show_projects') %}
+	              <form class="search" method="post" action="/projects/search">
+	                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+	                <input class="form-control"
+	                  type="search"
+	                  name="search_term"
+	                  placeholder="Find a project"
+	                  aria-label="Search">
+	              </form>
+				  {% endif %}
 			  {% endif %}
             </li>
           </ul>
@@ -71,10 +73,10 @@
             <li {% if request.endpoint == 'projects' %} class="active" {% endif %}><a href="{{ url_for('projects') }}">Projects</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="./docs/index.html" target="_blank">Docs</a></li>
-			{% if username  %}
+            <li><a href="/docs/index.html" target="_blank">Docs</a></li>
+			{% if user.username  %}
             	<li {% if request.endpoint == 'logout' %} class="active" {% endif %}><a href="{{ url_for('logout') }}">Logout</a></li>
-				<li ><a>User: {{ username }}</a></li>
+				<li ><a>User: {{ user.username }}</a></li>
 			{% else %}
             	<li {% if request.endpoint == 'login' %} class="active" {% endif %}><a href="{{ url_for('login') }}">Login</a></li>
 			{% endif %}

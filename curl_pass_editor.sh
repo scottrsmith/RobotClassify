@@ -33,11 +33,11 @@ curl -X POST http://robotclassify.herokuapp.com/projects/search \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN" \
                  -F "search_term=Titanic"
 
-curl -X DELETE http://robotclassify.herokuapp.com/projects/1/delete \
+curl -X DELETE http://robotclassify.herokuapp.com/projects/15/delete \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
 echo "Runs"
-##################
+
 curl -X GET http://robotclassify.herokuapp.com/runs/8 \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
@@ -56,16 +56,14 @@ curl -X POST http://robotclassify.herokuapp.com/runs/create/4 \
 curl -X DELETE http://robotclassify.herokuapp.com/runs/17/delete \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
-curl -X PATCH http://robotclassify.herokuapp.com/runs/14/edit \
+curl -X PATCH http://robotclassify.herokuapp.com/runs/13/edit \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN" \
                  -F "form-run-name=Updated Curl Run Patch"
 
 echo "Training"
 
-curl -X GET http://robotclassify.herokuapp.com/train/1 \
-                 -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
-curl -X GET http://robotclassify.herokuapp.com/train/1/download \
+curl -X GET http://robotclassify.herokuapp.com/train/13/download \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
 
