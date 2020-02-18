@@ -101,7 +101,7 @@ availableModels = {TRAIN_REGRESSION: ['lasso', 'ridge', 'enet', 'rf', 'gb',
                    TRAIN_CLUSTERING: ['kmeans']}
 
 
-def memorySnapshot(log, cnt=25, start=False):
+def memorySnapshot(log, cnt=10, start=False):
     if start:
        tracemalloc.start()
     snapshot = tracemalloc.take_snapshot()

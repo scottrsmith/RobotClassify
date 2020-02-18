@@ -218,10 +218,10 @@ def autoFlaskEvaluateClassifier(projectName=None,
         # mlUtility.runLog (project.explore[TRAININGFILENAME].
         #                                           allStatsSummary())
 
+        # results['exploreheatmap'] = None
+        results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
+            plotExploreHeatMap(toWeb=True)
         pass
-        # results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
-        #    plotExploreHeatMap(toWeb=True)
-        results['exploreheatmap'] = None
 
         # project.explore[TRAININGFILENAME].plotFeatureImportance()
         # project.explore[TRAININGFILENAME].plotColumnImportance()
