@@ -33,11 +33,11 @@ curl -X POST http://robotclassify.herokuapp.com/projects/search \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN" \
                  -F "search_term=Titanic"
 
-curl -X DELETE http://robotclassify.herokuapp.com/projects/14/delete \
+curl -X DELETE http://robotclassify.herokuapp.com/projects/1/delete \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
 echo "Runs"
-
+##################
 curl -X GET http://robotclassify.herokuapp.com/runs/8 \
                  -H "Authorization: Bearer $USER_EDIT_TOKEN"
 
