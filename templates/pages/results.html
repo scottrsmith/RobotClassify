@@ -8,8 +8,8 @@
 </div>
 
 <div class="row">
-	<center>
-	Jump to: <a href="#heatmap">Heatmap</a> |  <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> | <a href="/projects/{{ run.project_id }}">Project</a>
+<center>
+Jump to: {% if results.exploreheatmap %}<a href="#heatmap">Heatmap</a> |{% endif %} <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> | <a href="/projects/{{ run.project_id }}">Project</a>
 </center>
 </div>
 
@@ -23,10 +23,12 @@
 
 <br>
 
+{% if results.exploreheatmap %} 
 <div class="row" id="heatmap">
 	<h3 >Explore Heatmap: At a glance, what columns need feature engineering</h3>
 	<img src="{{ results.exploreheatmap }}" alt="Heat Map" />
 </div>
+{% endif %}
 
 <div class="row" id="engineering">
 	<h3>Feature Engineering Recommendations</h3>
@@ -102,7 +104,7 @@
 <div>
 	<br><br><br>
 	<center>
-	Jump to: <a href="#top">Top</a> | <a href="#results">Results</a> | <a href="#heatmap">Heatmap</a> |  <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> 
+	Jump to: <a href="#top">Top</a> | <a href="#results">Results</a> |{% if results.exploreheatmap %} <a href="#heatmap">Heatmap</a> |{% endif %}  <a href="#engineering">Feature Engineering</a> | <a href="#cleaninglog">Cleaning Log</a> |  <a href="#scores">Training Scores</a> | <a href="/projects/{{ run.project_id }}">Project</a> 
 </center>
 <br><br>
 </div>

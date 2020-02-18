@@ -138,7 +138,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
     TRAININGFILENAME = 'Training'
     TESTINGFILENAME = 'Testing'
 
-    tm.memorySnapshot('Start...', cnt=25, start=True)
+    tm.memorySnapshot('Start...', cnt=10, start=True)
 
     results = {}
 
@@ -212,14 +212,16 @@ def autoFlaskEvaluateClassifier(projectName=None,
     results['recommendations'] = project.explore[TRAININGFILENAME]\
         .getRecommendationsAsObject()
 
+    tm.memorySnapshot('doExplore...', cnt=10)
     if doExplore:
         # mlUtility.runLog (project.explore[TRAININGFILENAME])
         # mlUtility.runLog (project.explore[TRAININGFILENAME].
         #                                           allStatsSummary())
 
         pass
-        results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
-            plotExploreHeatMap(toWeb=True)
+        # results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
+        #    plotExploreHeatMap(toWeb=True)
+        results['exploreheatmap'] = None
 
         # project.explore[TRAININGFILENAME].plotFeatureImportance()
         # project.explore[TRAININGFILENAME].plotColumnImportance()
@@ -230,6 +232,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
     results['cleaninglog'] = project.cleanProject(TRAININGFILENAME)
     project.prepProjectByName(TRAININGFILENAME, outFile=trainingFileOut)
 
+    tm.memorySnapshot('doTrain...', cnt=10)
     if doTrain:
         project.trainProjectByName(TRAININGFILENAME)
 
@@ -249,7 +252,9 @@ def autoFlaskEvaluateClassifier(projectName=None,
         # project.reportResultsOnTrainedModel(TRAININGFILENAME,
         # project.bestModelName)
 
+    tm.memorySnapshot('doPredict...', cnt=10)
     predictFileDF = None
+    
     if doPredict:
         predict = project.createPredictFromBestModel(TRAININGFILENAME)
 
@@ -287,6 +292,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
     if predict is not None:
         del predict
 
+    tm.memorySnapshot('doPredict...', cnt=10)
     return results, predictFileDF
 
 
