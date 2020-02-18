@@ -57,7 +57,8 @@
 								<div class="col-sm-4">
 									<h4>Run: {{ run.name }}</h4>
 									<h5>{{ run.description }}</h5>
-									<h5>{{ run.description }}</h5>
+									<h5>Model(s): {% for model in run.modelList %}{{model}}, {% endfor %} </h5>
+									<h5>Scoring on {{ run.scoring }}</h5>
 								</div>
 						
 								<!-- Training Status -->

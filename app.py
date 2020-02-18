@@ -78,7 +78,7 @@ from logging import Formatter, FileHandler
 from six.moves.urllib.parse import urlencode
 from functools import wraps
 from jose import jwt
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 # Robot Classify Libraries
 from forms import *
@@ -228,14 +228,41 @@ def get_token_from_header():
     return token
 
 
+#  curl -X GET https://dev-p35ewo73.auth0.com/userinfo      
+#       -H "Authorization: Bearer $USER_EDIT_TOKEN"
+#
+# returns: {
+#           "sub":"auth0|5e2b4bd7cc2da80e9813f3e3",
+#           "nickname":"udacityscott+edit",
+#           "name":"udacityscott+edit@gmail.com",
+#           "picture":"...",
+#           "updated_at":"2020-02-18T06:17:14.168Z",
+#           "email":"udacityscott+edit@gmail.com",
+#           "email_verified":true
+#          }
+#
+# def get_user_info(token):
+#    headers = {'Authorization:': "Bearer " + token}
+#    request = Request(AUTH0_BASE_URL + '/userinfo', headers=headers)
+#    response = urlopen(request).read()
+
+    # conn = http.client.HTTPSConnection(path)
+    # payload = "{}"
+    # headers = {'Authorization:': "Bearer "+token}
+    # conn.request("POST", "/oauth/token", payload, headers)
+
+#    print('/n/n Response Data=', response)
+#    data = json.loads(res.read().decode("utf-8"))
+#    print('/n/nGet User response=', data)
+#    return data
+
+
 # When authenticated, set the user's session data for later reference
 def set_session_at_auth(userinfo, payload):
+
     session[config.JWT_PAYLOAD] = userinfo
-    if 'name' in userinfo:
-        session[config.PROFILE_KEY] = {'user_id': userinfo['sub'],
-                                       'name': userinfo['name']}
-    else:
-        session[config.PROFILE_KEY] = {'user_id': userinfo['sub']}
+    session[config.PROFILE_KEY] = {'user_id': userinfo['sub'],
+                                   'name': userinfo['name']}
     session['account_id'] = userinfo['sub']
     session['username'] = userinfo['name']
     session['payload'] = payload
@@ -271,7 +298,7 @@ def verify_decode_jwt(token):
 
     unverified_header = jwt.get_unverified_header(token)
     jsonurl = \
-        urlopen(f'https://dev-p35ewo73.auth0.com/.well-known/jwks.json')
+        urlopen(AUTH0_BASE_URL + '/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
     rsa_key = {}
     if 'kid' not in unverified_header:
@@ -336,6 +363,7 @@ def requires_auth(permission=''):
                     token = get_token_from_header()
                     payload = verify_decode_jwt(token)
                     session['account_id'] = payload['sub']
+                    session['username'] = payload['sub']
                     session['payload'] = payload
                     session.modified = True
                     app.config['WTF_CSRF_ENABLED'] = False
@@ -446,13 +474,14 @@ def index():
 
         - Expected Fail Response::
 
-            HTTP Status Code: 404
+            HTTP Status Code: 405
             {
-             "description": "404 Not Found: The requested URL..."
-             "error": 404,
-             "message": "Not Found",
-             "success": false
+             "description":"405 Method Not Allowed: .... requested URL.",
+             "error":405,
+             "message":"Method Not Allowed",
+             "success":false
             }
+
     """
     if 'username' in session:
         un = session['username']
