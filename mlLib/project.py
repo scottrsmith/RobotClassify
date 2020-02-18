@@ -117,21 +117,38 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
         Auto-process an ML job for Flask Servers
 
-        **XXXXX**
+        Takes a data file and a few data points about the file and automatically
+        does feature engineering and model evaluation.
 
         - Sample Call::
 
-            Example Call
-
-
-        - Expected Success Response::
-
-            Example Success Response
-
-
-        - Expected Fail Response::
-
-            Example fail response
+            results, pred = autoFlaskEvaluateClassifier(
+                 projectName=run.name,
+                 trainingFile=run.Project.trainingFile,
+                 testingFile=run.Project.testingFile,
+                 trainingFileDF=run.Project.savedTrainingFile,
+                 testingFileDF=run.Project.savedTestingFile,
+                 targetVariable=run.targetVariable,
+                 key=run.key,
+                 predictSetOut=run.predictSetOut,
+                 logFileOut=None,
+                 transcriptFile=None,
+                 trainingFileOut=None,
+                 predictFileOut=None,
+                 resultsFile='KaggleSubmitFile.csv',
+                 modelList=run.modelList,
+                 confusionMatrixLabels=None,
+                 scoring=run.scoring,
+                 setProjectGoals={'f1': (0.9, '>')},
+                 runVerbose=0,
+                 recommendOnly=True,
+                 basicAutoMethod=True,
+                 skewFactor=40.0,
+                 doExplore=True,
+                 doTrain=True,
+                 doPredict=True,
+                 toTerminal=True,
+             )
 
     """
 
@@ -218,9 +235,10 @@ def autoFlaskEvaluateClassifier(projectName=None,
         # mlUtility.runLog (project.explore[TRAININGFILENAME].
         #                                           allStatsSummary())
 
-        # results['exploreheatmap'] = None
-        results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
-            plotExploreHeatMap(toWeb=True)
+        
+        #results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
+        #    plotExploreHeatMap(toWeb=True)
+        results['exploreheatmap'] = None
         pass
 
         # project.explore[TRAININGFILENAME].plotFeatureImportance()
@@ -322,29 +340,7 @@ def autoEvaluateClassifier(projectName=None,
                            skewFactor=None,
                            toTerminal=True
                            ):
-    """
-        **autoEvaluateClassifier**
-
-        Auto-process an ML job for
-
-        **XXXXX**
-
-        - Sample Call::
-
-            Example Call
-
-
-        - Expected Success Response::
-
-            Example Success Response
-
-
-        - Expected Fail Response::
-
-            Example fail response
-
-    """
-
+  
     TRAININGFILENAME = 'Training'
     TESTINGFILENAME = 'Testing'
 
@@ -466,9 +462,9 @@ class mlProject (object):
     Various object mothods are used to load, review, and train the data, as
     well as manage running predictions
 
+
     Example:
-    project = mlProject('Customer Segements', 'clustering model should factor
-    in both aggregate sales patterns and specific items purchased')
+    project = mlProject('Customer Segements', 'clustering model should factor')
 
 
     """
@@ -612,21 +608,22 @@ class mlProject (object):
 
             setTrainingPreferences for an ML job
 
-            **XXXXX**
 
             - Sample Call::
 
-                Example sample call
-
-
-            - Expected Success Response::
-
-                Example Success Response
-
-
-            - Expected Fail Response::
-
-                Example fail response
+                project.setTrainingPreferences (
+                               crossValidationSplits=5,
+                               parallelJobs=-1,
+                               modelType=tm.TRAIN_CLASSIFICATION,
+                               modelList=['l2','xgbc','etc','stack'],
+                               useStandardScaler=True,
+                               gridSearchScoring='accuracy',
+                               testSize=.25,
+                               logTrainingResultsFilename=resultsFile,
+                               gridSearchVerbose=1,
+                               runHyperparameters=runHyper,
+                               runEstimatorHyperparameters=runEstimatorHyper,
+                               runMetaClassifier=runMeta)
 
         """
 
@@ -762,6 +759,8 @@ class mlProject (object):
             project.setHyperparametersOverride(self, 'lasso', hyperparameters)
 
 
+        Example Hyper Paramaters::
+
             hyperparameters = {
                 'lasso__alpha': [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10]
                 }
@@ -811,9 +810,12 @@ class mlProject (object):
 
     def setConfusionMatrixLabels(self, list):
         """
+        Set the labels for the confusion matrix plot
 
-           Example: project.setConfusionMatrixLabels(
-                            [(0,'Paid'), (1, 'Default') ])
+           Example::
+
+               project.setConfusionMatrixLabels(
+                    [(0,'Paid'), (1, 'Default') ])
 
         """
 
@@ -825,16 +827,18 @@ class mlProject (object):
         """
         Purpose: Set the target variable for supervised learning.
 
-        Call: setTarget(self, value, boolean=False, trueValue=None,
-                        convertTable=None, tableName=None):
-
-        Example:
-                project.setTarget('loan_status')
-
+        Call::
+            setTarget(self, value, boolean=False, trueValue=None,
+                      convertTable=None, tableName=None):
 
             trueValue = what is the true values
             boolean = is this a boolean value
             convertTable = a table of how to convert values
+
+        Example::
+
+            project.setTarget('loan_status')
+
 
         """
         if tableName is not None:
@@ -852,11 +856,9 @@ class mlProject (object):
                    location=None, fileName=None, sheetName=None,
                    df=None, hasHeaders=False, range=None, isDefault=False):
         """
-            def importFile(self, name, type=None, description=None,
-                          location=None, fileName=None, sheetName=None,
-                          hasHeaders = False,
-                          range=None, isDefault=False):
+        Import a file to be used in training or predicting
 
+        Example::
 
             project.importFile('Loan Data', type='csv',
                     description='Lending Club Data from 2017-2018',
