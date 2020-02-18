@@ -38,6 +38,7 @@ curl $HOST/
 echo "Docs"
 curl -X GET $HOST/docs/index.html
 
+
 echo "Projects"
 curl -X GET $HOST/projects \
      -H "Authorization: Bearer $TOKEN"
@@ -60,7 +61,7 @@ curl -X POST $HOST/projects/search \
                  -H "Authorization: Bearer $TOKEN" \
                  -F "search_term=Titanic"
 
-curl -X DELETE $HOST/projects/3/delete \
+curl -X DELETE $HOST/projects/11/delete \
                  -H "Authorization: Bearer $TOKEN"
 
 echo "Runs"
@@ -80,7 +81,7 @@ curl -X POST $HOST/runs/create/1 \
                  -F "form-run-modelList=xgbc" \
                  -F "form-run-basicAutoMethod=True"
 
-curl -X DELETE $HOST/runs/5/delete \
+curl -X DELETE $HOST/runs/15/delete \
                  -H "Authorization: Bearer $TOKEN"
 
 curl -X PATCH $HOST/runs/6/edit \

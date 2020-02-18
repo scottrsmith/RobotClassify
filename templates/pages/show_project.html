@@ -25,6 +25,9 @@
 		{%for run in project.runs %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
+				<p class="subtitle">
+					ID: {{ run.id }}
+				</p>
 				<h3><a href="/runs/{{ run.id }}">{{ run.name }}</a></h3>
 				<h5>{{ run.description }}</h5>
 				<h6>Target Variable: {{ run.targetVariable }}</h6>

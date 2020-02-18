@@ -237,6 +237,7 @@ def set_session_at_auth(userinfo, payload):
     else:
         session[config.PROFILE_KEY] = {'user_id': userinfo['sub']}
     session['account_id'] = userinfo['sub']
+    session['username'] = userinfo['name']
     session['payload'] = payload
     session.modified = True
 
@@ -393,7 +394,7 @@ def callback_handling():
     if 'redirect_url' in session:
         return redirect(session.get('redirect_url'))
     else:
-        return redirect('/')
+        return redirect('/projects')
 
 
 @app.route('/login')
@@ -453,8 +454,11 @@ def index():
              "success": false
             }
     """
-
-    return render_template('pages/index.html')
+    if 'username' in session:
+        un = session['username']
+    else:
+        un = None
+    return render_template('pages/index.html', username=un)
 
 # ----------------------------------------------------------------------------
 # Display Documentation Pages (Generated from sphinx)
@@ -488,6 +492,15 @@ def send_documents(path):
      """
     return send_from_directory('docs/build/html', path)
 
+
+def projects_list_page():
+    projectList = \
+            Project.query.filter_by(account_id=session['account_id']).all()
+    data = [p.projectPage for p in projectList]
+    return render_template('pages/projects.html',
+                           projects=data,
+                           count=len(data),
+                           username=session['username'])
 
 # ----------------------------------------------------------------------------
 #  List Projects
@@ -532,11 +545,7 @@ def projects(payload):
 
     # List the projects
 
-    projectList = \
-        Project.query.filter_by(account_id=session['account_id']).all()
-    data = [p.projectPage for p in projectList]
-    return render_template('pages/projects.html', projects=data,
-                           count=len(data))
+    return projects_list_page()
 
 
 # ----------------------------------------------------------------------------
@@ -581,7 +590,9 @@ def show_project(payload, project_id):
         abort(404)
 
     data = project.projectPage
-    return render_template('pages/show_project.html', project=data)
+    return render_template('pages/show_project.html',
+                           project=data,
+                           username=session['username'])
 
 
 # ----------------------------------------------------------------------------
@@ -672,10 +683,16 @@ def create_projects_submission(payload):
 
         flash('Project ' + form['name'].data
               + ' was successfully added!')
+        data = project.projectPage
+        return render_template('pages/show_project.html',
+                               project=data,
+                               username=session['username'])
     else:
-        return render_template('forms/new_project.html', form=form)
+        return render_template('forms/new_project.html',
+                               form=form,
+                               username=session['username'])
 
-    return render_template('pages/index.html')
+    return projects_list_page()
 
 
 # ----------------------------------------------------------------------------
@@ -744,8 +761,10 @@ def edit_project_submission(payload, project_id):
         data = project.projectPage
         return render_template('pages/show_project.html', project=data)
 
-    return render_template('forms/edit_project.html', form=form,
-                           project=project)
+    return render_template('forms/edit_project.html',
+                           form=form,
+                           project=project,
+                           username=session['username'])
 
 # ----------------------------------------------------------------------------
 #  Search projects
@@ -797,7 +816,8 @@ def search_projects(payload):
 
     return render_template('pages/search_projects.html',
                            results=response,
-                           search_term=request.form.get('search_term', ''))
+                           search_term=request.form.get('search_term', ''),
+                           username=session['username'])
 
 
 # ----------------------------------------------------------------------------
@@ -901,11 +921,14 @@ def show_run(payload, run_id):
     if isinstance(run.results, type(None)):
 
         flash('No Run Results for ' + run.name)
-        data = project.projectPage
-        return render_template('pages/show_project.html', project=data)
+        data = run.Project.projectPage
+        return render_template('pages/show_project.html',
+                               project=data,
+                               username=session['username'])
     else:
         return render_template('pages/results.html', run=run,
-                               results=pickle.loads(run.results))
+                               results=pickle.loads(run.results),
+                               username=session['username'])
 
 
 # ----------------------------------------------------------------------------
@@ -961,16 +984,16 @@ def create_run_submission(payload, project_id):
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
 
-    print('\n\nform.validate=', form.validate())
-    print('form.is_submitted=', form.is_submitted())
-    print('form.name.data=', form.name.data)
-    print('form.description.data=', form.description.data)
-    print('form.targetVariable.data=', form.targetVariable.data)
-    print('form.key.data=', form.key.data)
-    print('form.predictSetOut.data=', form.predictSetOut.data)
-    print('form.scoring.data=', form.scoring.data)
-    print('form.modelList.data=', form.modelList.data)
-    print('form.basicAutoMethod.data=', form.basicAutoMethod.data)
+    # print('\n\nform.validate=', form.validate())
+    # print('form.is_submitted=', form.is_submitted())
+    # print('form.name.data=', form.name.data)
+    # print('form.description.data=', form.description.data)
+    # print('form.targetVariable.data=', form.targetVariable.data)
+    # print('form.key.data=', form.key.data)
+    # print('form.predictSetOut.data=', form.predictSetOut.data)
+    # print('form.scoring.data=', form.scoring.data)
+    # print('form.modelList.data=', form.modelList.data)
+    # print('form.basicAutoMethod.data=', form.basicAutoMethod.data)
 
     if form.validate_on_submit():
         run = Run()
@@ -982,10 +1005,14 @@ def create_run_submission(payload, project_id):
 
         flash('Run ' + form['name'].data + ' was successfully added!')
     else:
-        return render_template('forms/new_run.html', form=form)
+        return render_template('forms/new_run.html',
+                               form=form,
+                               username=session['username'])
 
     data = project.projectPage
-    return render_template('pages/show_project.html', project=data)
+    return render_template('pages/show_project.html',
+                           project=data,
+                           username=session['username'])
 
 
 # ----------------------------------------------------------------------------
@@ -1040,7 +1067,9 @@ def delete_run(payload, run_id):
 
     # flash('Run with ID of "' + str(run_id)
     #      + '" was successfully deleted!')
-    # return redirect(url_for('show_project', project_id=project_id))
+    # return redirect(url_for('show_project',
+    #                         project_id=project_id),
+    #                         username=session['username'])
     return '{"success"}'
 
 
@@ -1113,9 +1142,14 @@ def edit_run_submission(payload, run_id):
                   + ' could not be Updated.')
 
         data = run.Project.projectPage
-        return render_template('pages/show_project.html', project=data)
+        return render_template('pages/show_project.html',
+                               project=data,
+                               username=session['username'])
 
-    return render_template('forms/edit_run.html', form=form, run=run)
+    return render_template('forms/edit_run.html',
+                           form=form,
+                           run=run,
+                           username=session['username'])
 
 
 # ----------------------------------------------------------------------------
@@ -1192,8 +1226,10 @@ def run_submission(payload, run_id):
     run.predictFile = pickle.dumps(pred)
     run.update()
 
-    return render_template('pages/results.html', run=run,
-                           results=results)
+    return render_template('pages/results.html',
+                           run=run,
+                           results=results,
+                           username=session['username'])
 
 
 @app.route('/train/<int:run_id>/download', methods=['GET'])
