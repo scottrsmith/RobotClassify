@@ -61,15 +61,15 @@ class Project(db.Model):
     trainingFile = db.Column(db.String(120))
     '''
     Training file.
-    CSV file to be loaded for training as uploaded in the upload folder. 
+    CSV file to be loaded for training as uploaded in the upload folder.
     It stored in the project record in 'savedTrainingFile' as a python pickle.
     '''
     testingFile = db.Column(db.String(120))
     '''
     Testing file.
     CSV file to be loaded for testing the trained model as uploaded in the
-    upload folder. The testing file is designed for Kaggle comperition 
-    submissions. It is stored in the project record in 'savedTestingFile' 
+    upload folder. The testing file is designed for Kaggle comperition
+    submissions. It is stored in the project record in 'savedTestingFile'
     as a python pickle
     '''
     savedTrainingFile = db.Column(db.PickleType)
@@ -91,7 +91,7 @@ class Project(db.Model):
     runs = db.relationship('Run', backref='project', lazy=True)
     '''
     Runs associated with the project.
-    Runs have a many to one relationship to projects. 
+    Runs have a many to one relationship to projects.
     '''
 
     @property
@@ -237,7 +237,7 @@ class Run(db.Model):
     '''
     predictSetOut
     Defines the sheet columns to be used in the predict file.
-    Usually two, the target variable and key. This is designed 
+    Usually two, the target variable and key. This is designed
     to be used for Kaggle competition submissions.
     '''
 
@@ -245,7 +245,7 @@ class Run(db.Model):
     '''
     predictFile
     Stores the results of the prediction for the test file.
-    Used for downloads. 
+    Used for downloads.
     '''
 
     # confusionMatrixLabels=[(0,'Not'), (1, 'Survived')],
@@ -269,8 +269,9 @@ class Run(db.Model):
     basicAutoMethod = db.Column(db.Boolean(), default=True)
     '''
     basicAutoMethod
-    There are two algorithems for feature engineering and attribute evaliuation. 
-    This selects between the two models. True for Model I False for model II
+    There are two algorithems for feature engineering and attribute
+    evaliuation. This selects between the two models. True for Model
+    I False for model II
     '''
 
     Project = db.relationship('Project',

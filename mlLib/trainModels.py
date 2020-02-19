@@ -102,14 +102,14 @@ availableModels = {TRAIN_REGRESSION: ['lasso', 'ridge', 'enet', 'rf', 'gb',
 
 
 def memorySnapshot(log, cnt=10, start=False):
-    if start:
-       tracemalloc.start()
-    snapshot = tracemalloc.take_snapshot()
-    top_stats = snapshot.statistics('lineno')
-    print('\n\nTop {} at {}..............'.format(cnt, log))
-    for stat in top_stats[:cnt]:
-       print(stat)
-    print ('\n')
+    # if start:
+    #   tracemalloc.start()
+    # snapshot = tracemalloc.take_snapshot()
+    # top_stats = snapshot.statistics('lineno')
+    # print('\n\nTop {} at {}..............'.format(cnt, log))
+    # for stat in top_stats[:cnt]:
+    #    print(stat)
+    # print ('\n')
     pass
 
 

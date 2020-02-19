@@ -1002,7 +1002,7 @@ Description of the project</p>
 <dt id="models.Project.trainingFile">
 <code class="sig-name descname">trainingFile</code><a class="headerlink" href="#models.Project.trainingFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Training file.
-CSV file to be loaded for training as uploaded in the upload folder. 
+CSV file to be loaded for training as uploaded in the upload folder.
 It stored in the project record in ‘savedTrainingFile’ as a python pickle.</p>
 </dd></dl>
 
@@ -1011,8 +1011,8 @@ It stored in the project record in ‘savedTrainingFile’ as a python pickle.</
 <code class="sig-name descname">testingFile</code><a class="headerlink" href="#models.Project.testingFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Testing file.
 CSV file to be loaded for testing the trained model as uploaded in the
-upload folder. The testing file is designed for Kaggle comperition 
-submissions. It is stored in the project record in ‘savedTestingFile’ 
+upload folder. The testing file is designed for Kaggle comperition
+submissions. It is stored in the project record in ‘savedTestingFile’
 as a python pickle</p>
 </dd></dl>
 
@@ -1150,7 +1150,7 @@ The unique key that defines the training record.</p>
 <code class="sig-name descname">predictSetOut</code><a class="headerlink" href="#models.Run.predictSetOut" title="Permalink to this definition">¶</a></dt>
 <dd><p>predictSetOut
 Defines the sheet columns to be used in the predict file.
-Usually two, the target variable and key. This is designed 
+Usually two, the target variable and key. This is designed
 to be used for Kaggle competition submissions.</p>
 </dd></dl>
 
@@ -1184,8 +1184,9 @@ Options include f1, r2, Perecision, Recall, and Accuracy</p>
 <dt id="models.Run.basicAutoMethod">
 <code class="sig-name descname">basicAutoMethod</code><a class="headerlink" href="#models.Run.basicAutoMethod" title="Permalink to this definition">¶</a></dt>
 <dd><p>basicAutoMethod
-There are two algorithems for feature engineering and attribute evaliuation. 
-This selects between the two models. True for Model I False for model II</p>
+There are two algorithems for feature engineering and attribute
+evaliuation. This selects between the two models. True for Model
+I False for model II</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1241,7 +1242,8 @@ the model must exist in the database</p>
 <h2><strong>Introduction</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>The projects module is is a high-level library to process ML jobs at the
 project level. All interactions can happen with this API</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>Manage Projects</p></li>
 <li><p>Load Data</p></li>
 <li><p>Explore Data</p></li>
@@ -1250,50 +1252,173 @@ project level. All interactions can happen with this API</p>
 <li><p>Train the data, finding the best model</p></li>
 <li><p>Deploy model, to process ML transactions</p></li>
 </ul>
+</div></blockquote>
+<p>Code Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">project</span> <span class="k">import</span> <span class="n">mlProject</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">getData</span> <span class="k">import</span> <span class="n">getData</span>
+<span class="kn">import</span> <span class="nn">exploreData</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">from</span> <span class="nn">exploreData</span> <span class="k">import</span> <span class="n">exploreData</span>
+<span class="kn">from</span> <span class="nn">cleanData</span> <span class="k">import</span> <span class="n">cleanData</span><span class="p">,</span> <span class="n">cleaningRules</span>
+<span class="kn">from</span> <span class="nn">prepData</span> <span class="k">import</span> <span class="n">prepData</span>
+<span class="kn">from</span> <span class="nn">trainModels</span> <span class="k">import</span> <span class="n">trainModels</span>
+
+<span class="c1"># Create the project and set the training preferences</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">mlProject</span><span class="p">(</span><span class="s1">&#39;Predict Home Values&#39;</span><span class="p">,</span> <span class="s1">&#39;EDS Real Estate Project 2&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">setTrainingPreferences</span><span class="p">(</span><span class="n">crossValidationSplits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                               <span class="n">parallelJobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                               <span class="n">modelType</span><span class="o">=</span><span class="s1">&#39;regression&#39;</span><span class="p">,</span>
+                               <span class="n">modelList</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="s1">&#39;ridge&#39;</span><span class="p">,</span>
+                                          <span class="s1">&#39;enet&#39;</span><span class="p">,</span> <span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="s1">&#39;gb&#39;</span><span class="p">])</span>
+
+<span class="c1"># Import the file and set the training target to predict</span>
+<span class="n">project</span><span class="o">.</span><span class="n">importFile</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                   <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;GoogleSheet&#39;</span><span class="p">,</span>
+                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Real Estate Project 2&#39;</span><span class="p">,</span>
+                   <span class="n">location</span><span class="o">=</span><span class="s1">&#39;1QC2v9jPJFTLYxjm-x6ic-utw0CBskU8&#39;</span><span class="p">,</span>
+                   <span class="n">hasHeaders</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="s1">&#39;A1:Z1884&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">setTarget</span><span class="p">(</span><span class="s1">&#39;tx_price&#39;</span><span class="p">)</span>
+
+<span class="c1"># Explore the data and print out the heatmap that</span>
+<span class="c1"># will illustrate the recommended feature engineering</span>
+<span class="c1"># plot other statistical data</span>
+<span class="n">project</span><span class="o">.</span><span class="n">exploreData</span><span class="p">()</span>
+<span class="n">project</span><span class="o">.</span><span class="n">explore</span><span class="p">[</span><span class="s1">&#39;Property Data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plotExploreHeatMap</span><span class="p">()</span>
+<span class="n">project</span><span class="o">.</span><span class="n">explore</span><span class="p">[</span><span class="n">TRAININGFILENAME</span><span class="p">]</span><span class="o">.</span><span class="n">plotFeatureImportance</span><span class="p">()</span>
+<span class="n">project</span><span class="o">.</span><span class="n">explore</span><span class="p">[</span><span class="n">TRAININGFILENAME</span><span class="p">]</span><span class="o">.</span><span class="n">plotColumnImportance</span><span class="p">()</span>
+<span class="n">project</span><span class="o">.</span><span class="n">explore</span><span class="p">[</span><span class="n">TRAININGFILENAME</span><span class="p">]</span><span class="o">.</span><span class="n">plotHistogramsAll</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">explore</span><span class="p">[</span><span class="n">TRAININGFILENAME</span><span class="p">]</span><span class="o">.</span><span class="n">plotCorrelations</span><span class="p">()</span>
+
+<span class="c1"># Init the setup of the cleaning rules</span>
+<span class="n">project</span><span class="o">.</span><span class="n">runCleaningRules</span><span class="p">()</span>
+
+
+<span class="c1"># Add manual cleaning Rules. These rules perform the feature engineering</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;roof&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;asphalt,shake-shingle&#39;</span><span class="p">,</span><span class="s1">&#39;shake-shingle&#39;</span><span class="p">],</span>
+                                 <span class="s1">&#39;Shake Shingle&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;exterior_walls&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Rock, Stone&#39;</span><span class="p">],</span> <span class="s1">&#39;Masonry&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;exterior_walls&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Concrete&#39;</span><span class="p">,</span> <span class="s1">&#39;Block&#39;</span><span class="p">],</span> <span class="s1">&#39;Concrete Block&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span>
+    <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REMOVE_ITEMS_ABOVE</span><span class="p">,</span> <span class="s1">&#39;lot_size&#39;</span><span class="p">,</span> <span class="mi">1220551</span><span class="p">)</span>
+
+<span class="c1"># values are sparse classes and prompt to combine</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;exterior_walls&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Wood Siding&#39;</span><span class="p">,</span> <span class="s1">&#39;Wood Shingle&#39;</span><span class="p">],</span> <span class="s1">&#39;Wood&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;exterior_walls&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Concrete Block&#39;</span><span class="p">,</span> <span class="s1">&#39;Stucco&#39;</span><span class="p">,</span> <span class="s1">&#39;Masonry&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;Asbestos shingle&#39;</span><span class="p">],</span> <span class="s1">&#39;Other&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;roof&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Composition&#39;</span><span class="p">,</span> <span class="s1">&#39;Wood Shake/ Shingles&#39;</span><span class="p">],</span>
+                                 <span class="s1">&#39;Composition Shingle&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REBUCKET</span><span class="p">,</span> <span class="s1">&#39;roof&#39;</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span><span class="s1">&#39;Gravel/Rock&#39;</span><span class="p">,</span> <span class="s1">&#39;Roll Composition&#39;</span><span class="p">,</span><span class="s1">&#39;Slate&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;Built-up&#39;</span><span class="p">,</span> <span class="s1">&#39;Asbestos&#39;</span><span class="p">,</span> <span class="s1">&#39;Metal&#39;</span><span class="p">],</span> <span class="s1">&#39;Other&#39;</span><span class="p">])</span>
+
+<span class="c1"># indicator variables</span>
+<span class="c1"># Create indicator variable for properties with 2 beds and 2 baths</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_INDICATOR_VARIABLE</span><span class="p">,</span>
+                                <span class="s1">&#39;two_and_two&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;( beds == 2 ) &amp; ( baths == 2 )&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create indicator feature for transactions between 2010 and 13 resession</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_INDICATOR_VARIABLE</span><span class="p">,</span>
+                            <span class="s1">&#39;during_recession&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;( tx_year &gt;= 2010 ) &amp; ( tx_year &lt;= 2013 )&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a school score feature that num_schools * median_school</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                               <span class="s1">&#39;school_score&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;num_schools * median_school&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a property age feature</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                                <span class="s1">&#39;property_age&#39;</span><span class="p">,</span> <span class="s1">&#39;tx_year - year_built&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REMOVE_ITEMS_BELOW</span><span class="p">,</span>
+                                <span class="s1">&#39;property_age&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Drop &#39;tx_year&#39; and &#39;year_built&#39; from the dataset</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span> <span class="s1">&#39;tx_year&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span> <span class="s1">&#39;year_built&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Now run these rules to reformat the data</span>
+<span class="n">project</span><span class="o">.</span><span class="n">cleanAndExploreProject</span><span class="p">()</span>
+
+<span class="c1"># Prep the data for training</span>
+<span class="n">project</span><span class="o">.</span><span class="n">prepProjectByName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">project</span><span class="o">.</span><span class="n">trainProjectByName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Save the best model and one named model</span>
+<span class="n">project</span><span class="o">.</span><span class="n">exportBestModel</span><span class="p">(</span><span class="s1">&#39;realEstateBestModel.plk&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">exportNamedModel</span><span class="p">(</span><span class="s1">&#39;gb&#39;</span><span class="p">,</span> <span class="s1">&#39;gbRealEstateModel.plk&#39;</span><span class="p">)</span>
+
+<span class="c1"># Now run the predections</span>
+<span class="n">predict</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">createPredictFromBestModel</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">importPredictFromDF</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">PullTrainingData</span><span class="p">(),</span>
+                            <span class="n">readyForPredict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">keyName</span><span class="p">,</span> <span class="n">keyData</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">getKey</span><span class="p">()</span>
+
+<span class="c1"># Prep the predict file</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">prepPredict</span><span class="p">()</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">predict</span><span class="o">.</span><span class="n">runPredict</span><span class="p">()</span>
+
+<span class="c1"># Prepare the predict file for Kaggle upload</span>
+<span class="c1"># This means taking the predicted answer and adding</span>
+<span class="c1"># to the file for later export</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">addToPredictFile</span><span class="p">(</span><span class="n">keyName</span><span class="p">,</span> <span class="n">keyData</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">useProba</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">]</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">addToPredictFile</span><span class="p">(</span><span class="n">targetVariable</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+
+<span class="c1"># Prep the file for export, onlu keeping</span>
+<span class="c1"># columns needed</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">keepFromPredictFile</span><span class="p">(</span><span class="n">predictSetOut</span><span class="p">)</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">exportPredictFile</span><span class="p">(</span><span class="n">resultsFile</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="function">
 <dt id="mlLib.project.autoFlaskEvaluateClassifier">
 <code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">autoFlaskEvaluateClassifier</code><span class="sig-paren">(</span><em class="sig-param">projectName=None, trainingFile=None, testingFile=None, trainingFileDF=None, testingFileDF=None, targetVariable=None, key=None, predictSetOut=[None], trainingFileOut=None, logFileOut=None, transcriptFile=None, predictFileOut=None, resultsFile=None, modelList=None, confusionMatrixLabels=[], scoring='f1', useProba=False, bottomImportancePrecentToCut=None, setProjectGoals={'f1': (0.9, '&gt;')}, runVerbose=0, recommendOnly=None, basicAutoMethod=None, doExplore=True, doTrain=True, doPredict=True, skewFactor=None, toTerminal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.autoFlaskEvaluateClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>autoFlaskEvaluateClassifier</strong></p>
 <p>Auto-process an ML job for Flask Servers</p>
-<p><strong>XXXXX</strong></p>
+<p>Takes a data file and a few data points about the file and
+automatically does feature engineering and model evaluation.</p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Call</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
-<dt id="mlLib.project.autoEvaluateClassifier">
-<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">autoEvaluateClassifier</code><span class="sig-paren">(</span><em class="sig-param">projectName=None, trainingFile=None, testingFile=None, targetVariable=None, key=None, predictSetOut=[None], trainingFileOut=None, logFileOut=None, transcriptFile=None, predictFileOut=None, resultsFile=None, modelList=None, confusionMatrixLabels=[], scoring='f1', useProba=False, bottomImportancePrecentToCut=None, setProjectGoals={'f1': (0.9, '&gt;')}, runVerbose=1, recommendOnly=None, basicAutoMethod=None, doExplore=True, doTrain=True, doPredict=True, skewFactor=None, toTerminal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.autoEvaluateClassifier" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>autoEvaluateClassifier</strong></p>
-<p>Auto-process an ML job for</p>
-<p><strong>XXXXX</strong></p>
-<ul>
-<li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Call</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">autoFlaskEvaluateClassifier</span><span class="p">(</span>
+     <span class="n">projectName</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+     <span class="n">trainingFile</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">Project</span><span class="o">.</span><span class="n">trainingFile</span><span class="p">,</span>
+     <span class="n">testingFile</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">Project</span><span class="o">.</span><span class="n">testingFile</span><span class="p">,</span>
+     <span class="n">trainingFileDF</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">Project</span><span class="o">.</span><span class="n">savedTrainingFile</span><span class="p">,</span>
+     <span class="n">testingFileDF</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">Project</span><span class="o">.</span><span class="n">savedTestingFile</span><span class="p">,</span>
+     <span class="n">targetVariable</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">targetVariable</span><span class="p">,</span>
+     <span class="n">key</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+     <span class="n">predictSetOut</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">predictSetOut</span><span class="p">,</span>
+     <span class="n">logFileOut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">transcriptFile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">trainingFileOut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">predictFileOut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">resultsFile</span><span class="o">=</span><span class="s1">&#39;KaggleSubmitFile.csv&#39;</span><span class="p">,</span>
+     <span class="n">modelList</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">modelList</span><span class="p">,</span>
+     <span class="n">confusionMatrixLabels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">scoring</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">scoring</span><span class="p">,</span>
+     <span class="n">setProjectGoals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)},</span>
+     <span class="n">runVerbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+     <span class="n">recommendOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">basicAutoMethod</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">skewFactor</span><span class="o">=</span><span class="mf">40.0</span><span class="p">,</span>
+     <span class="n">doExplore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">doTrain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">doPredict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">toTerminal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+ <span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -1307,27 +1432,27 @@ project level. All interactions can happen with this API</p>
 Various object mothods are used to load, review, and train the data, as
 well as manage running predictions</p>
 <p>Example:
-project = mlProject(‘Customer Segements’, ‘clustering model should factor
-in both aggregate sales patterns and specific items purchased’)</p>
+project = mlProject(‘Customer Segements’, ‘clustering model should factor’)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.setTrainingPreferences">
 <code class="sig-name descname">setTrainingPreferences</code><span class="sig-paren">(</span><em class="sig-param">crossValidationSplits=None</em>, <em class="sig-param">parallelJobs=None</em>, <em class="sig-param">modelType=None</em>, <em class="sig-param">modelList=None</em>, <em class="sig-param">testSize=None</em>, <em class="sig-param">randomState=None</em>, <em class="sig-param">uniqueThreshold=None</em>, <em class="sig-param">dropDuplicates=None</em>, <em class="sig-param">clusterDimensionThreshold=None</em>, <em class="sig-param">varianceThreshold=None</em>, <em class="sig-param">kmeansClusters=None</em>, <em class="sig-param">useStandardScaler=None</em>, <em class="sig-param">fbeta=None</em>, <em class="sig-param">runHyperparameters=None</em>, <em class="sig-param">runEstimatorHyperparameters=None</em>, <em class="sig-param">runMetaClassifier=None</em>, <em class="sig-param">runAutoFeaturesMode=None</em>, <em class="sig-param">smallSample=None</em>, <em class="sig-param">highDimensionality=None</em>, <em class="sig-param">gridSearchVerbose=None</em>, <em class="sig-param">gridSearchScoring=None</em>, <em class="sig-param">featuresToReport=None</em>, <em class="sig-param">logTrainingResultsFilename=None</em>, <em class="sig-param">useProbaForPredict=None</em>, <em class="sig-param">recommendOnly=None</em>, <em class="sig-param">basicAutoMethod=None</em>, <em class="sig-param">competitionMode=None</em>, <em class="sig-param">skewFactor=None</em>, <em class="sig-param">bottomImportancePrecentToCut=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTrainingPreferences" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>setTrainingPreferences</strong></p>
 <p>setTrainingPreferences for an ML job</p>
-<p><strong>XXXXX</strong></p>
 <ul>
 <li><p>Sample Call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">sample</span> <span class="n">call</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">Success</span> <span class="n">Response</span>
-</pre></div>
-</div>
-</li>
-<li><p>Expected Fail Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Example</span> <span class="n">fail</span> <span class="n">response</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setTrainingPreferences</span> <span class="p">(</span>
+               <span class="n">crossValidationSplits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+               <span class="n">parallelJobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">modelType</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="n">TRAIN_CLASSIFICATION</span><span class="p">,</span>
+               <span class="n">modelList</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span><span class="s1">&#39;xgbc&#39;</span><span class="p">,</span><span class="s1">&#39;etc&#39;</span><span class="p">,</span><span class="s1">&#39;stack&#39;</span><span class="p">],</span>
+               <span class="n">useStandardScaler</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">gridSearchScoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
+               <span class="n">testSize</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span>
+               <span class="n">logTrainingResultsFilename</span><span class="o">=</span><span class="n">resultsFile</span><span class="p">,</span>
+               <span class="n">gridSearchVerbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">runHyperparameters</span><span class="o">=</span><span class="n">runHyper</span><span class="p">,</span>
+               <span class="n">runEstimatorHyperparameters</span><span class="o">=</span><span class="n">runEstimatorHyper</span><span class="p">,</span>
+               <span class="n">runMetaClassifier</span><span class="o">=</span><span class="n">runMeta</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -1344,9 +1469,10 @@ Set the hyperparameters to override the defaults for a model</p>
         <span class="s1">&#39;lasso__alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
         <span class="p">}</span>
 <span class="n">project</span><span class="o">.</span><span class="n">setHyperparametersOverride</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">)</span>
-
-
-<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+</pre></div>
+</div>
+<p>Example Hyper Paramaters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;lasso__alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
     <span class="p">}</span>
 <span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
@@ -1391,10 +1517,14 @@ Set the hyperparameters to override the defaults for a model</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.setConfusionMatrixLabels">
 <code class="sig-name descname">setConfusionMatrixLabels</code><span class="sig-paren">(</span><em class="sig-param">list</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setConfusionMatrixLabels" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Example: project.setConfusionMatrixLabels(</dt><dd><p>[(0,’Paid’), (1, ‘Default’) ])</p>
-</dd>
-</dl>
+<dd><p>Set the labels for the confusion matrix plot</p>
+<blockquote>
+<div><p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setConfusionMatrixLabels</span><span class="p">(</span>
+     <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Paid&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Default&#39;</span><span class="p">)</span> <span class="p">])</span>
+</pre></div>
+</div>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -1402,31 +1532,32 @@ Set the hyperparameters to override the defaults for a model</p>
 <code class="sig-name descname">setTarget</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">boolean=False</em>, <em class="sig-param">trueValue=None</em>, <em class="sig-param">convertTable=None</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTarget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Purpose: Set the target variable for supervised learning.</p>
 <dl>
-<dt>Call: setTarget(self, value, boolean=False, trueValue=None,</dt><dd><p>convertTable=None, tableName=None):</p>
+<dt>Call::</dt><dd><dl class="simple">
+<dt>setTarget(self, value, boolean=False, trueValue=None,</dt><dd><p>convertTable=None, tableName=None):</p>
 </dd>
-<dt>Example:</dt><dd><blockquote>
-<div><p>project.setTarget(‘loan_status’)</p>
-</div></blockquote>
+</dl>
 <p>trueValue = what is the true values
 boolean = is this a boolean value
 convertTable = a table of how to convert values</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setTarget</span><span class="p">(</span><span class="s1">&#39;loan_status&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.importFile">
 <code class="sig-name descname">importFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">fileName=None</em>, <em class="sig-param">sheetName=None</em>, <em class="sig-param">df=None</em>, <em class="sig-param">hasHeaders=False</em>, <em class="sig-param">range=None</em>, <em class="sig-param">isDefault=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.importFile" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>def importFile(self, name, type=None, description=None,</dt><dd><p>location=None, fileName=None, sheetName=None,
-hasHeaders = False,
-range=None, isDefault=False):</p>
-</dd>
-<dt>project.importFile(‘Loan Data’, type=’csv’,</dt><dd><p>description=’Lending Club Data from 2017-2018’,
-fileName=’LendingClub2017_2018ready.csv’,
-hasHeaders = True, isDefault=True)</p>
-</dd>
-</dl>
+<dd><p>Import a file to be used in training or predicting</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">importFile</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Lending Club Data from 2017-2018&#39;</span><span class="p">,</span>
+        <span class="n">fileName</span><span class="o">=</span><span class="s1">&#39;LendingClub2017_2018ready.csv&#39;</span><span class="p">,</span>
+        <span class="n">hasHeaders</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">isDefault</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1461,16 +1592,18 @@ files associated with them)</p>
 <dt id="mlLib.project.mlProject.initCleaningRules">
 <code class="sig-name descname">initCleaningRules</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.initCleaningRules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Before adding any cleaning rules you must init</p>
-<p>project.initCleaningRules()</p>
-<dl class="simple">
-<dt>project.addManualRuleForDefault(</dt><dd><p>ed.CLEANDATA_REBUCKET_TO_BINARY,
-‘term’, [[‘36 months’, ‘ 36 months’],
-‘36’])</p>
-</dd>
-<dt>project.addManualRuleForDefault(</dt><dd><p>‘ed.CLEANDATA_REBUCKET_TO_BINARY,
-‘term’, [[‘60 months’, ‘ 60 months’], ‘60’])</p>
-</dd>
-</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">initCleaningRules</span><span class="p">()</span>
+
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span>
+    <span class="n">ed</span><span class="o">.</span><span class="n">CLEANDATA_REBUCKET_TO_BINARY</span><span class="p">,</span>
+    <span class="s1">&#39;term&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="s1">&#39;36 months&#39;</span><span class="p">,</span> <span class="s1">&#39; 36 months&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;36&#39;</span><span class="p">])</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span>
+    <span class="s1">&#39;ed.CLEANDATA_REBUCKET_TO_BINARY,</span>
+    <span class="s1">&#39;term&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="s1">&#39;60 months&#39;</span><span class="p">,</span> <span class="s1">&#39; 60 months&#39;</span><span class="p">],</span> <span class="s1">&#39;60&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1478,7 +1611,10 @@ files associated with them)</p>
 <code class="sig-name descname">cleanProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Purpose: Run the cleaning rules established for a project.</p>
 <p>Call: cleanProject(self)</p>
-<p>Example: project.cleanProject()</p>
+<dl class="simple">
+<dt>Example::</dt><dd><p>project.cleanProject()</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1486,7 +1622,10 @@ files associated with them)</p>
 <code class="sig-name descname">cleanAndExploreProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanAndExploreProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Purpose: Run clean and explore together</p>
 <p>Call: def cleanAndExploreProject(self)</p>
-<p>Example: project.cleanAndExploreProject()</p>
+<dl class="simple">
+<dt>Example::</dt><dd><p>project.cleanAndExploreProject()</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1497,54 +1636,66 @@ files associated with them)</p>
 </dd>
 </dl>
 <p>Call: prepProjectByName(self, tableName=None)</p>
-<p>Example: project.prepProjectByName(‘Loan Data’)</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">prepProjectByName</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.writePreppedFileByName">
 <code class="sig-name descname">writePreppedFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writePreppedFileByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Once a file has been cleaned and explorred</p>
-<p>Call:</p>
+<dd><p>Purpose: Once a file has been cleaned and explored</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">writePreppedFileByName</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">,</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.writeTrainingSetFileByName">
 <code class="sig-name descname">writeTrainingSetFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writeTrainingSetFileByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Purpose: Write out the training set file by filename</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">writeTrainingSetFileByName</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">,</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.trainProjectByName">
 <code class="sig-name descname">trainProjectByName</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Purpose: Train table by tablename</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">trainProjectByName</span><span class="p">(</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.prepProjectByBatch">
 <code class="sig-name descname">prepProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.prepProjectByBatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Purpose: Prep all of the files for training</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">prepProjectByBatch</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.trainProjectByBatch">
 <code class="sig-name descname">trainProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByBatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Purpose: Train all of the files at once</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">trainProjectByBatch</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.exportBestModel">
 <code class="sig-name descname">exportBestModel</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportBestModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Purpose:</p>
-<p>Call:</p>
 <p>Example:</p>
 </dd></dl>
 

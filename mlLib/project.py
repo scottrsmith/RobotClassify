@@ -24,14 +24,144 @@
 The projects module is is a high-level library to process ML jobs at the
 project level. All interactions can happen with this API
 
-- Manage Projects
-- Load Data
-- Explore Data
-- Auto-execute ML jobs
-- Create cleaning rules
-- Train the data, finding the best model
-- Deploy model, to process ML transactions
+ - Manage Projects
+ - Load Data
+ - Explore Data
+ - Auto-execute ML jobs
+ - Create cleaning rules
+ - Train the data, finding the best model
+ - Deploy model, to process ML transactions
 
+
+Code Example::
+
+    from project import mlProject
+    import pandas as pd
+    import numpy as np
+    from getData import getData
+    import exploreData as ed
+    from exploreData import exploreData
+    from cleanData import cleanData, cleaningRules
+    from prepData import prepData
+    from trainModels import trainModels
+
+    # Create the project and set the training preferences
+    project = mlProject('Predict Home Values', 'EDS Real Estate Project 2')
+    project.setTrainingPreferences(crossValidationSplits=10,
+                                   parallelJobs=-1,
+                                   modelType='regression',
+                                   modelList=['lasso', 'ridge',
+                                              'enet', 'rf', 'gb'])
+
+    # Import the file and set the training target to predict
+    project.importFile('Property Data',
+                       type='GoogleSheet',
+                       description='Real Estate Project 2',
+                       location='1QC2v9jPJFTLYxjm-x6ic-utw0CBskU8',
+                       hasHeaders=False, range='A1:Z1884')
+    project.setTarget('tx_price')
+
+    # Explore the data and print out the heatmap that
+    # will illustrate the recommended feature engineering
+    # plot other statistical data
+    project.exploreData()
+    project.explore['Property Data'].plotExploreHeatMap()
+    project.explore[TRAININGFILENAME].plotFeatureImportance()
+    project.explore[TRAININGFILENAME].plotColumnImportance()
+    project.explore[TRAININGFILENAME].plotHistogramsAll(10)
+    project.explore[TRAININGFILENAME].plotCorrelations()
+
+    # Init the setup of the cleaning rules
+    project.runCleaningRules()
+
+
+    # Add manual cleaning Rules. These rules perform the feature engineering
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'roof', [
+                                    ['asphalt,shake-shingle','shake-shingle'],
+                                     'Shake Shingle'])
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'exterior_walls', [
+                                    ['Rock, Stone'], 'Masonry'])
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'exterior_walls', [
+                                    ['Concrete', 'Block'], 'Concrete Block'])
+    project.addManualRuleForDefault(
+        ed.EXPLORE_REMOVE_ITEMS_ABOVE, 'lot_size', 1220551)
+
+    # values are sparse classes and prompt to combine
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'exterior_walls', [
+                                    ['Wood Siding', 'Wood Shingle'], 'Wood'])
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'exterior_walls', [
+                                    ['Concrete Block', 'Stucco', 'Masonry',
+                                     'Asbestos shingle'], 'Other'])
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'roof', [
+                                    ['Composition', 'Wood Shake/ Shingles'],
+                                     'Composition Shingle'])
+    project.addManualRuleForDefault(ed.EXPLORE_REBUCKET, 'roof', [
+                                    ['Gravel/Rock', 'Roll Composition','Slate',
+                                    'Built-up', 'Asbestos', 'Metal'], 'Other'])
+
+    # indicator variables
+    # Create indicator variable for properties with 2 beds and 2 baths
+    project.addManualRuleForDefault(ed.EXPLORE_NEW_INDICATOR_VARIABLE,
+                                    'two_and_two',
+                                    '( beds == 2 ) & ( baths == 2 )')
+
+    # Create indicator feature for transactions between 2010 and 13 resession
+    project.addManualRuleForDefault(ed.EXPLORE_NEW_INDICATOR_VARIABLE,
+                                'during_recession',
+                                '( tx_year >= 2010 ) & ( tx_year <= 2013 )')
+
+    # Create a school score feature that num_schools * median_school
+    project.addManualRuleForDefault(ed.EXPLORE_NEW_VARIABLE,
+                                   'school_score',
+                                   'num_schools * median_school')
+
+    # Create a property age feature
+    project.addManualRuleForDefault(ed.EXPLORE_NEW_VARIABLE,
+                                    'property_age', 'tx_year - year_built')
+    project.addManualRuleForDefault(ed.EXPLORE_REMOVE_ITEMS_BELOW,
+                                    'property_age', -1)
+
+    # Drop 'tx_year' and 'year_built' from the dataset
+    project.addManualRuleForDefault(ed.EXPLORE_DROP_COLUMN, 'tx_year', None)
+    project.addManualRuleForDefault(ed.EXPLORE_DROP_COLUMN, 'year_built', None)
+
+    # Now run these rules to reformat the data
+    project.cleanAndExploreProject()
+
+    # Prep the data for training
+    project.prepProjectByName('Property Data')
+
+    # Train the model
+    project.trainProjectByName('Property Data')
+
+    # Save the best model and one named model
+    project.exportBestModel('realEstateBestModel.plk')
+    project.exportNamedModel('gb', 'gbRealEstateModel.plk')
+
+    # Now run the predections
+    predict = project.createPredictFromBestModel('Property Data')
+    predict.importPredictFromDF(project.PullTrainingData(),
+                                readyForPredict=True)
+    keyName, keyData = project.getKey()
+
+    # Prep the predict file
+    predict.prepPredict()
+    answer = predict.runPredict()
+
+    # Prepare the predict file for Kaggle upload
+    # This means taking the predicted answer and adding
+    # to the file for later export
+    predict.addToPredictFile(keyName, keyData)
+    if useProba:
+        pass
+    else:
+        answer = [int(x) for x in answer]
+    predict.addToPredictFile(targetVariable, answer)
+
+    # Prep the file for export, onlu keeping
+    # columns needed
+    predict.keepFromPredictFile(predictSetOut)
+    predict.exportPredictFile(resultsFile)
 
 """
 
@@ -117,8 +247,8 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
         Auto-process an ML job for Flask Servers
 
-        Takes a data file and a few data points about the file and automatically
-        does feature engineering and model evaluation.
+        Takes a data file and a few data points about the file and
+        automatically does feature engineering and model evaluation.
 
         - Sample Call::
 
@@ -234,9 +364,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
         # mlUtility.runLog (project.explore[TRAININGFILENAME])
         # mlUtility.runLog (project.explore[TRAININGFILENAME].
         #                                           allStatsSummary())
-
-        
-        #results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
+        # results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
         #    plotExploreHeatMap(toWeb=True)
         results['exploreheatmap'] = None
         pass
@@ -272,7 +400,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
     tm.memorySnapshot('doPredict...', cnt=10)
     predictFileDF = None
-    
+
     if doPredict:
         predict = project.createPredictFromBestModel(TRAININGFILENAME)
 
@@ -340,7 +468,7 @@ def autoEvaluateClassifier(projectName=None,
                            skewFactor=None,
                            toTerminal=True
                            ):
-  
+
     TRAININGFILENAME = 'Training'
     TESTINGFILENAME = 'Testing'
 
@@ -1033,17 +1161,19 @@ class mlProject (object):
 
     def initCleaningRules(self, fileName=None):
         """
-               Before adding any cleaning rules you must init
+        Before adding any cleaning rules you must init
 
-               project.initCleaningRules()
+        Example::
 
-               project.addManualRuleForDefault(
-                   ed.CLEANDATA_REBUCKET_TO_BINARY,
-                   'term', [['36 months', ' 36 months'],
-                   '36'])
-               project.addManualRuleForDefault(
-                   'ed.CLEANDATA_REBUCKET_TO_BINARY,
-                   'term', [['60 months', ' 60 months'], '60'])
+           project.initCleaningRules()
+
+           project.addManualRuleForDefault(
+               ed.CLEANDATA_REBUCKET_TO_BINARY,
+               'term', [['36 months', ' 36 months'],
+               '36'])
+           project.addManualRuleForDefault(
+               'ed.CLEANDATA_REBUCKET_TO_BINARY,
+               'term', [['60 months', ' 60 months'], '60'])
 
         """
         if fileName is None:
@@ -1062,7 +1192,8 @@ class mlProject (object):
 
         Call: cleanProject(self)
 
-        Example: project.cleanProject()
+        Example::
+            project.cleanProject()
 
         """
         cleaningLog = []
@@ -1087,7 +1218,8 @@ class mlProject (object):
 
         Call: def cleanAndExploreProject(self)
 
-        Example: project.cleanAndExploreProject()
+        Example::
+            project.cleanAndExploreProject()
 
         """
 
@@ -1117,7 +1249,9 @@ class mlProject (object):
 
         Call: prepProjectByName(self, tableName=None)
 
-        Example: project.prepProjectByName('Loan Data')
+        Example::
+
+            project.prepProjectByName('Loan Data')
 
         """
         if tableName is not None:
@@ -1131,11 +1265,11 @@ class mlProject (object):
 
     def writePreppedFileByName(self, filename, tableName=None):
         """
-        Purpose: Once a file has been cleaned and explorred
+        Purpose: Once a file has been cleaned and explored
 
-        Call:
+        Example::
 
-        Example:
+             project.writePreppedFileByName('results.csv','Titanic')
 
         """
         if tableName is not None:
@@ -1149,11 +1283,11 @@ class mlProject (object):
 
     def writeTrainingSetFileByName(self, filename, tableName=None):
         """
-        Purpose:
+        Purpose: Write out the training set file by filename
 
-        Call:
+        Example::
 
-        Example:
+            project.writeTrainingSetFileByName('results.csv','Titanic')
 
         """
         if tableName is not None:
@@ -1170,11 +1304,11 @@ class mlProject (object):
 
     def trainProjectByName(self, tableName=None):
         """
-        Purpose:
+        Purpose: Train table by tablename
 
-        Call:
+        Example::
 
-        Example:
+            project.trainProjectByName('Titanic')
 
         """
         if tableName is not None:
@@ -1188,11 +1322,11 @@ class mlProject (object):
 
     def prepProjectByBatch(self):
         """
-        Purpose:
+        Purpose: Prep all of the files for training
 
-        Call:
+        Example::
 
-        Example:
+            project.prepProjectByBatch()
 
         """
         for tableName in self.batchTablesList:
@@ -1202,12 +1336,11 @@ class mlProject (object):
 
     def trainProjectByBatch(self):
         """
-        Purpose:
+        Purpose: Train all of the files at once
 
-        Call:
+        Example::
 
-        Example:
-
+            project.trainProjectByBatch()
         """
         for tableName in self.batchTablesList:
             if tableName in self.preppedTablesDF:
@@ -1218,8 +1351,6 @@ class mlProject (object):
     def exportBestModel(self, filename, tableName=None):
         """
         Purpose:
-
-        Call:
 
         Example:
 
