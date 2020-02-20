@@ -1,39 +1,116 @@
-## Introduction ##
-
-RobotClassify allows for non-data scientest such as citizen developers and other operational people involved with analizing and
+RobotClassify allows for non-data scientists such as citizen developers and other operational people involved with analyzing and
 reporting on business data.  The goal is to automate the entire ML process (feature-engineering, training, prediction). 
 
-This version of the app is optimized for loading datafiles to train with, and test files for predctiona, optimzed for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created to put into code, techniques I have learning during my ML course work. T
+This version of the app is optimized for loading data files to train with, and test files for predictions. Prediction files are optimized for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created, put into code techniques I have learning during my ML studies.
 
-My motivation for project centers around my interest in machine learning for citizen developers. Taking the complecated tasked of feature engineering, model selection, and training and makeing it a simple point and click excersie without any prior machine learning training. 
+My motivation for RobotClassify centers around my interest in making machine learning accessible for citizen developers. Taking the complicated task of feature engineering, model selection, and training and making it a simple point and click exercise without any prior machine learning training. 
 
 Using RobotClassify requires four simple steps that can all be accomplished via the RobotClassify.herokuapp.com.
 
-1. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)
-2. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:
-- The target variable that is to be predicted
-- Record Key column 
-- Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle comopetition
-- Classification model to train 
-- Scoring method
-- Algoritym type (There are two approaches used to automate feature engineering)
-3. Run the training
-4. Review the results
+* Load a CSV data file. This is done by creating a project and specifying the training and test files (examples are found in the examples folder)
+* Create a Run. The run record defines the file attributes and the nature of the training. For this, we need to specify:
+    - The target variable that is to be predicted
+    - Record Key column 
+    - Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle competition
+    - Classification model to train 
+    - Scoring method
+    - Algorithm type (There are two approaches used to automate feature engineering)
+* Run the training
+* Review the results
 
-## Implementation Ovweview ##
+# Running and Testing Instructions #
 
-The application is build with Flask and Flask What-the-forms for the frontend. 
+RobotClassify can be accessed from the URL: https://robotclassify.herokuapp.com/.
 
-Roles
+There are two user accounts for testing:
+- Editor Role: udacityscott+edit@gmail.com / Password: Udacity$Scott
+  Editors can create projects, runs, and perform training
+- Viewer Role: udacityscott+view@gmail.com / Password: Udacity$Scott
+  Viewers can only view projects, runs, and their results.
+
+Bearer Tokens can be obtained for these accounts, after logging in, at https://robotclassify.herokuapp.com/jwt.
+
+There are three approaches to running and evaluating RobotClassify:
+
+* Web
+* UnitTest
+* Curl
+
+There are scripts to help with each approach. Example files are located at https://github.com/scottrsmith/RobotClassify/tree/master/examples.
+
+## Running on the Web ###
+The web interface provides a 4 step approach to completing training and getting a result:
+* Load the training and test files by creating a project
+* Create a run record. The run record describes the test attributes
+* Run the training
+* Download the results file from the predictions
+
+For example, the Titanic Kaggle competition (https://www.kaggle.com/c/titanic) provides two data sets, the training set and a test set. Loading these into RobotClassify, we would set the run parameters as follows:
+- Target Variable: Survived
+- Record Key: PassengerID
+- Predict set out: Survived, PassengerID
+- Classification model: xgbc
+- Scoring method: f1
+- Use Algorithm I for feature engineering: True
+
+Following these instructions will give a training result that would put you in the top 8% of competitors.
+
+## UnitTest ##
+
+Unit tests are run using the script `test.sh`. This script requires Postgress on the local machine where the test is to be run.
+
+The `test.sh` script will:
+* Create the robotclassiy_test database
+* Get a Token and User ID for the API user (placed into environment variables)
+* Populate the test database with data for the API user
+* Run the tests
+
+## Curl ##
+The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Heroku).
+
+- `curl.sh` (Sets the environment variables, token and database URL)
+- `curl_pass_editor.sh` (Curl commands that will pass for the editor user)
+- `curl.fail_editor.sh` (Curl commands that will fail for the editor user)
+- `curl_pass_viewer.sh` (Curl commands that will pass for the viewer user)
+
+It is best to run the `curl.sh` script and then cut and paste each command from the file.
+
+## Getting updated tokens ##
+If you need to get an updated token, you need to login to the Web app and issue the following URL:
+
+[https://robotclassify.herokuapp.com/jwt](https://robotclassify.herokuapp.com/jwt)
+
+This will retrieve the current bearer token for the logged-in user.
+
+# Implementation Overview #
+
+The application was written with Flask as the backend and Flask What-the-forms for the frontend. 
+
+## Roles ##
+
 There are two roles:
-Editor: Able to create, update, train and delete projects and training runs
-Viewer: Only able to view results
+- Viewer Role: Viewers can only view projects, runs, and their results.
+- Editor Role: Editors can create projects, runs, and perform training
 
-### API End Points ###
+| permissions |  Editor  | Viewer | Description | 
+| ----------- | --------- | ---------- | --------------------------------| 
+| get:project | Yes | Yes | get a single, or list of projects |
+| post:project | Yes |  | Create a new project or search |
+| patch:project | Yes | | Update a project attributes |
+| delete:project | Yes |  | Delete a project and its runs |
+| get:run | Yes | Yes | Get a run or download run results |
+| post:run | Yes |  | Create a new run |
+| patch:run | Yes |  | Update a run's attributes |
+| delete:run | Yes |  | Delete a run |
+| get:train | Yes |  | Run ML Training  |
 
-The following APIs endpoints are available. Detailed html documentation can be found at 
-https://robotclassify.herokuapp.com/docs/index.html
 
+## API End Points ##
+
+The following APIs endpoints are available. Detailed HTML documentation on these end points,
+including this file, can be found at https://robotclassify.herokuapp.com/docs/index.html
+
+These are the end-points, with the short description and role.
 
 -- Home Page --
 - GET / (home)
@@ -43,7 +120,7 @@ https://robotclassify.herokuapp.com/docs/index.html
 
 --- Projects ---
 - GET /projects (List all projects) - get:project
-- GET /projects/<int:project_id> (Project page) - get:project
+- GET /projects/<int:project_id> (List a single project) - get:project
 - POST/GET /projects/create (create a new project) - post:project
 - PATCH /projects/<int:project_id>/edit (edit a project) - patch:project
 - DELETE /projects/<project_id>/delete (Delete a project) - delete:project
@@ -55,78 +132,22 @@ https://robotclassify.herokuapp.com/docs/index.html
 - PATCH /run/<int:run_id>/edit (edit a run) - patch:run
 
 --- Train ---
-- GET /train/<int:run_id>  (run ML training for a run) post:train
+- GET /train/<int:run_id>  (run ML training for a run) get:train
 - GET /train/<int:run_id>/download  (download testing results file,
-      kaggle file) get:train
+      kaggle file) get:run
 
 
+# Installation and Dependencies #
 
-## Project dependencies, local development and hosting instructions ##
+RobotClassify source is loacted at: https://github.com/scottrsmith/RobotClassify
 
-- Detailed instructions for scripts to install any project dependencies, and to run the development server.
-- Documentation of API behavior and RBAC controls
-
-
-## Runing and Testing Instrunctions ##
-
-URL: https://robotclassify.herokuapp.com/
-
-
-There are three approaches to running and evaluating RobotClassify:
-1. Web
-2. UnitTest
-3. Curl
-
-There are scripts to help with each one.
-
-
-### Running on the Web ####
-
-For example, the Titanic Kaggle competeition (https://www.kaggle.com/c/titanic.com), provides two data sets, the Training set and test set. Loading these into Robot Classify, we would set the run paramatgers as follows:
-- Target Variable: Survived
-- Record Key: PassengerID
-- Predict set out: Survuved, PassengerID
-- Classification model: xgbc
-- Scoring method: f1
-- Use Algorithm I for feature engineering: True
-
-This will give a training result that would put you in the top 8% of competitors.
-
-### UnitTest ###
-
-Unittests are run using the script `test.sh`. This script requires Postgress on the local machine where the test is being run.
-
-The `test.sh` script will:
-1. Create the robotclassiy_test database
-2. Get a Token and User ID for the API user (placed into environment variables)
-3. Populate the test database with data for the API user
-4. Run the tests
-
-### Curl ###
-The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Amazon/Heroku)
-
-curl_pass.sh
-curl_fail.sh
-curl.sh (setup the environment variables to run Curl manually)
-
-
-### Getting updated tokens ###
-If you need to get an updated token, you need to login to the Web app and issue the following URL:
-
-https://robotclassify.herokuapp.com/jwt
-
-This will retrive the current jwt token for the logged in user.
-
-
-## Installation ##
-
-### Python 3.7 ###
+## Python ##
 
 This project uses python 3.7
 
 To Install [Python](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
-### PIP Dependencies ###
+## PIP Dependencies ##
 
 Once you have your virtual environment setup and running, install dependencies by navigating to the root directory and running:
 
@@ -136,7 +157,7 @@ pip install -r requirements.txt
 
 This will install all of the required packages we selected within the `requirements.txt` file.
 
-### Key Dependencies ###
+## Key Dependencies ##
 
 - [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. 
 
@@ -146,108 +167,87 @@ This will install all of the required packages we selected within the `requireme
 
 - [Auth0](https://auth0.com/docs/getting-started/overview) Provides authentication and authorization as a service
 
-- [Postgres](http://example.com) DOES XXX
+- [Postgres](https://www.postgresql.org/download/) Postgres SQL database
 
-- [Heroku](http://example.com) DOES XXX
+- [Heroku](http://heroku.com) App Hosting
 
-- [Flask-WTF](http://example.com) DOES XXX
+- [Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/install.html) Flask What-the-forms
 
-- [mlLib](http://example.com) DOES XXX
+- [mlLib](https://github.com/scottrsmith/mllib) Machine Learning Training lib. Included in robot classify
 
-- [InitTest](http://example.com) DOES XXX
+- [InitTest](https://docs.python.org/3/library/unittest.html) Test automation for Python
 
-- [FlaskMigrate](http://example.com) DOES XXX
+- [FlaskMigrate](https://flask-migrate.readthedocs.io/en/latest/) Manages SQLAlchemy database migrations for Flask applications using Alembic
 
+- [scikit-learn](https://scikit-learn.org/stable/) Simple and efficient tools for predictive data analysis
 
 ## Database Setup ##
 
-The app is running Postgres SQL.
+The UnitTest is running Postgres SQL as the local souce database.
 
-## Running the server ##
+How to start/stop:
+https://stackoverflow.com/questions/7975556/how-to-start-postgresql-server-on-mac-os-x
 
-From within the `root` directory to run the server, execute:
+## Running the flask server ##
 
-```bash
-export FLASK_APP=app.py
-export FLASK_ENV=development
-flask run
-```
+On a local machine, from within the `root` directory to run the server, execute `dev.sh`
 
-## Documentation ##
+# Documentation #
 
-### HTML Documentation ###
+## HTML Documentation ##
 
 Live documentation, including this readme, can be found at https://robotclassify.herokuapp.com/docs/index.html
 
-### PDF Documentation ###
+## PDF Documentation ##
 
 The PDF version of the documentation is located in the root project directory. Named robotclassify.pdf
 
-### Generating documentation ###
+## Generating documentation ##
 
 Documentation is generated with Sphinx.
 
-#### Installing Sphinx and support tools ####
+### Installing Sphinx and support tools ###
 
 To install Sphinx, reference the documents at https://www.sphinx-doc.org/en/master/usage/installation.html
 
-For example:
+### Generating documentation ###
 
-```bash
-pip install -U sphinx
-```
+Documentation is generated with Sphinx. Use `docs.sh` in the docs folder to generate the documentation.
+Generated docs are located at https://robotclassify.herokuapp.com/docs/index.html
 
-Install dependencies by navigating to the `root` project directory and running:
-
-```bash
-cd docs
-pip install m2r
-pip install recommonmark
-pip install rinohtype
-pip install -r requirements.txt
-```
-
-#### Generating documentation ####
-
-Documentation is generated with Sphinx. Use `docs.sh` in the docs folder to generate the documentation
-
-
-
-
-## Error Handling
+# Error Handling
 
 Errors are returned as JSON objects in the following format:
 
 ```bash
 {
     "success": False, 
-    "error": 400,
-    "message": "Bad Request"
+    "error": 401,
+    "message": "Premission Error"
+    "description": "401: Authorization header is expected."
 }
 ```
 
 The API returns multiple error types when requests fail:
 - 400: Bad Request
+- 401: Permission Error
 - 404: Resource Not Found
 - 405: Method Not Allowed
 - 422: Not Processable 
-- 500: Internal Server Error
+- 500: Server Error
 
 
-## Testing
+# Testing
 
-Testing is done with UnitTest and curl.  UnitTest is setup to create and use a local Postgres database while Curl is setup to  run commands against the
+Testing is done with UnitTest and curl.  UnitTest is set up to create and use a local Postgres database while Curl is set up to  run commands against the
 
-### Testing with UnitTest ###
 
-### Testing with Curl ###
+# Development Notes
 
-## Development Notes
-
-- Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon 
-- CSRF protection is disabled for certain REST calls to faciliate testing cia CuRL.
-- Patch and Delete functions are only avialable via API calls
-- UnitTest uses a local postgres database
-- UnitTest uses API App Auth0 credentials (verses using Auth0 Web App quickstart code)
+- Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon Flask Sessions and the quickstart example app from Auth0 for Web applications.
+- CSRF protection is disabled for certain REST calls to facilitate testing via CuRL.
+- Patch and Delete functions are only available via API calls
+- UnitTest uses a local Postgres database
+- UnitTest uses Auth0 API App credentials (verses using Auth0 Web App quickstart code)
 Auth0 Management API (Test Application)
 - Tokens in the headers are used for API authentication

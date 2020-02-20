@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Welcome to Robot Classify’s documentation! &#8212; Robot Classify Alpha documentation</title>
+    <title>Welcome to RobotClassify &#8212; RobotClassify 0.20 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -31,64 +31,55 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Robot Classify Alpha documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">RobotClassify 0.20 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to Robot Classify’s documentation!</a></li>
-<li><a class="reference internal" href="#instalation-and-overview">Instalation and Overview</a><ul>
+<li><a class="reference internal" href="#">Welcome to RobotClassify</a></li>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#running-and-testing-instructions">Running and Testing Instructions</a><ul>
+<li><a class="reference internal" href="#running-on-the-web">Running on the Web</a></li>
+<li><a class="reference internal" href="#unittest">UnitTest</a></li>
+<li><a class="reference internal" href="#curl">Curl</a></li>
+<li><a class="reference internal" href="#getting-updated-tokens">Getting updated tokens</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)</a></li>
-<li><a class="reference internal" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:</a></li>
-<li><a class="reference internal" href="#run-the-training">. Run the training</a></li>
-<li><a class="reference internal" href="#review-the-results">. Review the results</a><ul>
-<li><a class="reference internal" href="#implementation-ovweview">Implementation Ovweview</a><ul>
+<li><a class="reference internal" href="#implementation-overview">Implementation Overview</a><ul>
+<li><a class="reference internal" href="#roles">Roles</a></li>
 <li><a class="reference internal" href="#api-end-points">API End Points</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#project-dependencies-local-development-and-hosting-instructions">Project dependencies, local development and hosting instructions</a></li>
-<li><a class="reference internal" href="#runing-and-testing-instrunctions">Runing and Testing Instrunctions</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#web">. Web</a></li>
-<li><a class="reference internal" href="#unittest">. UnitTest</a></li>
-<li><a class="reference internal" href="#curl">. Curl</a></li>
-<li><a class="reference internal" href="#create-the-robotclassiy-test-database">. Create the robotclassiy_test database</a></li>
-<li><a class="reference internal" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">. Get a Token and User ID for the API user (placed into environment variables)</a></li>
-<li><a class="reference internal" href="#populate-the-test-database-with-data-for-the-api-user">. Populate the test database with data for the API user</a></li>
-<li><a class="reference internal" href="#run-the-tests">. Run the tests</a><ul>
-<li><a class="reference internal" href="#installation">Installation</a><ul>
-<li><a class="reference internal" href="#python-3-7">Python 3.7</a></li>
+<li><a class="reference internal" href="#installation-and-dependencies">Installation and Dependencies</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
 <li><a class="reference internal" href="#pip-dependencies">PIP Dependencies</a></li>
 <li><a class="reference internal" href="#key-dependencies">Key Dependencies</a></li>
+<li><a class="reference internal" href="#database-setup">Database Setup</a></li>
+<li><a class="reference internal" href="#running-the-flask-server">Running the flask server</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#database-setup">Database Setup</a></li>
-<li><a class="reference internal" href="#running-the-server">Running the server</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
 <li><a class="reference internal" href="#html-documentation">HTML Documentation</a></li>
 <li><a class="reference internal" href="#pdf-documentation">PDF Documentation</a></li>
-<li><a class="reference internal" href="#generating-documentation">Generating documentation</a></li>
+<li><a class="reference internal" href="#generating-documentation">Generating documentation</a><ul>
+<li><a class="reference internal" href="#installing-sphinx-and-support-tools">Installing Sphinx and support tools</a></li>
+<li><a class="reference internal" href="#id2">Generating documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#error-handling">Error Handling</a></li>
-<li><a class="reference internal" href="#testing">Testing</a><ul>
-<li><a class="reference internal" href="#testing-with-unittest">Testing with UnitTest</a></li>
-<li><a class="reference internal" href="#testing-with-curl">Testing with Curl</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
 <li><a class="reference internal" href="#development-notes">Development Notes</a></li>
+<li><a class="reference internal" href="#module-app">Robot Classify’s API Controllers</a><ul>
+<li><a class="reference internal" href="#id3">Introduction</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-app">Robot Classify’s API Controllers</a></li>
 <li><a class="reference internal" href="#module-models">Robot Classify’s API Model</a></li>
-<li><a class="reference internal" href="#module-mlLib.project">ML Lib</a><ul>
-<li><a class="reference internal" href="#id1"><strong>Introduction</strong></a></li>
+<li><a class="reference internal" href="#id4">mlLib</a><ul>
+<li><a class="reference internal" href="#id5"><em>Introduction</em></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
@@ -119,52 +110,179 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-robot-classify-s-documentation">
-<h1>Welcome to Robot Classify’s documentation!<a class="headerlink" href="#welcome-to-robot-classify-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-robotclassify">
+<h1>Welcome to RobotClassify<a class="headerlink" href="#welcome-to-robotclassify" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 </div>
-<div class="section" id="instalation-and-overview">
-<h1>Instalation and Overview<a class="headerlink" href="#instalation-and-overview" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>RobotClassify allows for non-data scientest such as citizen developers and other operational people involved with analizing and
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>RobotClassify allows for non-data scientists such as citizen developers and other operational people involved with analyzing and
 reporting on business data.  The goal is to automate the entire ML process (feature-engineering, training, prediction).</p>
-<p>This version of the app is optimized for loading datafiles to train with, and test files for predctiona, optimzed for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created to put into code, techniques I have learning during my ML course work. T</p>
-<p>My motivation for project centers around my interest in machine learning for citizen developers. Taking the complecated tasked of feature engineering, model selection, and training and makeing it a simple point and click excersie without any prior machine learning training.</p>
+<p>This version of the app is optimized for loading data files to train with, and test files for predictions. Prediction files are optimized for submission in Kaggle competitions. Currently, we only support Machine Learning classification problems. The Machine Learning component is based upon mlLib, a library that I created, put into code techniques I have learning during my ML studies.</p>
+<p>My motivation for RobotClassify centers around my interest in making machine learning accessible for citizen developers. Taking the complicated task of feature engineering, model selection, and training and making it a simple point and click exercise without any prior machine learning training.</p>
 <p>Using RobotClassify requires four simple steps that can all be accomplished via the RobotClassify.herokuapp.com.</p>
-</div>
-</div>
-<div class="section" id="load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder">
-<h1>. Load a CSV data file. This is done be creating a project and specifing the training and test files (examples are founx in the examples folder)<a class="headerlink" href="#load-a-csv-data-file-this-is-done-be-creating-a-project-and-specifing-the-training-and-test-files-examples-are-founx-in-the-examples-folder" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify">
-<h1>. Create a Run. The run record defines the file attributes and the nature of the training. FOr this, we need to specify:<a class="headerlink" href="#create-a-run-the-run-record-defines-the-file-attributes-and-the-nature-of-the-training-for-this-we-need-to-specify" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
+<li><p>Load a CSV data file. This is done by creating a project and specifying the training and test files (examples are found in the examples folder)</p></li>
+<li><p>Create a Run. The run record defines the file attributes and the nature of the training. For this, we need to specify:</p>
+<ul>
 <li><p>The target variable that is to be predicted</p></li>
 <li><p>Record Key column</p></li>
-<li><p>Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle comopetition</p></li>
+<li><p>Predict set out. These are the columns that are used to create the predict file in a format that can be used to submit the test results in a Kaggle competition</p></li>
 <li><p>Classification model to train</p></li>
 <li><p>Scoring method</p></li>
-<li><p>Algoritym type (There are two approaches used to automate feature engineering)</p></li>
+<li><p>Algorithm type (There are two approaches used to automate feature engineering)</p></li>
+</ul>
+</li>
+<li><p>Run the training</p></li>
+<li><p>Review the results</p></li>
 </ul>
 </div>
-<div class="section" id="run-the-training">
-<h1>. Run the training<a class="headerlink" href="#run-the-training" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-and-testing-instructions">
+<h1>Running and Testing Instructions<a class="headerlink" href="#running-and-testing-instructions" title="Permalink to this headline">¶</a></h1>
+<p>RobotClassify can be accessed from the URL: <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a>.</p>
+<p>There are two user accounts for testing:</p>
+<ul class="simple">
+<li><p>Editor Role: <a class="reference external" href="mailto:udacityscott+edit&#37;&#52;&#48;gmail&#46;com">udacityscott+edit<span>&#64;</span>gmail<span>&#46;</span>com</a> / Password: Udacity$Scott
+Editors can create projects, runs, and perform training</p></li>
+<li><p>Viewer Role: <a class="reference external" href="mailto:udacityscott+view&#37;&#52;&#48;gmail&#46;com">udacityscott+view<span>&#64;</span>gmail<span>&#46;</span>com</a> / Password: Udacity$Scott
+Viewers can only view projects, runs, and their results.</p></li>
+</ul>
+<p>Bearer Tokens can be obtained for these accounts, after logging in, at <a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a>.</p>
+<p>There are three approaches to running and evaluating RobotClassify:</p>
+<ul class="simple">
+<li><p>Web</p></li>
+<li><p>UnitTest</p></li>
+<li><p>Curl</p></li>
+</ul>
+<p>There are scripts to help with each approach. Example files are located at <a class="reference external" href="https://github.com/scottrsmith/RobotClassify/tree/master/examples">https://github.com/scottrsmith/RobotClassify/tree/master/examples</a>.</p>
+<div class="section" id="running-on-the-web">
+<h2>Running on the Web<a class="headerlink" href="#running-on-the-web" title="Permalink to this headline">¶</a></h2>
+<p>The web interface provides a 4 step approach to completing training and getting a result:</p>
+<ul class="simple">
+<li><p>Load the training and test files by creating a project</p></li>
+<li><p>Create a run record. The run record describes the test attributes</p></li>
+<li><p>Run the training</p></li>
+<li><p>Download the results file from the predictions</p></li>
+</ul>
+<p>For example, the Titanic Kaggle competition (<a class="reference external" href="https://www.kaggle.com/c/titanic">https://www.kaggle.com/c/titanic</a>) provides two data sets, the training set and a test set. Loading these into RobotClassify, we would set the run parameters as follows:</p>
+<ul class="simple">
+<li><p>Target Variable: Survived</p></li>
+<li><p>Record Key: PassengerID</p></li>
+<li><p>Predict set out: Survived, PassengerID</p></li>
+<li><p>Classification model: xgbc</p></li>
+<li><p>Scoring method: f1</p></li>
+<li><p>Use Algorithm I for feature engineering: True</p></li>
+</ul>
+<p>Following these instructions will give a training result that would put you in the top 8% of competitors.</p>
 </div>
-<div class="section" id="review-the-results">
-<h1>. Review the results<a class="headerlink" href="#review-the-results" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="implementation-ovweview">
-<h2>Implementation Ovweview<a class="headerlink" href="#implementation-ovweview" title="Permalink to this headline">¶</a></h2>
-<p>The application is build with Flask and Flask What-the-forms for the frontend.</p>
-<p>Roles
-There are two roles:
-Editor: Able to create, update, train and delete projects and training runs
-Viewer: Only able to view results</p>
+<div class="section" id="unittest">
+<h2>UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h2>
+<p>Unit tests are run using the script <code class="docutils literal notranslate"><span class="pre">test.sh</span></code>. This script requires Postgress on the local machine where the test is to be run.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">test.sh</span></code> script will:</p>
+<ul class="simple">
+<li><p>Create the robotclassiy_test database</p></li>
+<li><p>Get a Token and User ID for the API user (placed into environment variables)</p></li>
+<li><p>Populate the test database with data for the API user</p></li>
+<li><p>Run the tests</p></li>
+</ul>
+</div>
+<div class="section" id="curl">
+<h2>Curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h2>
+<p>The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Heroku).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">curl.sh</span></code> (Sets the environment variables, token and database URL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">curl_pass_editor.sh</span></code> (Curl commands that will pass for the editor user)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">curl.fail_editor.sh</span></code> (Curl commands that will fail for the editor user)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">curl_pass_viewer.sh</span></code> (Curl commands that will pass for the viewer user)</p></li>
+</ul>
+<p>It is best to run the <code class="docutils literal notranslate"><span class="pre">curl.sh</span></code> script and then cut and paste each command from the file.</p>
+</div>
+<div class="section" id="getting-updated-tokens">
+<h2>Getting updated tokens<a class="headerlink" href="#getting-updated-tokens" title="Permalink to this headline">¶</a></h2>
+<p>If you need to get an updated token, you need to login to the Web app and issue the following URL:</p>
+<p><a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a></p>
+<p>This will retrieve the current bearer token for the logged-in user.</p>
+</div>
+</div>
+<div class="section" id="implementation-overview">
+<h1>Implementation Overview<a class="headerlink" href="#implementation-overview" title="Permalink to this headline">¶</a></h1>
+<p>The application was written with Flask as the backend and Flask What-the-forms for the frontend.</p>
+<div class="section" id="roles">
+<h2>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h2>
+<p>There are two roles:</p>
+<ul class="simple">
+<li><p>Viewer Role: Viewers can only view projects, runs, and their results.</p></li>
+<li><p>Editor Role: Editors can create projects, runs, and perform training</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>permissions</p></th>
+<th class="head"><p>Editor</p></th>
+<th class="head"><p>Viewer</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>get:project</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>get a single, or list of projects</p></td>
+</tr>
+<tr class="row-odd"><td><p>post:project</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Create a new project or search</p></td>
+</tr>
+<tr class="row-even"><td><p>patch:project</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Update a project attributes</p></td>
+</tr>
+<tr class="row-odd"><td><p>delete:project</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Delete a project and its runs</p></td>
+</tr>
+<tr class="row-even"><td><p>get:run</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Get a run or download run results</p></td>
+</tr>
+<tr class="row-odd"><td><p>post:run</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Create a new run</p></td>
+</tr>
+<tr class="row-even"><td><p>patch:run</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Update a run’s attributes</p></td>
+</tr>
+<tr class="row-odd"><td><p>delete:run</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Delete a run</p></td>
+</tr>
+<tr class="row-even"><td><p>get:train</p></td>
+<td><p>Yes</p></td>
+<td></td>
+<td><p>Run ML Training</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="api-end-points">
-<h3>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h3>
-<p>The following APIs endpoints are available. Detailed html documentation can be found at
-<a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+<h2>API End Points<a class="headerlink" href="#api-end-points" title="Permalink to this headline">¶</a></h2>
+<p>The following APIs endpoints are available. Detailed HTML documentation on these end points,
+including this file, can be found at <a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+<p>These are the end-points, with the short description and role.</p>
 <p>– Home Page –</p>
 <ul class="simple">
 <li><p>GET / (home)</p></li>
@@ -176,7 +294,7 @@ Viewer: Only able to view results</p>
 <p>— Projects —</p>
 <ul class="simple">
 <li><p>GET /projects (List all projects) - get:project</p></li>
-<li><p>GET /projects/int:project_id (Project page) - get:project</p></li>
+<li><p>GET /projects/int:project_id (List a single project) - get:project</p></li>
 <li><p>POST/GET /projects/create (create a new project) - post:project</p></li>
 <li><p>PATCH /projects/int:project_id/edit (edit a project) - patch:project</p></li>
 <li><p>DELETE /projects/<span class="raw-html-m2r"><project_id></span>/delete (Delete a project) - delete:project</p></li>
@@ -190,78 +308,26 @@ Viewer: Only able to view results</p>
 </ul>
 <p>— Train —</p>
 <ul>
-<li><p>GET /train/int:run_id  (run ML training for a run) post:train</p></li>
+<li><p>GET /train/int:run_id  (run ML training for a run) get:train</p></li>
 <li><p>GET /train/int:run_id/download  (download testing results file,
 .. code-block:</p>
 <blockquote>
-<div><p>kaggle file) get:train</p>
+<div><p>kaggle file) get:run</p>
 </div></blockquote>
 </li>
 </ul>
 </div>
 </div>
-<div class="section" id="project-dependencies-local-development-and-hosting-instructions">
-<h2>Project dependencies, local development and hosting instructions<a class="headerlink" href="#project-dependencies-local-development-and-hosting-instructions" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Detailed instructions for scripts to install any project dependencies, and to run the development server.</p></li>
-<li><p>Documentation of API behavior and RBAC controls</p></li>
-</ul>
-</div>
-<div class="section" id="runing-and-testing-instrunctions">
-<h2>Runing and Testing Instrunctions<a class="headerlink" href="#runing-and-testing-instrunctions" title="Permalink to this headline">¶</a></h2>
-<p>URL: <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a></p>
-<p>There are three approaches to running and evaluating RobotClassify:</p>
-</div>
-</div>
-<div class="section" id="web">
-<h1>. Web<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="unittest">
-<h1>. UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="curl">
-<h1>. Curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h1>
-<p>There are scripts to help with each one.</p>
-<p>For example, the Titanic Kaggle competeition (<a class="reference external" href="https://www.kaggle.com/c/titanic.com">https://www.kaggle.com/c/titanic.com</a>), provides two data sets, the Training set and test set. Loading these into Robot Classify, we would set the run paramatgers as follows:</p>
-<ul class="simple">
-<li><p>Target Variable: Survived</p></li>
-<li><p>Record Key: PassengerID</p></li>
-<li><p>Predict set out: Survuved, PassengerID</p></li>
-<li><p>Classification model: xgbc</p></li>
-<li><p>Scoring method: f1</p></li>
-<li><p>Use Algorithm I for feature engineering: True</p></li>
-</ul>
-<p>This will give a training result that would put you in the top 8% of competitors.</p>
-<p>Unittests are run using the script <code class="docutils literal notranslate"><span class="pre">test.sh</span></code>. This script requires Postgress on the local machine where the test is being run.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">test.sh</span></code> script will:</p>
-</div>
-<div class="section" id="create-the-robotclassiy-test-database">
-<h1>. Create the robotclassiy_test database<a class="headerlink" href="#create-the-robotclassiy-test-database" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables">
-<h1>. Get a Token and User ID for the API user (placed into environment variables)<a class="headerlink" href="#get-a-token-and-user-id-for-the-api-user-placed-into-environment-variables" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="populate-the-test-database-with-data-for-the-api-user">
-<h1>. Populate the test database with data for the API user<a class="headerlink" href="#populate-the-test-database-with-data-for-the-api-user" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="run-the-tests">
-<h1>. Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h1>
-<p>The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Amazon/Heroku)</p>
-<p>curl_pass.sh
-curl_fail.sh
-curl.sh (setup the environment variables to run Curl manually)</p>
-<p>If you need to get an updated token, you need to login to the Web app and issue the following URL:</p>
-<p><a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a></p>
-<p>This will retrive the current jwt token for the logged in user.</p>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="python-3-7">
-<h3>Python 3.7<a class="headerlink" href="#python-3-7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installation-and-dependencies">
+<h1>Installation and Dependencies<a class="headerlink" href="#installation-and-dependencies" title="Permalink to this headline">¶</a></h1>
+<p>RobotClassify source is loacted at: <a class="reference external" href="https://github.com/scottrsmith/RobotClassify">https://github.com/scottrsmith/RobotClassify</a></p>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
 <p>This project uses python 3.7</p>
 <p>To Install <a class="reference external" href="https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python">Python</a></p>
 </div>
 <div class="section" id="pip-dependencies">
-<h3>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h3>
+<h2>PIP Dependencies<a class="headerlink" href="#pip-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>Once you have your virtual environment setup and running, install dependencies by navigating to the root directory and running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
 </pre></div>
@@ -269,161 +335,100 @@ curl.sh (setup the environment variables to run Curl manually)</p>
 <p>This will install all of the required packages we selected within the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
 </div>
 <div class="section" id="key-dependencies">
-<h3>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h3>
+<h2>Key Dependencies<a class="headerlink" href="#key-dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="http://flask.pocoo.org/">Flask</a>  is a lightweight backend microservices framework.</p></li>
 <li><p><a class="reference external" href="https://www.sqlalchemy.org/">SQLAlchemy</a> is the Python SQL toolkit and ORM.</p></li>
 <li><p><a class="reference external" href="https://flask-cors.readthedocs.io/en/latest/#">Flask-CORS</a> is the extension used to handle cross-origin requests from the frontend server.</p></li>
 <li><p><a class="reference external" href="https://auth0.com/docs/getting-started/overview">Auth0</a> Provides authentication and authorization as a service</p></li>
-<li><p><a class="reference external" href="http://example.com">Postgres</a> DOES XXX</p></li>
-<li><p><a class="reference external" href="http://example.com">Heroku</a> DOES XXX</p></li>
-<li><p><a class="reference external" href="http://example.com">Flask-WTF</a> DOES XXX</p></li>
-<li><p><a class="reference external" href="http://example.com">mlLib</a> DOES XXX</p></li>
-<li><p><a class="reference external" href="http://example.com">InitTest</a> DOES XXX</p></li>
-<li><p><a class="reference external" href="http://example.com">FlaskMigrate</a> DOES XXX</p></li>
+<li><p><a class="reference external" href="https://www.postgresql.org/download/">Postgres</a> Postgres SQL database</p></li>
+<li><p><a class="reference external" href="http://heroku.com">Heroku</a> App Hosting</p></li>
+<li><p><a class="reference external" href="https://flask-wtf.readthedocs.io/en/stable/install.html">Flask-WTF</a> Flask What-the-forms</p></li>
+<li><p><a class="reference external" href="https://github.com/scottrsmith/mllib">mlLib</a> Machine Learning Training lib. Included in robot classify</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/unittest.html">InitTest</a> Test automation for Python</p></li>
+<li><p><a class="reference external" href="https://flask-migrate.readthedocs.io/en/latest/">FlaskMigrate</a> Manages SQLAlchemy database migrations for Flask applications using Alembic</p></li>
+<li><p><a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> Simple and efficient tools for predictive data analysis</p></li>
 </ul>
-</div>
 </div>
 <div class="section" id="database-setup">
 <h2>Database Setup<a class="headerlink" href="#database-setup" title="Permalink to this headline">¶</a></h2>
-<p>The app is running Postgres SQL.</p>
+<p>The UnitTest is running Postgres SQL as the local souce database.</p>
+<p>How to start/stop:
+<a class="reference external" href="https://stackoverflow.com/questions/7975556/how-to-start-postgresql-server-on-mac-os-x">https://stackoverflow.com/questions/7975556/how-to-start-postgresql-server-on-mac-os-x</a></p>
 </div>
-<div class="section" id="running-the-server">
-<h2>Running the server<a class="headerlink" href="#running-the-server" title="Permalink to this headline">¶</a></h2>
-<p>From within the <code class="docutils literal notranslate"><span class="pre">root</span></code> directory to run the server, execute:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">FLASK_APP</span><span class="o">=</span>app.py
-<span class="nb">export</span> <span class="nv">FLASK_ENV</span><span class="o">=</span>development
-flask run
-</pre></div>
+<div class="section" id="running-the-flask-server">
+<h2>Running the flask server<a class="headerlink" href="#running-the-flask-server" title="Permalink to this headline">¶</a></h2>
+<p>On a local machine, from within the <code class="docutils literal notranslate"><span class="pre">root</span></code> directory to run the server, execute <code class="docutils literal notranslate"><span class="pre">dev.sh</span></code></p>
 </div>
 </div>
 <div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="html-documentation">
-<h3>HTML Documentation<a class="headerlink" href="#html-documentation" title="Permalink to this headline">¶</a></h3>
+<h2>HTML Documentation<a class="headerlink" href="#html-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Live documentation, including this readme, can be found at <a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
 </div>
 <div class="section" id="pdf-documentation">
-<h3>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h3>
+<h2>PDF Documentation<a class="headerlink" href="#pdf-documentation" title="Permalink to this headline">¶</a></h2>
 <p>The PDF version of the documentation is located in the root project directory. Named robotclassify.pdf</p>
 </div>
 <div class="section" id="generating-documentation">
-<h3>Generating documentation<a class="headerlink" href="#generating-documentation" title="Permalink to this headline">¶</a></h3>
+<h2>Generating documentation<a class="headerlink" href="#generating-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Documentation is generated with Sphinx.</p>
-<p>Installing Sphinx and support tools</p>
-<div class="highlight-~~~~~~~~~~~ notranslate"><div class="highlight"><pre><span></span>To install Sphinx, reference the documents at https://www.sphinx-doc.org/en/master/usage/installation.html
-
-For example:
-
-.. code-block:: bash
-
-   pip install -U sphinx
-
-Install dependencies by navigating to the ``root`` project directory and running:
-
-.. code-block:: bash
-
-   cd docs
-   pip install m2r
-   pip install recommonmark
-   pip install rinohtype
-   pip install -r requirements.txt
-
-Generating documentation
-</pre></div>
+<div class="section" id="installing-sphinx-and-support-tools">
+<h3>Installing Sphinx and support tools<a class="headerlink" href="#installing-sphinx-and-support-tools" title="Permalink to this headline">¶</a></h3>
+<p>To install Sphinx, reference the documents at <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/installation.html">https://www.sphinx-doc.org/en/master/usage/installation.html</a></p>
 </div>
-<p>Documentation is generated with Sphinx. Use <code class="docutils literal notranslate"><span class="pre">docs.sh</span></code> in the docs folder to generate the documentation</p>
+<div class="section" id="id2">
+<h3>Generating documentation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Documentation is generated with Sphinx. Use <code class="docutils literal notranslate"><span class="pre">docs.sh</span></code> in the docs folder to generate the documentation.
+Generated docs are located at <a class="reference external" href="https://robotclassify.herokuapp.com/docs/index.html">https://robotclassify.herokuapp.com/docs/index.html</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="error-handling">
-<h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<h1>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h1>
 <p>Errors are returned as JSON objects in the following format:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
     <span class="s2">&quot;success&quot;</span>: False,
-    <span class="s2">&quot;error&quot;</span>: <span class="m">400</span>,
-    <span class="s2">&quot;message&quot;</span>: <span class="s2">&quot;Bad Request&quot;</span>
+    <span class="s2">&quot;error&quot;</span>: <span class="m">401</span>,
+    <span class="s2">&quot;message&quot;</span>: <span class="s2">&quot;Premission Error&quot;</span>
+    <span class="s2">&quot;description&quot;</span>: <span class="s2">&quot;401: Authorization header is expected.&quot;</span>
 <span class="o">}</span>
 </pre></div>
 </div>
 <p>The API returns multiple error types when requests fail:</p>
 <ul class="simple">
 <li><p>400: Bad Request</p></li>
+<li><p>401: Permission Error</p></li>
 <li><p>404: Resource Not Found</p></li>
 <li><p>405: Method Not Allowed</p></li>
 <li><p>422: Not Processable</p></li>
-<li><p>500: Internal Server Error</p></li>
+<li><p>500: Server Error</p></li>
 </ul>
 </div>
 <div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Testing is done with UnitTest and curl.  UnitTest is setup to create and use a local Postgres database while Curl is setup to  run commands against the</p>
-<div class="section" id="testing-with-unittest">
-<h3>Testing with UnitTest<a class="headerlink" href="#testing-with-unittest" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="testing-with-curl">
-<h3>Testing with Curl<a class="headerlink" href="#testing-with-curl" title="Permalink to this headline">¶</a></h3>
-</div>
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<p>Testing is done with UnitTest and curl.  UnitTest is set up to create and use a local Postgres database while Curl is set up to  run commands against the</p>
 </div>
 <div class="section" id="development-notes">
-<h2>Development Notes<a class="headerlink" href="#development-notes" title="Permalink to this headline">¶</a></h2>
+<h1>Development Notes<a class="headerlink" href="#development-notes" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon</p></li>
-<li><p>CSRF protection is disabled for certain REST calls to faciliate testing cia CuRL.</p></li>
-<li><p>Patch and Delete functions are only avialable via API calls</p></li>
-<li><p>UnitTest uses a local postgres database</p></li>
-<li><p>UnitTest uses API App Auth0 credentials (verses using Auth0 Web App quickstart code)
+<li><p>Flask Sessions are maintained between REST Calls for Web-based use of the API. The implementation is based upon Flask Sessions and the quickstart example app from Auth0 for Web applications.</p></li>
+<li><p>CSRF protection is disabled for certain REST calls to facilitate testing via CuRL.</p></li>
+<li><p>Patch and Delete functions are only available via API calls</p></li>
+<li><p>UnitTest uses a local Postgres database</p></li>
+<li><p>UnitTest uses Auth0 API App credentials (verses using Auth0 Web App quickstart code)
 Auth0 Management API (Test Application)</p></li>
 <li><p>Tokens in the headers are used for API authentication</p></li>
 </ul>
 </div>
-</div>
 <div class="section" id="module-app">
 <span id="robot-classify-s-api-controllers"></span><h1>Robot Classify’s API Controllers<a class="headerlink" href="#module-app" title="Permalink to this headline">¶</a></h1>
-<p>## Introduction</p>
-<p><strong>Home Page</strong></p>
-<ul class="simple">
-<li><p>GET / (home)</p></li>
-</ul>
-<p><strong>Documentation Page</strong></p>
-<ul class="simple">
-<li><p>GET /docs/index.html</p></li>
-</ul>
-<p><strong>Projects</strong></p>
-<ul class="simple">
-<li><p>GET /projects (List all projects) - get:project</p></li>
-<li><p>GET /projects/&lt;int:project_id&gt; (Project page) - get:project</p></li>
-<li><p>POST/GET /projects/create (create a new project) - post:project</p></li>
-<li><p>PATCH /projects/&lt;int:project_id&gt;/edit (edit a project) - patch:project</p></li>
-<li><p>DELETE /projects/&lt;project_id&gt;/delete (Delete a project) - delete:project</p></li>
-</ul>
-<p><strong>Runs</strong></p>
-<ul class="simple">
-<li><p>GET /runs/&lt;int:run_id&gt;  (Display a run results) - get:run</p></li>
-<li><p>GET/POST /runs/create/&lt;int:project_id&gt; (Create a run) - get:post</p></li>
-<li><p>DELETE /runs/&lt;int:run_id&gt;/delete (Delete a run) - delete:post</p></li>
-<li><p>PATCH /run/&lt;int:run_id&gt;/edit (edit a run) - patch:run</p></li>
-</ul>
-<p><strong>Train</strong></p>
-<ul class="simple">
-<li><p>GET /train/&lt;int:run_id&gt;  (run ML training for a run) post:train</p></li>
-<li><dl class="simple">
-<dt>GET /train/&lt;int:run_id&gt;/download  (download testing results file,</dt><dd><p>kaggle file) get:train</p>
-</dd>
-</dl>
-</li>
-</ul>
-<dl class="function">
-<dt id="app.get_token_from_auth0">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">get_token_from_auth0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_token_from_auth0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Obtains the Access Token from the oAuth object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.get_token_from_header">
-<code class="sig-prename descclassname">app.</code><code class="sig-name descname">get_token_from_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_token_from_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Obtains the Access Token from the Authorization Header</p>
-</dd></dl>
-
+<div class="section" id="id3">
+<h2>Introduction<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>RobotClassify has a number of APIs that are under RBAC control. These APIs
+generally return HTML data (web pages) for human interaction. These APIs
+can also be called machine-to-machine.</p>
 <dl class="function">
 <dt id="app.index">
 <code class="sig-prename descclassname">app.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Permalink to this definition">¶</a></dt>
@@ -958,6 +963,7 @@ Run ML Training based upon run record attributes</p>
 </dd></dl>
 
 </div>
+</div>
 <div class="section" id="module-models">
 <span id="robot-classify-s-api-model"></span><h1>Robot Classify’s API Model<a class="headerlink" href="#module-models" title="Permalink to this headline">¶</a></h1>
 <p><strong>Introduction</strong></p>
@@ -1236,12 +1242,12 @@ the model must exist in the database</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-mlLib.project">
-<span id="ml-lib"></span><h1>ML Lib<a class="headerlink" href="#module-mlLib.project" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2><strong>Introduction</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>The projects module is is a high-level library to process ML jobs at the
-project level. All interactions can happen with this API</p>
+<div class="section" id="id4">
+<h1>mlLib<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-mlLib.project"></span><div class="section" id="id5">
+<h2><em>Introduction</em><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>The Project module is a high-level library to process ML jobs at the
+project level. All interactions can happen with this API.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Manage Projects</p></li>
@@ -1253,7 +1259,7 @@ project level. All interactions can happen with this API</p>
 <li><p>Deploy model, to process ML transactions</p></li>
 </ul>
 </div></blockquote>
-<p>Code Example:</p>
+<p>Python Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">project</span> <span class="k">import</span> <span class="n">mlProject</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1377,7 +1383,7 @@ project level. All interactions can happen with this API</p>
     <span class="n">answer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">]</span>
 <span class="n">predict</span><span class="o">.</span><span class="n">addToPredictFile</span><span class="p">(</span><span class="n">targetVariable</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
 
-<span class="c1"># Prep the file for export, onlu keeping</span>
+<span class="c1"># Prep the file for export, only keeping</span>
 <span class="c1"># columns needed</span>
 <span class="n">predict</span><span class="o">.</span><span class="n">keepFromPredictFile</span><span class="p">(</span><span class="n">predictSetOut</span><span class="p">)</span>
 <span class="n">predict</span><span class="o">.</span><span class="n">exportPredictFile</span><span class="p">(</span><span class="n">resultsFile</span><span class="p">)</span>
@@ -1387,11 +1393,11 @@ project level. All interactions can happen with this API</p>
 <dt id="mlLib.project.autoFlaskEvaluateClassifier">
 <code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">autoFlaskEvaluateClassifier</code><span class="sig-paren">(</span><em class="sig-param">projectName=None, trainingFile=None, testingFile=None, trainingFileDF=None, testingFileDF=None, targetVariable=None, key=None, predictSetOut=[None], trainingFileOut=None, logFileOut=None, transcriptFile=None, predictFileOut=None, resultsFile=None, modelList=None, confusionMatrixLabels=[], scoring='f1', useProba=False, bottomImportancePrecentToCut=None, setProjectGoals={'f1': (0.9, '&gt;')}, runVerbose=0, recommendOnly=None, basicAutoMethod=None, doExplore=True, doTrain=True, doPredict=True, skewFactor=None, toTerminal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.autoFlaskEvaluateClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>autoFlaskEvaluateClassifier</strong></p>
-<p>Auto-process an ML job for Flask Servers</p>
+<p>Purpose:
+Auto-process an ML job for Flask Servers</p>
 <p>Takes a data file and a few data points about the file and
 automatically does feature engineering and model evaluation.</p>
-<ul>
-<li><p>Sample Call:</p>
+<p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">autoFlaskEvaluateClassifier</span><span class="p">(</span>
      <span class="n">projectName</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
      <span class="n">trainingFile</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">Project</span><span class="o">.</span><span class="n">trainingFile</span><span class="p">,</span>
@@ -1421,25 +1427,25 @@ automatically does feature engineering and model evaluation.</p>
  <span class="p">)</span>
 </pre></div>
 </div>
-</li>
-</ul>
 </dd></dl>
 
 <dl class="class">
 <dt id="mlLib.project.mlProject">
 <em class="property">class </em><code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">mlProject</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>mlProject is the top level object for training and running a ML project.
-Various object mothods are used to load, review, and train the data, as
-well as manage running predictions</p>
-<p>Example:
-project = mlProject(‘Customer Segements’, ‘clustering model should factor’)</p>
+<dd><p>mlProject is the top-level object for training and running a ML project.
+Various object methods are used to load, review, and train the data, as
+well as manage running predictions. autoFlaskEvaluateClassifier is built
+using this class and class methods.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span> <span class="o">=</span> <span class="n">mlProject</span><span class="p">(</span><span class="s1">&#39;Customer Segements&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;clustering model should factor&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="mlLib.project.mlProject.setTrainingPreferences">
 <code class="sig-name descname">setTrainingPreferences</code><span class="sig-paren">(</span><em class="sig-param">crossValidationSplits=None</em>, <em class="sig-param">parallelJobs=None</em>, <em class="sig-param">modelType=None</em>, <em class="sig-param">modelList=None</em>, <em class="sig-param">testSize=None</em>, <em class="sig-param">randomState=None</em>, <em class="sig-param">uniqueThreshold=None</em>, <em class="sig-param">dropDuplicates=None</em>, <em class="sig-param">clusterDimensionThreshold=None</em>, <em class="sig-param">varianceThreshold=None</em>, <em class="sig-param">kmeansClusters=None</em>, <em class="sig-param">useStandardScaler=None</em>, <em class="sig-param">fbeta=None</em>, <em class="sig-param">runHyperparameters=None</em>, <em class="sig-param">runEstimatorHyperparameters=None</em>, <em class="sig-param">runMetaClassifier=None</em>, <em class="sig-param">runAutoFeaturesMode=None</em>, <em class="sig-param">smallSample=None</em>, <em class="sig-param">highDimensionality=None</em>, <em class="sig-param">gridSearchVerbose=None</em>, <em class="sig-param">gridSearchScoring=None</em>, <em class="sig-param">featuresToReport=None</em>, <em class="sig-param">logTrainingResultsFilename=None</em>, <em class="sig-param">useProbaForPredict=None</em>, <em class="sig-param">recommendOnly=None</em>, <em class="sig-param">basicAutoMethod=None</em>, <em class="sig-param">competitionMode=None</em>, <em class="sig-param">skewFactor=None</em>, <em class="sig-param">bottomImportancePrecentToCut=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTrainingPreferences" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>setTrainingPreferences</strong></p>
-<p>setTrainingPreferences for an ML job</p>
-<ul>
-<li><p>Sample Call:</p>
+<dd><p>setTrainingPreferences for an ML job.</p>
+<p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setTrainingPreferences</span> <span class="p">(</span>
                <span class="n">crossValidationSplits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                <span class="n">parallelJobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
@@ -1455,15 +1461,12 @@ project = mlProject(‘Customer Segements’, ‘clustering model should factor�
                <span class="n">runMetaClassifier</span><span class="o">=</span><span class="n">runMeta</span><span class="p">)</span>
 </pre></div>
 </div>
-</li>
-</ul>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.setHyperparametersOverride">
 <code class="sig-name descname">setHyperparametersOverride</code><span class="sig-paren">(</span><em class="sig-param">modelName</em>, <em class="sig-param">override</em>, <em class="sig-param">forBaseEstimator=False</em>, <em class="sig-param">forMetaClassifier=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setHyperparametersOverride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:
-Set the hyperparameters to override the defaults for a model</p>
+<dd><p>Set the hyperparameters to override the defaults for a model</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;lasso__alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
@@ -1517,20 +1520,18 @@ Set the hyperparameters to override the defaults for a model</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.setConfusionMatrixLabels">
 <code class="sig-name descname">setConfusionMatrixLabels</code><span class="sig-paren">(</span><em class="sig-param">list</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setConfusionMatrixLabels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the labels for the confusion matrix plot</p>
-<blockquote>
-<div><p>Example:</p>
+<dd><p>Set the labels for the confusion matrix plot.</p>
+<p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setConfusionMatrixLabels</span><span class="p">(</span>
-     <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Paid&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Default&#39;</span><span class="p">)</span> <span class="p">])</span>
+       <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Paid&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Default&#39;</span><span class="p">)</span> <span class="p">])</span>
 </pre></div>
 </div>
-</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.setTarget">
 <code class="sig-name descname">setTarget</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">boolean=False</em>, <em class="sig-param">trueValue=None</em>, <em class="sig-param">convertTable=None</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setTarget" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Set the target variable for supervised learning.</p>
+<dd><p>Set the target variable for supervised learning.</p>
 <dl>
 <dt>Call::</dt><dd><dl class="simple">
 <dt>setTarget(self, value, boolean=False, trueValue=None,</dt><dd><p>convertTable=None, tableName=None):</p>
@@ -1563,7 +1564,7 @@ convertTable = a table of how to convert values</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.exportFile">
 <code class="sig-name descname">exportFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Export the named file. (Projects can have multiuple
+<dd><p>Export the named file. (Projects can have multiuple
 files associated with them)</p>
 <p>Call: def exportFile(self, name, filename):</p>
 <p>Example: project.exportFile(‘Loan Data’, ‘fileout.csv’):</p>
@@ -1572,26 +1573,90 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.getColumn">
 <code class="sig-name descname">getColumn</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.getColumn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Get a columns from the data file</p>
-<p>Call: def getColumn(self, name, column):</p>
-<p>Example: project.getColumn(‘Loan Data’,’Name’)</p>
+<dd><p>Get a column from the data.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">getColumn</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">,</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.dropColumn">
+<code class="sig-name descname">dropColumn</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.dropColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop column from the data/</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">dropColumn</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">,</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.saveKey">
+<code class="sig-name descname">saveKey</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.saveKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a column as a key.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">saveKey</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">,</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.getKey">
+<code class="sig-name descname">getKey</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.getKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the key column</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keyName</span><span class="p">,</span> <span class="n">keyData</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">getKey</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.MergeFilesAsTrainAndTest">
+<code class="sig-name descname">MergeFilesAsTrainAndTest</code><span class="sig-paren">(</span><em class="sig-param">trainingFile</em>, <em class="sig-param">testingFile</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.MergeFilesAsTrainAndTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge both the training and test files. Useful when doing
+Statistical evaluation of the complete data set.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">MergeFilesAsTrainAndTest</span><span class="p">(</span><span class="s1">&#39;Training&#39;</span><span class="p">,</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.PullTrainingData">
+<code class="sig-name descname">PullTrainingData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.PullTrainingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return training and test files merged with MergeFilesAsTrainAndTest.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">PullTrainingData</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mlLib.project.mlProject.groupByValue">
+<code class="sig-name descname">groupByValue</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">columnList</em>, <em class="sig-param">value='mean'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.groupByValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refactor data that is grouped. Uses pandas groupby function.
+Can recalculate grouped data as a mean of the data. (default)</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">groupByValue</span><span class="p">(</span><span class="s1">&#39;Training&#39;</span><span class="p">,[</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span><span class="s1">&#39;col2&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.exploreData">
 <code class="sig-name descname">exploreData</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exploreData" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Purpose: Run the explore data function. This will review the data</dt><dd><p>and make recommendations</p>
-</dd>
-</dl>
-<p>Call: exploreData(self):</p>
-<p>Example: project.exploreData()</p>
+<dd><p>Run the explore data function. This will review the data
+and make recommendations.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">exploreData</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.initCleaningRules">
 <code class="sig-name descname">initCleaningRules</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.initCleaningRules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Before adding any cleaning rules you must init</p>
+<dd><p>Before adding any cleaning rules you must initialize.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">initCleaningRules</span><span class="p">()</span>
 
@@ -1609,33 +1674,29 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.cleanProject">
 <code class="sig-name descname">cleanProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Run the cleaning rules established for a project.</p>
+<dd><p>Run the cleaning rules established for a project.</p>
 <p>Call: cleanProject(self)</p>
-<dl class="simple">
-<dt>Example::</dt><dd><p>project.cleanProject()</p>
-</dd>
-</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">cleanProject</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.cleanAndExploreProject">
 <code class="sig-name descname">cleanAndExploreProject</code><span class="sig-paren">(</span><em class="sig-param">fileName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.cleanAndExploreProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Run clean and explore together</p>
-<p>Call: def cleanAndExploreProject(self)</p>
-<dl class="simple">
-<dt>Example::</dt><dd><p>project.cleanAndExploreProject()</p>
-</dd>
-</dl>
+<dd><p>Run clean and explore together</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">cleanAndExploreProject</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.prepProjectByName">
 <code class="sig-name descname">prepProjectByName</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em>, <em class="sig-param">outFile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.prepProjectByName" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Purpose: Prepare the ‘table’ for training. This will one-hot encode,</dt><dd><p>for example.</p>
-</dd>
-</dl>
-<p>Call: prepProjectByName(self, tableName=None)</p>
+<dd><p>Prepare the ‘table’ for training. This will one-hot encode,
+for example.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">prepProjectByName</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1645,7 +1706,8 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.writePreppedFileByName">
 <code class="sig-name descname">writePreppedFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writePreppedFileByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Once a file has been cleaned and explored</p>
+<dd><p>Once a file has been cleaned and explored it can be exported
+with this command.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">writePreppedFileByName</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">,</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1655,7 +1717,7 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.writeTrainingSetFileByName">
 <code class="sig-name descname">writeTrainingSetFileByName</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.writeTrainingSetFileByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Write out the training set file by filename</p>
+<dd><p>Write out the training set file by filename.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">writeTrainingSetFileByName</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">,</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1665,7 +1727,7 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.trainProjectByName">
 <code class="sig-name descname">trainProjectByName</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Train table by tablename</p>
+<dd><p>Train table by tablename.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">trainProjectByName</span><span class="p">(</span><span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1675,7 +1737,7 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.prepProjectByBatch">
 <code class="sig-name descname">prepProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.prepProjectByBatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Prep all of the files for training</p>
+<dd><p>Prep all of the files for training.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">prepProjectByBatch</span><span class="p">()</span>
 </pre></div>
@@ -1685,7 +1747,7 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.trainProjectByBatch">
 <code class="sig-name descname">trainProjectByBatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.trainProjectByBatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Train all of the files at once</p>
+<dd><p>Train all of the files at once</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">trainProjectByBatch</span><span class="p">()</span>
 </pre></div>
@@ -1695,105 +1757,176 @@ files associated with them)</p>
 <dl class="method">
 <dt id="mlLib.project.mlProject.exportBestModel">
 <code class="sig-name descname">exportBestModel</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportBestModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
+<dd><p>Exports the model with the best training results to a file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">exportBestModel</span><span class="p">(</span><span class="s1">&#39;bestmodel.plk&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.createPredictFromBestModel">
 <code class="sig-name descname">createPredictFromBestModel</code><span class="sig-paren">(</span><em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.createPredictFromBestModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Using the best trained model in the project, create the predict
+object to allow for raw data to be cleaned and predicted based
+upon the model.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">createPredictFromBestModel</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.createPredictFromNamedModel">
 <code class="sig-name descname">createPredictFromNamedModel</code><span class="sig-paren">(</span><em class="sig-param">namedModel</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.createPredictFromNamedModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Using a named trained model from the project, create the predict
+object to allow for raw data to be cleaned and predicted based
+upon the model.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">createPredictFromNamedModel</span><span class="p">(</span><span class="s1">&#39;xgbc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.exportNamedModel">
 <code class="sig-name descname">exportNamedModel</code><span class="sig-paren">(</span><em class="sig-param">namedModel</em>, <em class="sig-param">filename</em>, <em class="sig-param">tableName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportNamedModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Export the named project to a file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">exportNamedModel</span><span class="p">(</span><span class="s1">&#39;gbc&#39;</span><span class="p">,</span> <span class="s1">&#39;gbRealEstateModel.plk&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.addManualRuleForTableName">
 <code class="sig-name descname">addManualRuleForTableName</code><span class="sig-paren">(</span><em class="sig-param">tableName</em>, <em class="sig-param">functionName</em>, <em class="sig-param">columnName</em>, <em class="sig-param">value</em>, <em class="sig-param">forPredict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.addManualRuleForTableName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Manually add a cleaning rule for the named table. Cleaning
+rules are used to feature engineer and refactor data.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForTableName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                                  <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                                  <span class="s1">&#39;school_score&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;num_schools * median_school&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a property age feature</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForTableName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                                  <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                                  <span class="s1">&#39;property_age&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;tx_year - year_built&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForTableName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                                  <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REMOVE_ITEMS_BELOW</span><span class="p">,</span>
+                                  <span class="s1">&#39;property_age&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Drop &#39;tx_year&#39; and &#39;year_built&#39; from the dataset</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForTableName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                                  <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span>
+                                  <span class="s1">&#39;tx_year&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForTableName</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">,</span>
+                                  <span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span>
+                                  <span class="s1">&#39;year_built&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.addManualRuleForDefault">
 <code class="sig-name descname">addManualRuleForDefault</code><span class="sig-paren">(</span><em class="sig-param">functionName</em>, <em class="sig-param">columnName=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">forPredict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.addManualRuleForDefault" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Manually add a cleaning rule for the default table. Cleaning
+rules are used to feature engineer and refactor data.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                               <span class="s1">&#39;school_score&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;num_schools * median_school&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a property age feature</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_NEW_VARIABLE</span><span class="p">,</span>
+                                <span class="s1">&#39;property_age&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;tx_year - year_built&#39;</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_REMOVE_ITEMS_BELOW</span><span class="p">,</span>
+                                <span class="s1">&#39;property_age&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Drop &#39;tx_year&#39; and &#39;year_built&#39; from the dataset</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span>
+                                <span class="s1">&#39;tx_year&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">project</span><span class="o">.</span><span class="n">addManualRuleForDefault</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">EXPLORE_DROP_COLUMN</span><span class="p">,</span>
+                                <span class="s1">&#39;year_built&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.setGoals">
 <code class="sig-name descname">setGoals</code><span class="sig-paren">(</span><em class="sig-param">goals</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setGoals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
-<dl class="simple">
-<dt>Example:</dt><dd><dl class="simple">
-<dt>project.setGoals({‘AUROC’:(0.70,’&gt;’),’Precision’:(0.386,’&gt;’),</dt><dd><p>‘fbeta’:(0.44,’&gt;’)})</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<dd><p>Set project goals for model training. Does not change how
+a model is trained, just added to reporting</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setGoals</span><span class="p">({</span><span class="s1">&#39;AUROC&#39;</span><span class="p">:(</span><span class="mf">0.70</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">),</span><span class="s1">&#39;Precision&#39;</span><span class="p">:(</span><span class="mf">0.386</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">),</span>
+                  <span class="s1">&#39;fbeta&#39;</span><span class="p">:(</span><span class="mf">0.44</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)})</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.setOngoingReporting">
-<code class="sig-name descname">setOngoingReporting</code><span class="sig-paren">(</span><em class="sig-param">True</em>, <em class="sig-param">'Loan Data'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setOngoingReporting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">setOngoingReporting</code><span class="sig-paren">(</span><em class="sig-param">flag</em>, <em class="sig-param">fileName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.setOngoingReporting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow for the training data to be recorded.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">setOngoingReporting</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.displayAllScores">
-<code class="sig-name descname">displayAllScores</code><span class="sig-paren">(</span><em class="sig-param">'Loan Data'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.displayAllScores" title="Permalink to this definition">¶</a></dt>
-<dd><p>def displayAllScores(self, fileName):</p>
+<code class="sig-name descname">displayAllScores</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">short=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.displayAllScores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the results of the model training. This is an extensive
+report.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">displayAllScores</span><span class="p">(</span><span class="s1">&#39;Loan Data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.reportResultsOnTrainedModel">
 <code class="sig-name descname">reportResultsOnTrainedModel</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">modelName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.reportResultsOnTrainedModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Report the funak results on the traibn mdoel</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">reportResultsOnTrainedModel</span><span class="p">(</span><span class="s1">&#39;Titanic&#39;</span><span class="p">,</span><span class="s1">&#39;xgbc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.showFeatureImportances">
 <code class="sig-name descname">showFeatureImportances</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">modelName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.showFeatureImportances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Report on the feature importance of columns in a datafile based
+upon the model.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">showFeatureImportances</span><span class="p">(</span><span class="s1">&#39;Titanic&#39;</span><span class="p">,</span> <span class="s1">&#39;xgbc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.logTrainingResultsRunDescription">
 <code class="sig-name descname">logTrainingResultsRunDescription</code><span class="sig-paren">(</span><em class="sig-param">description='None'</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.logTrainingResultsRunDescription" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Give a run a name to be added to the training log results</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">logTrainingResultsRunDescription</span><span class="p">(</span><span class="s1">&#39;First Run&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.mlProject.logTrainingResults">
 <code class="sig-name descname">logTrainingResults</code><span class="sig-paren">(</span><em class="sig-param">fileName</em>, <em class="sig-param">outputFileName</em>, <em class="sig-param">inputModelName=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.logTrainingResults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Log training results to a file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="n">logTrainingResults</span><span class="p">(</span><span class="s1">&#39;Training File&#39;</span><span class="p">,</span><span class="s1">&#39;TrainingLog.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -1801,111 +1934,152 @@ files associated with them)</p>
 <dl class="class">
 <dt id="mlLib.project.predictProject">
 <em class="property">class </em><code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">predictProject</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">tableName=None</em>, <em class="sig-param">namedModel=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: predictProject</p>
-<p>Call:</p>
+<dd><p>Predict a previously trained project. Predict objects allow for raw
+data to be loaded and cleaned with cleaning rules from the project
+as well as run predictions from the previously trained model.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">createPredictFromBestModel</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="mlLib.project.predictProject.importPredictFile">
 <code class="sig-name descname">importPredictFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">fileName=None</em>, <em class="sig-param">sheetName=None</em>, <em class="sig-param">hasHeaders=False</em>, <em class="sig-param">range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Import a file for prediction.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">importPredictFile</span><span class="p">(</span><span class="s1">&#39;Titanic&#39;</span><span class="p">,</span><span class="s1">&#39;/files/titanic_train.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.importPredictFileFromProject">
 <code class="sig-name descname">importPredictFileFromProject</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">tableName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFileFromProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Get a file loaded in a project and load it as the predict
+file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">importPredictFileFromProject</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;Titanic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.importPredictFromDF">
 <code class="sig-name descname">importPredictFromDF</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">readyForPredict=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.importPredictFromDF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>From an existing dataframne, import the data
+for prediction. (Rather than from a file)</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">importPredictFromDF</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.prepPredict">
 <code class="sig-name descname">prepPredict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.prepPredict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Get the predict data ready for prediction.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">prepPredict</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.exportPreppedFile">
 <code class="sig-name descname">exportPreppedFile</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">columnName=None</em>, <em class="sig-param">columnData=None</em>, <em class="sig-param">columnName2=None</em>, <em class="sig-param">columnData2=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPreppedFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Export a preped predict file. (Post cleaning rules.)</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">exportPreppedFile</span><span class="p">(</span><span class="s1">&#39;readydata.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.getColumn">
 <code class="sig-name descname">getColumn</code><span class="sig-paren">(</span><em class="sig-param">columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.getColumn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Get a columns from the data file</p>
-<p>Call: def getColumn(self, column):</p>
-<p>Example: prdict.getColumn(‘Name’)</p>
+<dd><p>Get a columns from the data file</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span><span class="o">.</span><span class="n">getColumn</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.exportPredictClass">
 <code class="sig-name descname">exportPredictClass</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPredictClass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Export the predict class object to a file (for later use).</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">exportPredictClass</span><span class="p">(</span><span class="s1">&#39;save.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.addToPredictFile">
 <code class="sig-name descname">addToPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columnName</em>, <em class="sig-param">columnData</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.addToPredictFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
-<p>Example:</p>
+<dd><p>Add a column to the predict file.</p>
+<dl class="simple">
+<dt>Example::</dt><dd><p>id = project.getKey()
+predict = addToPredictFile(‘id’,id)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.removeFromPredictFile">
 <code class="sig-name descname">removeFromPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.removeFromPredictFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Remove listed columns from the predict file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">removeFromPredictFile</span><span class="p">([</span><span class="s1">&#39;tmp&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.keepFromPredictFile">
 <code class="sig-name descname">keepFromPredictFile</code><span class="sig-paren">(</span><em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.keepFromPredictFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Remove all columns from the predict file except those that are
+listed.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">keepFromPredictFile</span><span class="p">([</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span><span class="s1">&#39;Survived&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.exportPredictFile">
 <code class="sig-name descname">exportPredictFile</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.exportPredictFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Export the predicted file as a csv.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">exportPredictFile</span><span class="p">(</span><span class="s1">&#39;Kaggle.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.getPredictFileDF">
 <code class="sig-name descname">getPredictFileDF</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.getPredictFileDF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose: Return a datraframe of the predict file.</p>
-<p>Call:</p>
+<dd><p>Get, from the dataframe, the predicted file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">predictProject</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="mlLib.project.predictProject.runPredict">
 <code class="sig-name descname">runPredict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.predictProject.runPredict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>After setup, run the prediction on the defined file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">createPredictFromBestModel</span><span class="p">(</span><span class="s1">&#39;Property Data&#39;</span><span class="p">)</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">importPredictFromDF</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">PullTrainingData</span><span class="p">(),</span>
+                            <span class="n">readyForPredict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">keyName</span><span class="p">,</span> <span class="n">keyData</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">getKey</span><span class="p">()</span>
+
+<span class="c1"># Prep the predict file</span>
+<span class="n">predict</span><span class="o">.</span><span class="n">prepPredict</span><span class="p">()</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">predict</span><span class="o">.</span><span class="n">runPredict</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -1913,29 +2087,23 @@ files associated with them)</p>
 <dl class="function">
 <dt id="mlLib.project.loadPredictProject">
 <code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">loadPredictProject</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.loadPredictProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
+<dd><p>Load the predit object (used to run predictions) from
+a saved file. The file is stored as a Python pickle file.</p>
 <p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predict</span> <span class="o">=</span> <span class="n">loadPrecictProject</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="mlLib.project.plot_confusion_matrix">
 <code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">cm</em>, <em class="sig-param">classes</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">title='Confusion matrix'</em>, <em class="sig-param">cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Purpose:</p>
-<p>Call:</p>
-<p>Example:</p>
-</div></blockquote>
-<p>This function prints and plots the confusion matrix.
+<dd><p>This function prints and plots the confusion matrix.
 Normalization can be applied by setting <cite>normalize=True</cite>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mlLib.project.makeStack">
-<code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">makeStack</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">list</em>, <em class="sig-param">alias=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.makeStack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Purpose:</p>
-<p>Call:</p>
-<p>Example:</p>
+<dl class="simple">
+<dt>Example::</dt><dd><p>plot_confusion_matrix(matrix, Normalize=True)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1964,7 +2132,7 @@ Normalization can be applied by setting <cite>normalize=True</cite>.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Robot Classify Alpha documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">RobotClassify 0.20 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

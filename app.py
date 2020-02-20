@@ -1,38 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
+Introduction
+============
 
-## Introduction
+RobotClassify has a number of APIs that are under RBAC control. These APIs
+generally return HTML data (web pages) for human interaction. These APIs
+can also be called machine-to-machine.
 
-
-**Home Page**
-
-- GET / (home)
-
-**Documentation Page**
-
-- GET /docs/index.html
-
-**Projects**
-
-- GET /projects (List all projects) - get:project
-- GET /projects/<int:project_id> (Project page) - get:project
-- POST/GET /projects/create (create a new project) - post:project
-- PATCH /projects/<int:project_id>/edit (edit a project) - patch:project
-- DELETE /projects/<project_id>/delete (Delete a project) - delete:project
-
-**Runs**
-
-- GET /runs/<int:run_id>  (Display a run results) - get:run
-- GET/POST /runs/create/<int:project_id> (Create a run) - get:post
-- DELETE /runs/<int:run_id>/delete (Delete a run) - delete:post
-- PATCH /run/<int:run_id>/edit (edit a run) - patch:run
-
-**Train**
-
-- GET /train/<int:run_id>  (run ML training for a run) post:train
-- GET /train/<int:run_id>/download  (download testing results file,
-      kaggle file) get:train
 """
 
 # ---------------------------------------------------------------------------#
@@ -188,11 +163,10 @@ auth0 = oauth.register(
 )
 
 
+# Obtains the Access Token from the oAuth object
 # When using auth0's implementation for web apps, the token is
 # in the Oauth object (auth0 object)
 def get_token_from_auth0():
-    """Obtains the Access Token from the oAuth object
-    """
     auth = auth0.token
     if not auth:
         abort(401, 'Authorization header is expected.')
@@ -206,10 +180,9 @@ def get_token_from_auth0():
     return auth['access_token']
 
 
+# Obtains the Access Token from the Authorization Header
 # Use this to check for authentication via Curl or UnitTest Calls
 def get_token_from_header():
-    """Obtains the Access Token from the Authorization Header
-    """
     auth = request.headers.get('Authorization', None)
     if not auth:
         abort(401, 'Authorization header is expected.')
@@ -226,35 +199,6 @@ def get_token_from_header():
 
     token = parts[1]
     return token
-
-
-#  curl -X GET https://dev-p35ewo73.auth0.com/userinfo
-#       -H "Authorization: Bearer $USER_EDIT_TOKEN"
-#
-# returns: {
-#           "sub":"auth0|5e2b4bd7cc2da80e9813f3e3",
-#           "nickname":"udacityscott+edit",
-#           "name":"udacityscott+edit@gmail.com",
-#           "picture":"...",
-#           "updated_at":"2020-02-18T06:17:14.168Z",
-#           "email":"udacityscott+edit@gmail.com",
-#           "email_verified":true
-#          }
-#
-# def get_user_info(token):
-#    headers = {'Authorization:': "Bearer " + token}
-#    request = Request(AUTH0_BASE_URL + '/userinfo', headers=headers)
-#    response = urlopen(request).read()
-
-    # conn = http.client.HTTPSConnection(path)
-    # payload = "{}"
-    # headers = {'Authorization:': "Bearer "+token}
-    # conn.request("POST", "/oauth/token", payload, headers)
-
-#    print('/n/n Response Data=', response)
-#    data = json.loads(res.read().decode("utf-8"))
-#    print('/n/nGet User response=', data)
-#    return data
 
 
 # When authenticated, set the user's session data for later reference
@@ -719,14 +663,6 @@ def create_projects_submission(payload):
     """
 
     form = ProjectForm(prefix='form-project-')  # request.form
-
-    # print('\n\nform.validate=',form.validate())
-    # print('form.is_submitted=',form.is_submitted())
-    # print('form.name.data=',form.name.data)
-    # print('form.description.data=',form.description.data)
-    # print('form.trainingFile.data=',form.trainingFile.data)
-    # print('form.testingFile.data=',form.testingFile.data)
-
     if form.validate_on_submit():
         project = Project()
         form.populate_obj(project)
@@ -831,7 +767,9 @@ def edit_project_submission(payload, project_id):
                   + ' could not be Updated.')
 
         data = project.projectPage
-        return render_template('pages/show_project.html', project=data)
+        return render_template('pages/show_project.html',
+                               project=data,
+                               user=userData())
 
     return render_template('forms/edit_project.html',
                            form=form,
@@ -1080,17 +1018,6 @@ def create_run_submission(payload, project_id):
     form.targetVariable.choices = pickList
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
-
-    # print('\n\nform.validate=', form.validate())
-    # print('form.is_submitted=', form.is_submitted())
-    # print('form.name.data=', form.name.data)
-    # print('form.description.data=', form.description.data)
-    # print('form.targetVariable.data=', form.targetVariable.data)
-    # print('form.key.data=', form.key.data)
-    # print('form.predictSetOut.data=', form.predictSetOut.data)
-    # print('form.scoring.data=', form.scoring.data)
-    # print('form.modelList.data=', form.modelList.data)
-    # print('form.basicAutoMethod.data=', form.basicAutoMethod.data)
 
     if form.validate_on_submit():
         run = Run()
@@ -1343,7 +1270,7 @@ def run_submission(payload, run_id):
 
 
 @app.route('/train/<int:run_id>/download', methods=['GET'])
-@requires_auth('get:train')
+@requires_auth('get:run')
 def download(payload, run_id):
     """
         **download results file**
@@ -1396,6 +1323,26 @@ def download(payload, run_id):
 # ----------------------------------------------------------------------------
 #  error handlers and other support code
 # ----------------------------------------------------------------------------
+@app.errorhandler(400)
+def bad_request(error):
+    return (jsonify({
+        'success': False,
+        'error': 400,
+        'message': 'Bad Request',
+        'description': str(error),
+    }), 400)
+
+
+@app.errorhandler(401)
+def premission_error(error):
+
+    return (jsonify({
+        'success': False,
+        'error': 401,
+        'message': 'Permission Error',
+        'description': str(error),
+    }), 401)
+    # return (render_template('errors/500.html'), 401)
 
 
 @app.errorhandler(404)
@@ -1407,40 +1354,6 @@ def not_found_error(error):
         'description': str(error),
     }), 404)
     # return (render_template('errors/404.html'), 404)
-
-
-@app.errorhandler(500)
-def server_error(error):
-
-    return (jsonify({
-        'success': False,
-        'error': 500,
-        'message': 'Server Error',
-        'description': str(error),
-    }), 500)
-    # return (render_template('errors/500.html'), 500)
-
-
-@app.errorhandler(401)
-def premission_error(error):
-
-    return (jsonify({
-        'success': False,
-        'error': 401,
-        'message': 'Premission Error',
-        'description': str(error),
-    }), 401)
-    # return (render_template('errors/500.html'), 401)
-
-
-@app.errorhandler(400)
-def bad_request(error):
-    return (jsonify({
-        'success': False,
-        'error': 400,
-        'message': 'Bad Request',
-        'description': str(error),
-    }), 400)
 
 
 @app.errorhandler(405)
@@ -1461,6 +1374,18 @@ def unprocessable(error):
         'message': 'Unprocessable',
         'description': str(error),
     }), 422)
+
+
+@app.errorhandler(500)
+def server_error(error):
+
+    return (jsonify({
+        'success': False,
+        'error': 500,
+        'message': 'Server Error',
+        'description': str(error),
+    }), 500)
+    # return (render_template('errors/500.html'), 500)
 
 
 if not app.debug:

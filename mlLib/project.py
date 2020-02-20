@@ -19,10 +19,10 @@
 # ============================================================================#
 
 """
-**Introduction**
+*Introduction*
 ----------------
-The projects module is is a high-level library to process ML jobs at the
-project level. All interactions can happen with this API
+The Project module is a high-level library to process ML jobs at the
+project level. All interactions can happen with this API.
 
  - Manage Projects
  - Load Data
@@ -33,7 +33,7 @@ project level. All interactions can happen with this API
  - Deploy model, to process ML transactions
 
 
-Code Example::
+Python Example::
 
     from project import mlProject
     import pandas as pd
@@ -158,7 +158,7 @@ Code Example::
         answer = [int(x) for x in answer]
     predict.addToPredictFile(targetVariable, answer)
 
-    # Prep the file for export, onlu keeping
+    # Prep the file for export, only keeping
     # columns needed
     predict.keepFromPredictFile(predictSetOut)
     predict.exportPredictFile(resultsFile)
@@ -243,42 +243,43 @@ def autoFlaskEvaluateClassifier(projectName=None,
                                 toTerminal=True
                                 ):
     """
-        **autoFlaskEvaluateClassifier**
+    **autoFlaskEvaluateClassifier**
 
-        Auto-process an ML job for Flask Servers
+    Purpose:
+    Auto-process an ML job for Flask Servers
 
-        Takes a data file and a few data points about the file and
-        automatically does feature engineering and model evaluation.
+    Takes a data file and a few data points about the file and
+    automatically does feature engineering and model evaluation.
 
-        - Sample Call::
+    Example::
 
-            results, pred = autoFlaskEvaluateClassifier(
-                 projectName=run.name,
-                 trainingFile=run.Project.trainingFile,
-                 testingFile=run.Project.testingFile,
-                 trainingFileDF=run.Project.savedTrainingFile,
-                 testingFileDF=run.Project.savedTestingFile,
-                 targetVariable=run.targetVariable,
-                 key=run.key,
-                 predictSetOut=run.predictSetOut,
-                 logFileOut=None,
-                 transcriptFile=None,
-                 trainingFileOut=None,
-                 predictFileOut=None,
-                 resultsFile='KaggleSubmitFile.csv',
-                 modelList=run.modelList,
-                 confusionMatrixLabels=None,
-                 scoring=run.scoring,
-                 setProjectGoals={'f1': (0.9, '>')},
-                 runVerbose=0,
-                 recommendOnly=True,
-                 basicAutoMethod=True,
-                 skewFactor=40.0,
-                 doExplore=True,
-                 doTrain=True,
-                 doPredict=True,
-                 toTerminal=True,
-             )
+        results, pred = autoFlaskEvaluateClassifier(
+             projectName=run.name,
+             trainingFile=run.Project.trainingFile,
+             testingFile=run.Project.testingFile,
+             trainingFileDF=run.Project.savedTrainingFile,
+             testingFileDF=run.Project.savedTestingFile,
+             targetVariable=run.targetVariable,
+             key=run.key,
+             predictSetOut=run.predictSetOut,
+             logFileOut=None,
+             transcriptFile=None,
+             trainingFileOut=None,
+             predictFileOut=None,
+             resultsFile='KaggleSubmitFile.csv',
+             modelList=run.modelList,
+             confusionMatrixLabels=None,
+             scoring=run.scoring,
+             setProjectGoals={'f1': (0.9, '>')},
+             runVerbose=0,
+             recommendOnly=True,
+             basicAutoMethod=True,
+             skewFactor=40.0,
+             doExplore=True,
+             doTrain=True,
+             doPredict=True,
+             toTerminal=True,
+         )
 
     """
 
@@ -580,20 +581,24 @@ def autoEvaluateClassifier(projectName=None,
 def getMLScoringFunctions():
     return sorted(SCORERS.keys())
 
-# ----------------------------------------------------------------------------#
 
+# ----------------------------------------------------------------------------#
+# mlProject Class.
+# This class is the top-lev object for training and running a ML project
+# ----------------------------------------------------------------------------#
 
 class mlProject (object):
     """
 
-    mlProject is the top level object for training and running a ML project.
-    Various object mothods are used to load, review, and train the data, as
-    well as manage running predictions
+    mlProject is the top-level object for training and running a ML project.
+    Various object methods are used to load, review, and train the data, as
+    well as manage running predictions. autoFlaskEvaluateClassifier is built
+    using this class and class methods.
 
+    Example::
 
-    Example:
-    project = mlProject('Customer Segements', 'clustering model should factor')
-
+        project = mlProject('Customer Segements',
+                           'clustering model should factor')
 
     """
 
@@ -732,26 +737,23 @@ class mlProject (object):
                                bottomImportancePrecentToCut=None
                                ):
         """
-            **setTrainingPreferences**
+        setTrainingPreferences for an ML job.
 
-            setTrainingPreferences for an ML job
+        Example::
 
-
-            - Sample Call::
-
-                project.setTrainingPreferences (
-                               crossValidationSplits=5,
-                               parallelJobs=-1,
-                               modelType=tm.TRAIN_CLASSIFICATION,
-                               modelList=['l2','xgbc','etc','stack'],
-                               useStandardScaler=True,
-                               gridSearchScoring='accuracy',
-                               testSize=.25,
-                               logTrainingResultsFilename=resultsFile,
-                               gridSearchVerbose=1,
-                               runHyperparameters=runHyper,
-                               runEstimatorHyperparameters=runEstimatorHyper,
-                               runMetaClassifier=runMeta)
+            project.setTrainingPreferences (
+                           crossValidationSplits=5,
+                           parallelJobs=-1,
+                           modelType=tm.TRAIN_CLASSIFICATION,
+                           modelList=['l2','xgbc','etc','stack'],
+                           useStandardScaler=True,
+                           gridSearchScoring='accuracy',
+                           testSize=.25,
+                           logTrainingResultsFilename=resultsFile,
+                           gridSearchVerbose=1,
+                           runHyperparameters=runHyper,
+                           runEstimatorHyperparameters=runEstimatorHyper,
+                           runMetaClassifier=runMeta)
 
         """
 
@@ -876,7 +878,6 @@ class mlProject (object):
                                    forBaseEstimator=False,
                                    forMetaClassifier=False):
         """
-        Purpose:
         Set the hyperparameters to override the defaults for a model
 
         Example::
@@ -938,12 +939,12 @@ class mlProject (object):
 
     def setConfusionMatrixLabels(self, list):
         """
-        Set the labels for the confusion matrix plot
+        Set the labels for the confusion matrix plot.
 
-           Example::
+        Example::
 
-               project.setConfusionMatrixLabels(
-                    [(0,'Paid'), (1, 'Default') ])
+            project.setConfusionMatrixLabels(
+                   [(0,'Paid'), (1, 'Default') ])
 
         """
 
@@ -953,7 +954,7 @@ class mlProject (object):
     def setTarget(self, value, boolean=False,
                   trueValue=None, convertTable=None, tableName=None):
         """
-        Purpose: Set the target variable for supervised learning.
+        Set the target variable for supervised learning.
 
         Call::
             setTarget(self, value, boolean=False, trueValue=None,
@@ -1011,7 +1012,7 @@ class mlProject (object):
 
     def exportFile(self, name, filename):
         """
-        Purpose: Export the named file. (Projects can have multiuple
+        Export the named file. (Projects can have multiuple
         files associated with them)
 
         Call: def exportFile(self, name, filename):
@@ -1025,11 +1026,11 @@ class mlProject (object):
 
     def getColumn(self, name, columnName):
         """
-        Purpose: Get a columns from the data file
+        Get a column from the data.
 
-        Call: def getColumn(self, name, column):
+        Example::
 
-        Example: project.getColumn('Loan Data','Name')
+            project.getColumn('Loan Data','Name')
 
         """
         if name in self.preppedTablesDF:
@@ -1039,6 +1040,14 @@ class mlProject (object):
         return None
 
     def dropColumn(self, name, columnName):
+        """
+        Drop column from the data/
+
+        Example::
+
+            project.dropColumn('Loan Data','Name')
+
+        """
         if name in self.preppedTablesDF:
             df = self.preppedTablesDF[name]
             if columnName in df:
@@ -1048,6 +1057,14 @@ class mlProject (object):
     # Used to save row keys, not used for training
 
     def saveKey(self, filename, columnName):
+        """
+        Save a column as a key.
+
+        Example::
+
+            project.saveKey('Loan Data','ID')
+
+        """
         if filename in self.preppedTablesDF:
             if columnName in self.preppedTablesDF[filename]:
                 self.saveKeyData = self.preppedTablesDF[filename][columnName]\
@@ -1059,6 +1076,14 @@ class mlProject (object):
 
     # Used to get row keys, not used for training
     def getKey(self):
+        """
+        Get the key column
+
+        Example::
+
+            keyName, keyData = project.getKey()
+
+        """
         if self.saveKeyColName is not None:
             return self.saveKeyColName, self.saveKeyData
         else:
@@ -1066,6 +1091,15 @@ class mlProject (object):
             return None
 
     def MergeFilesAsTrainAndTest(self, trainingFile, testingFile):
+        """
+        Merge both the training and test files. Useful when doing
+        Statistical evaluation of the complete data set.
+
+        Example::
+
+            project.MergeFilesAsTrainAndTest('Training','Test')
+
+        """
         if trainingFile in self.preppedTablesDF and testingFile\
            in self.preppedTablesDF:
             # Mark files
@@ -1091,6 +1125,14 @@ class mlProject (object):
         return None
 
     def PullTrainingData(self):
+        """
+        Return training and test files merged with MergeFilesAsTrainAndTest.
+
+        Example::
+
+            project.PullTrainingData()
+
+        """
         if self.mergedTrainingAndTest:
             if self.mergedTrainingAndTestFileName in self.preppedTablesDF:
                 return (self.preppedTablesDF
@@ -1101,20 +1143,16 @@ class mlProject (object):
 
         return None
 
-
-######
-#
-# Description:
-#
-# example:
-#
-# params
-#           name =
-#           value =
-#
-#
-######
     def groupByValue(self, filename, columnList, value='mean'):
+        """
+        Refactor data that is grouped. Uses pandas groupby function.
+        Can recalculate grouped data as a mean of the data. (default)
+
+        Example::
+
+            project.groupByValue('Training',['col1','col2'])
+
+        """
 
         if filename in self.preppedTablesDF:
             df = self.preppedTablesDF[filename]
@@ -1143,12 +1181,12 @@ class mlProject (object):
 
     def exploreData(self, fileName=None):
         """
-        Purpose: Run the explore data function. This will review the data
-                 and make recommendations
+        Run the explore data function. This will review the data
+        and make recommendations.
 
-        Call: exploreData(self):
+        Example::
 
-        Example: project.exploreData()
+            project.exploreData()
 
         """
         if fileName is None:
@@ -1161,7 +1199,7 @@ class mlProject (object):
 
     def initCleaningRules(self, fileName=None):
         """
-        Before adding any cleaning rules you must init
+        Before adding any cleaning rules you must initialize.
 
         Example::
 
@@ -1188,11 +1226,12 @@ class mlProject (object):
 
     def cleanProject(self, fileName=None):
         """
-        Purpose: Run the cleaning rules established for a project.
+        Run the cleaning rules established for a project.
 
         Call: cleanProject(self)
 
         Example::
+
             project.cleanProject()
 
         """
@@ -1214,11 +1253,10 @@ class mlProject (object):
 
     def cleanAndExploreProject(self, fileName=None):
         """
-        Purpose: Run clean and explore together
-
-        Call: def cleanAndExploreProject(self)
+        Run clean and explore together
 
         Example::
+
             project.cleanAndExploreProject()
 
         """
@@ -1244,10 +1282,8 @@ class mlProject (object):
 
     def prepProjectByName(self, tableName=None, outFile=None):
         """
-        Purpose: Prepare the 'table' for training. This will one-hot encode,
-                 for example.
-
-        Call: prepProjectByName(self, tableName=None)
+        Prepare the 'table' for training. This will one-hot encode,
+        for example.
 
         Example::
 
@@ -1265,7 +1301,8 @@ class mlProject (object):
 
     def writePreppedFileByName(self, filename, tableName=None):
         """
-        Purpose: Once a file has been cleaned and explored
+        Once a file has been cleaned and explored it can be exported
+        with this command.
 
         Example::
 
@@ -1283,7 +1320,7 @@ class mlProject (object):
 
     def writeTrainingSetFileByName(self, filename, tableName=None):
         """
-        Purpose: Write out the training set file by filename
+        Write out the training set file by filename.
 
         Example::
 
@@ -1304,7 +1341,7 @@ class mlProject (object):
 
     def trainProjectByName(self, tableName=None):
         """
-        Purpose: Train table by tablename
+        Train table by tablename.
 
         Example::
 
@@ -1322,7 +1359,7 @@ class mlProject (object):
 
     def prepProjectByBatch(self):
         """
-        Purpose: Prep all of the files for training
+        Prep all of the files for training.
 
         Example::
 
@@ -1336,11 +1373,12 @@ class mlProject (object):
 
     def trainProjectByBatch(self):
         """
-        Purpose: Train all of the files at once
+        Train all of the files at once
 
         Example::
 
             project.trainProjectByBatch()
+
         """
         for tableName in self.batchTablesList:
             if tableName in self.preppedTablesDF:
@@ -1350,9 +1388,11 @@ class mlProject (object):
 
     def exportBestModel(self, filename, tableName=None):
         """
-        Purpose:
+        Exports the model with the best training results to a file.
 
-        Example:
+        Example::
+
+            project.exportBestModel('bestmodel.plk')
 
         """
         if tableName is not None:
@@ -1364,11 +1404,13 @@ class mlProject (object):
 
     def createPredictFromBestModel(self, tableName=None):
         """
-        Purpose:
+        Using the best trained model in the project, create the predict
+        object to allow for raw data to be cleaned and predicted based
+        upon the model.
 
-        Call:
+        Example::
 
-        Example:
+            predict = project.createPredictFromBestModel('Property Data')
 
         """
         if tableName is not None:
@@ -1381,11 +1423,13 @@ class mlProject (object):
 
     def createPredictFromNamedModel(self, namedModel, tableName=None):
         """
-        Purpose:
+        Using a named trained model from the project, create the predict
+        object to allow for raw data to be cleaned and predicted based
+        upon the model.
 
-        Call:
+        Example::
 
-        Example:
+            predict = project.createPredictFromNamedModel('xgbc')
 
         """
         if tableName is not None:
@@ -1397,11 +1441,11 @@ class mlProject (object):
 
     def exportNamedModel(self, namedModel, filename, tableName=None):
         """
-        Purpose:
+        Export the named project to a file.
 
-        Call:
+        Example::
 
-        Example:
+            project.exportNamedModel('gbc', 'gbRealEstateModel.plk')
 
         """
         if tableName is not None:
@@ -1415,11 +1459,32 @@ class mlProject (object):
     def addManualRuleForTableName(self, tableName, functionName,
                                   columnName, value, forPredict=True):
         """
-        Purpose:
+        Manually add a cleaning rule for the named table. Cleaning
+        rules are used to feature engineer and refactor data.
 
-        Call:
+        Example::
 
-        Example:
+            project.addManualRuleForTableName('Property Data',
+                                              ed.EXPLORE_NEW_VARIABLE,
+                                              'school_score',
+                                              'num_schools * median_school')
+
+            # Create a property age feature
+            project.addManualRuleForTableName('Property Data',
+                                              ed.EXPLORE_NEW_VARIABLE,
+                                              'property_age',
+                                              'tx_year - year_built')
+            project.addManualRuleForTableName('Property Data',
+                                              ed.EXPLORE_REMOVE_ITEMS_BELOW,
+                                              'property_age', -1)
+
+            # Drop 'tx_year' and 'year_built' from the dataset
+            project.addManualRuleForTableName('Property Data',
+                                              ed.EXPLORE_DROP_COLUMN,
+                                              'tx_year', None)
+            project.addManualRuleForTableName('Property Data',
+                                              ed.EXPLORE_DROP_COLUMN,
+                                              'year_built', None)
 
         """
         if tableName in self.preppedTablesDF:
@@ -1430,11 +1495,27 @@ class mlProject (object):
     def addManualRuleForDefault(self, functionName, columnName=None,
                                 value=None, forPredict=True):
         """
-        Purpose:
+        Manually add a cleaning rule for the default table. Cleaning
+        rules are used to feature engineer and refactor data.
 
-        Call:
+        Example::
 
-        Example:
+            project.addManualRuleForDefault(ed.EXPLORE_NEW_VARIABLE,
+                                           'school_score',
+                                           'num_schools * median_school')
+
+            # Create a property age feature
+            project.addManualRuleForDefault(ed.EXPLORE_NEW_VARIABLE,
+                                            'property_age',
+                                            'tx_year - year_built')
+            project.addManualRuleForDefault(ed.EXPLORE_REMOVE_ITEMS_BELOW,
+                                            'property_age', -1)
+
+            # Drop 'tx_year' and 'year_built' from the dataset
+            project.addManualRuleForDefault(ed.EXPLORE_DROP_COLUMN,
+                                            'tx_year', None)
+            project.addManualRuleForDefault(ed.EXPLORE_DROP_COLUMN,
+                                            'year_built', None)
 
         """
         if self.defaultPreppedTableName in self.preppedTablesDF:
@@ -1444,20 +1525,25 @@ class mlProject (object):
 
     def setGoals(self, goals):
         """
-        Purpose:
+        Set project goals for model training. Does not change how
+        a model is trained, just added to reporting
 
-        Call:
+        Example::
 
-        Example:
-                project.setGoals({'AUROC':(0.70,'>'),'Precision':(0.386,'>'),
-                                'fbeta':(0.44,'>')})
+            project.setGoals({'AUROC':(0.70,'>'),'Precision':(0.386,'>'),
+                              'fbeta':(0.44,'>')})
+
         """
         self.goalsToReach = goals
         return
 
     def setOngoingReporting(self, flag, fileName):
         """
-        project.setOngoingReporting(True,'Loan Data')
+        Allow for the training data to be recorded.
+
+        Example::
+
+            project.setOngoingReporting(True,'Loan Data')
 
         """
         self.ongoingReporting = flag
@@ -1466,10 +1552,12 @@ class mlProject (object):
 
     def displayAllScores(self, fileName, short=False):
         """
+        Display the results of the model training. This is an extensive
+        report.
 
-         project.displayAllScores('Loan Data')
+        Example::
 
-         def displayAllScores(self, fileName):
+            project.displayAllScores('Loan Data')
 
         """
 
@@ -1577,11 +1665,11 @@ class mlProject (object):
 
     def reportResultsOnTrainedModel(self, fileName, modelName):
         """
-        Purpose:
+        Report the funak results on the traibn mdoel
 
-        Call:
+        Example::
 
-        Example:
+            project.reportResultsOnTrainedModel('Titanic','xgbc')
 
         """
         mlUtility.runLog('\nReport on model: '+modelName)
@@ -1671,11 +1759,12 @@ class mlProject (object):
 
     def showFeatureImportances(self, fileName, modelName):
         """
-        Purpose:
+        Report on the feature importance of columns in a datafile based
+        upon the model.
 
-        Call:
+        Example::
 
-        Example:
+            project.showFeatureImportances('Titanic', 'xgbc')
 
         """
         if fileName is not None:
@@ -1708,11 +1797,11 @@ class mlProject (object):
 
     def logTrainingResultsRunDescription(self, description='None'):
         """
-        Purpose:
+        Give a run a name to be added to the training log results
 
-        Call:
+        Example::
 
-        Example:
+            project.logTrainingResultsRunDescription('First Run')
 
         """
         self.logDescription = description
@@ -1720,11 +1809,11 @@ class mlProject (object):
     def logTrainingResults(self, fileName,
                            outputFileName, inputModelName=None):
         """
-        Purpose:
+        Log training results to a file.
 
-        Call:
+        Example::
 
-        Example:
+            project.logTrainingResults('Training File','TrainingLog.csv')
 
         """
         # mlUtility. traceLog(('\nLogging Results: ')
@@ -1844,11 +1933,13 @@ class mlProject (object):
 
 class predictProject (object):
     """
-        Purpose: predictProject
+    Predict a previously trained project. Predict objects allow for raw
+    data to be loaded and cleaned with cleaning rules from the project
+    as well as run predictions from the previously trained model.
 
-        Call:
+    Example::
 
-        Example:
+        predict = project.createPredictFromBestModel('Property Data')
 
     """
 
@@ -1896,11 +1987,11 @@ class predictProject (object):
                           location=None, fileName=None, sheetName=None,
                           hasHeaders=False, range=None):
         """
-        Purpose:
+        Import a file for prediction.
 
-        Call:
+        Example::
 
-        Example:
+            predict = importPredictFile('Titanic','/files/titanic_train.csv')
 
         """
         self.predictFile = getData(name,
@@ -1915,11 +2006,12 @@ class predictProject (object):
 
     def importPredictFileFromProject(self, project, tableName):
         """
-        Purpose:
+        Get a file loaded in a project and load it as the predict
+        file.
 
-        Call:
+        Example::
 
-        Example:
+            predict = importPredictFileFromProject(project, 'Titanic')
 
         """
         if tableName in project.preppedTablesDF:
@@ -1927,11 +2019,12 @@ class predictProject (object):
 
     def importPredictFromDF(self, df, readyForPredict=False):
         """
-        Purpose:
+        From an existing dataframne, import the data
+        for prediction. (Rather than from a file)
 
-        Call:
+        Example::
 
-        Example:
+            predict = importPredictFromDF(df)
 
         """
         if readyForPredict:
@@ -1943,11 +2036,11 @@ class predictProject (object):
 
     def prepPredict(self):
         """
-        Purpose:
+        Get the predict data ready for prediction.
 
-        Call:
+        Example::
 
-        Example:
+            predict = prepPredict()
 
         """
         if self.readyToRun:
@@ -1961,11 +2054,11 @@ class predictProject (object):
                           columnData=None, columnName2=None,
                           columnData2=None):
         """
-        Purpose:
+        Export a preped predict file. (Post cleaning rules.)
 
-        Call:
+        Example::
 
-        Example:
+            predict = exportPreppedFile('readydata.csv')
 
         """
         if self.predictSet is not None:
@@ -1982,11 +2075,11 @@ class predictProject (object):
 
     def getColumn(self, columnName):
         """
-        Purpose: Get a columns from the data file
+        Get a columns from the data file
 
-        Call: def getColumn(self, column):
+        Example::
 
-        Example: prdict.getColumn('Name')
+            predict.getColumn('Name')
 
         """
         if self.predictDataDF is not None:
@@ -1999,11 +2092,11 @@ class predictProject (object):
 
     def exportPredictClass(self, filename):
         """
-        Purpose:
+        Export the predict class object to a file (for later use).
 
-        Call:
+        Example::
 
-        Example:
+            predict = exportPredictClass('save.pkl')
 
         """
         with open(filename, 'wb') as f:
@@ -2011,11 +2104,11 @@ class predictProject (object):
 
     def addToPredictFile(self, columnName, columnData):
         """
-        Purpose:
+        Add a column to the predict file.
 
-        Call:
-
-        Example:
+        Example::
+            id = project.getKey()
+            predict = addToPredictFile('id',id)
 
         """
         if self.predictDataDF is not None:
@@ -2026,11 +2119,11 @@ class predictProject (object):
 
     def removeFromPredictFile(self, columns):
         """
-        Purpose:
+        Remove listed columns from the predict file.
 
-        Call:
+        Example::
 
-        Example:
+            predict = removeFromPredictFile(['tmp','description'])
 
         """
         if self.predictDataDF is not None:
@@ -2056,11 +2149,12 @@ class predictProject (object):
 
     def keepFromPredictFile(self, columns):
         """
-        Purpose:
+        Remove all columns from the predict file except those that are
+        listed.
 
-        Call:
+        Example::
 
-        Example:
+            predict = keepFromPredictFile(['ID','Survived'])
 
         """
         logData = ''
@@ -2090,11 +2184,11 @@ class predictProject (object):
 
     def exportPredictFile(self, filename):
         """
-        Purpose:
+        Export the predicted file as a csv.
 
-        Call:
+        Example::
 
-        Example:
+            predict = exportPredictFile('Kaggle.csv')
 
         """
         if self.predictDataDF is not None:
@@ -2110,11 +2204,11 @@ class predictProject (object):
 
     def getPredictFileDF(self):
         """
-        Purpose: Return a datraframe of the predict file.
+        Get, from the dataframe, the predicted file.
 
-        Call:
+        Example::
 
-        Example:
+            predict = predictProject()
 
         """
         pred = None
@@ -2128,11 +2222,18 @@ class predictProject (object):
     @ignore_warnings(category=DataConversionWarning)
     def runPredict(self):
         """
-        Purpose:
+        After setup, run the prediction on the defined file.
 
-        Call:
+        Example::
 
-        Example:
+            predict = project.createPredictFromBestModel('Property Data')
+            predict.importPredictFromDF(project.PullTrainingData(),
+                                        readyForPredict=True)
+            keyName, keyData = project.getKey()
+
+            # Prep the predict file
+            predict.prepPredict()
+            answer = predict.runPredict()
 
         """
 
@@ -2165,11 +2266,12 @@ class predictProject (object):
 
 def loadPredictProject(filename):
     """
-    Purpose:
+    Load the predit object (used to run predictions) from
+    a saved file. The file is stored as a Python pickle file.
 
-    Call:
+    Example::
 
-    Example:
+        predict = loadPrecictProject('')
 
     """
     with open(filename, 'rb') as f:
@@ -2185,14 +2287,12 @@ def plot_confusion_matrix(cm, classes,
                           title='Confusion matrix',
                           cmap=plt.cm.Blues):
     """
-        Purpose:
-
-        Call:
-
-        Example:
-
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
+
+    Example::
+            plot_confusion_matrix(matrix, Normalize=True)
+
     """
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -2224,14 +2324,6 @@ def plot_confusion_matrix(cm, classes,
 
 
 def makeStack(classifier, list, alias=None):
-    """
-        Purpose:
-
-        Call:
-
-        Example:
-
-    """
     stacker = []
     stack = classifier
     if list is not None:

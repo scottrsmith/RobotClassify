@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("Robot Classify Alpha documentation");
+        $("li.nav-item-0 a").text("RobotClassify 0.20 documentation");
     }
 });
