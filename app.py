@@ -1040,7 +1040,8 @@ def create_run_submission(payload, project_id):
     form.targetVariable.choices = pickList
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
-
+    
+    dumpRunForm(form)
     if form.validate_on_submit():
         run = Run()
         form.populate_obj(run)
