@@ -24,9 +24,13 @@ RobotClassify can be accessed from the URL: https://robotclassify.herokuapp.com/
 
 There are two user accounts for testing:
 - Editor Role: udacityscott+edit@gmail.com / Password: Udacity$Scott
+
   Editors can create projects, runs, and perform training
+
 - Viewer Role: udacityscott+view@gmail.com / Password: Udacity$Scott
+
   Viewers can only view projects, runs, and their results.
+
 
 Bearer Tokens can be obtained for these accounts, after logging in, at https://robotclassify.herokuapp.com/jwt.
 
