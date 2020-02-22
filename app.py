@@ -685,7 +685,7 @@ def create_projects_submission(payload):
 
     form = ProjectForm(prefix='form-project-')  # request.form
     dumpProjectForm(form)
-    if form.validate_on_submit():
+    if form.is_submitted() and request.method == 'POST':
         project = Project()
         form.populate_obj(project)
 
@@ -1042,7 +1042,7 @@ def create_run_submission(payload, project_id):
     form.predictSetOut.choices = pickList
 
     dumpRunForm(form)
-    if form.validate_on_submit():
+    if form.is_submitted() and request.method == 'POST':
         run = Run()
         form.populate_obj(run)
         run.project_id = project_id
