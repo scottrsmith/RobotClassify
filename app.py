@@ -683,7 +683,7 @@ def create_projects_submission(payload):
 
     """
 
-    form = ProjectForm(request.form, prefix='form-project-')  # request.form
+    form = ProjectForm(prefix='form-project-')  # request.form
     dumpProjectForm(form)
     if form.validate_on_submit():
         project = Project()
@@ -1035,7 +1035,7 @@ def create_run_submission(payload, project_id):
                                    == project_id).one_or_none()
     if project is None:
         abort(404)
-    form = RunForm(request.form, prefix='form-run-')
+    form = RunForm(prefix='form-run-')
     pickList = makePickList(project.columns)
     form.targetVariable.choices = pickList
     form.key.choices = pickList

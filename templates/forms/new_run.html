@@ -8,7 +8,7 @@
 	  
       <div class="form-group">
         <label for="form-run-name">Name</label>
-        {{ form.name(class_ = 'form-control', autofocus = true) }}
+        {{ form.name(class_ = 'form-control', autofocus = true) }}		
       </div>
 	  
       <div class="form-group">
@@ -20,6 +20,7 @@
         <label for="form-run-targetVariable">Target Variable to Predict</label>
         <small>Select one</small>
         {{ form.targetVariable(class_ = 'form-control', placeholder='targetVariable', id=form.targetVariable, autofocus = true) }}
+		
      </div>
 
 
@@ -27,12 +28,14 @@
         <label for="form-run-key">Record Key</label>
         <small>Select one</small>
         {{ form.key(class_ = 'form-control', placeholder='key', id=form.key, autofocus = true) }}
+		
      </div>
 
       <div class="form-group">
         <label for="form-run-predictSetOut">Predict Set Out</label><br>
         <small>Typically the Record Key and Target Variable. Ctrl+Click to select two</small>
         {{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
+		
       </div>
 
       <div class="form-group">
@@ -40,6 +43,7 @@
         <!-- <small>Ctrl+Click to select multiple</small> -->
 		 <small>Select one</small>
         {{ form.modelList(class_ = 'form-control', placeholder='modelList', id=form.modelList, autofocus = true) }}
+		
       </div>
 
  	  
@@ -47,6 +51,7 @@
         <label for="form-run-scoring">Scoring Method for Training</label>
         <small>Select one</small>
         {{ form.scoring(class_ = 'form-control', placeholder='f1', id=form.key, autofocus = true) }}
+		
       </div>
 
   
@@ -55,7 +60,8 @@
         <label for="form-run-basicAutoMethod">Use Algorithm I for feature engineering</label><br>
 		<small>Algorithm I (checked): Tests based upon datatypes. Basic conversions category-based data</small><br>
 		<small>Algorithm II: More numerical analysis of feature importane</small><br>
-        {{ form.basicAutoMethod(class_ = 'form-control', placeholder='True', id=form.basicAutoMethod, autofocus = true) }}
+        {{ form.basicAutoMethod(class_ = 'form-control', placeholder='true', id=form.basicAutoMethod, autofocus = true) }}
+		
       </div>
 
       <input type="submit" value="Create a New Run" class="btn btn-primary btn-lg btn-block">
