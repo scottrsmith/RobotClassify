@@ -102,22 +102,23 @@ def dumpHeader(name=None):
     print('\n')
     pass
 
+
 def dumpProjectForm(form):
-    print ('\n\nProject Form Validate on submit=', form.validate_on_submit())
-    print ('is_submitted=', form.is_submitted())
-    print ('validate=', form.validate())
-    print ('form.name.data=', form.name.data)
-    print ('form.description.data=', form.description.data)
-    print ('form.trainingFile.data=', form.trainingFile.data)
-    print ('form.testingFile.data=', form.testingFile.data)
+    print('\n\nProject Form Validate on submit=', form.validate_on_submit())
+    print('is_submitted=', form.is_submitted())
+    print('validate=', form.validate())
+    print('form.name.data=', form.name.data)
+    print('form.description.data=', form.description.data)
+    print('form.trainingFile.data=', form.trainingFile.data)
+    print('form.testingFile.data=', form.testingFile.data)
+
 
 def dumpRunForm(form):
-    print ('\n\nRun Form Validate on submit=', form.validate_on_submit())
-    print ('is_submitted=', form.is_submitted())
-    print ('validate=', form.validate())
-    print ('form.name.data=', form.name.data)
-    print ('form.description.data=', form.description.data)
-    
+    print('\n\nRun Form Validate on submit=', form.validate_on_submit())
+    print('is_submitted=', form.is_submitted())
+    print('validate=', form.validate())
+    print('form.name.data=', form.name.data)
+    print('form.description.data=', form.description.data)
 
 
 # ---------------------------------------------------------------------------#
@@ -684,7 +685,6 @@ def create_projects_submission(payload):
     """
 
     form = ProjectForm(prefix='form-project-')  # request.form
-    dumpProjectForm(form)
     if form.is_submitted() and request.method == 'POST':
         project = Project()
         form.populate_obj(project)
@@ -1041,7 +1041,6 @@ def create_run_submission(payload, project_id):
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
 
-    dumpRunForm(form)
     if form.is_submitted() and request.method == 'POST':
         run = Run()
         form.populate_obj(run)
