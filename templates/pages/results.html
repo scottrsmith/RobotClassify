@@ -3,6 +3,9 @@
 {% block content %}
 
 <div class="row" id="top">
+	<a href="/projects/{{ run.project_id }}">
+	  <center><h2 class="monospace">{{ run.Project.name }}</h2></center>
+	</a>
 	<center><h3>{{ run.name }}</h3></center>
 	<center><h5>{{ run.description }}</h5></center>
 </div>

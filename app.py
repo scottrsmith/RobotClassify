@@ -102,6 +102,23 @@ def dumpHeader(name=None):
     print('\n')
     pass
 
+def dumpProjectForm(form):
+    print ('\n\nProject Form Validate on submit=', form.validate_on_submit())
+    print ('is_submitted=', form.is_submitted())
+    print ('validate=', form.validate())
+    print ('form.name.data=', form.name.data)
+    print ('form.description.data=', form.description.data)
+    print ('form.trainingFile.data=', form.trainingFile.data)
+    print ('form.testingFile.data=', form.testingFile.data)
+
+def dumpRunForm(form):
+    print ('\n\nRun Form Validate on submit=', form.validate_on_submit())
+    print ('is_submitted=', form.is_submitted())
+    print ('validate=', form.validate())
+    print ('form.name.data=', form.name.data)
+    print ('form.description.data=', form.description.data)
+    
+
 
 # ---------------------------------------------------------------------------#
 # App Config.
@@ -665,8 +682,9 @@ def create_projects_submission(payload):
             }
 
     """
-
+    
     form = ProjectForm(prefix='form-project-')  # request.form
+    dumpProjectForm(form)
     if form.validate_on_submit():
         project = Project()
         form.populate_obj(project)
@@ -1030,7 +1048,6 @@ def create_run_submission(payload, project_id):
         run.insert()
 
         # on successful db insert, flash success
-
         flash('Run ' + form['name'].data + ' was successfully added!')
     else:
         return render_template('forms/new_run.html',
