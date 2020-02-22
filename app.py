@@ -223,11 +223,14 @@ def set_session_at_auth(userinfo, payload):
 # ---------------------------------------------------------------------------#
 
 def check_permissions(permission, payload):
+    # print('\n\n\nEnter check_permisions.permission=', permission)
     if 'permissions' not in payload:
         abort(400, 'Permissions not included in JWT.')
 
+    # print('payload[permissions]=',payload['permissions'])
     if permission not in payload['permissions']:
         abort(401, 'Permission not found.')
+
     return True
 
 
@@ -316,6 +319,7 @@ def requires_auth(permission=''):
                 if 'Authorization' in request.headers:
                     token = get_token_from_header()
                     payload = verify_decode_jwt(token)
+                    check_permissions(permission, payload)
                     session['account_id'] = payload['sub']
                     session['username'] = payload['sub']
                     session['payload'] = payload

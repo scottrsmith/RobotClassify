@@ -6,8 +6,6 @@ Created on Tue May 22 12:54:33 2018
 @author: scottsmith
 """
 
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
 
 from project import mlProject, loadPredictProject
 

@@ -1566,8 +1566,10 @@ convertTable = a table of how to convert values</p>
 <code class="sig-name descname">exportFile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.mlProject.exportFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export the named file. (Projects can have multiuple
 files associated with them)</p>
-<p>Call: def exportFile(self, name, filename):</p>
-<p>Example: project.exportFile(‘Loan Data’, ‘fileout.csv’):</p>
+<dl class="simple">
+<dt>Example::</dt><dd><p>project.exportFile(‘Loan Data’, ‘fileout.csv’):</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2100,10 +2102,10 @@ a saved file. The file is stored as a Python pickle file.</p>
 <code class="sig-prename descclassname">mlLib.project.</code><code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">cm</em>, <em class="sig-param">classes</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">title='Confusion matrix'</em>, <em class="sig-param">cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#mlLib.project.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function prints and plots the confusion matrix.
 Normalization can be applied by setting <cite>normalize=True</cite>.</p>
-<dl class="simple">
-<dt>Example::</dt><dd><p>plot_confusion_matrix(matrix, Normalize=True)</p>
-</dd>
-</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">Normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

@@ -92,18 +92,18 @@ class RunForm(FlaskForm):
         choices=[
             ('l2', 'l2'),
             ('rfc', 'rfc'),
-            ('gbc', 'gbc'),
+            # ('gbc', 'gbc'),
             ('decisiontree', 'decisiontree'),
             ('kneighbors', 'kneighbors'),
-            ('sgd', 'sgd'),
+            # ('sgd', 'sgd'),
             ('bagging', 'bagging'),
             ('adaboost', 'adaboost'),
             ('gaussiannb', 'gaussiannb'),
             ('etc', 'etc'),
-            ('svc', 'svc'),
+            # ('svc', 'svc'),
             ('xgbc', 'xgbc'),
-            ('stack', 'stack'),
-            ('vote', 'vote'),
+            # ('stack', 'stack'),
+            # ('vote', 'vote'),
         ])
 
     basicAutoMethod = BooleanField('basicAutoMethod', default=False)

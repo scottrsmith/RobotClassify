@@ -1015,9 +1015,8 @@ class mlProject (object):
         Export the named file. (Projects can have multiuple
         files associated with them)
 
-        Call: def exportFile(self, name, filename):
-
-        Example: project.exportFile('Loan Data', 'fileout.csv'):
+        Example::
+            project.exportFile('Loan Data', 'fileout.csv'):
 
         """
         if name in self.preppedTablesDF:
@@ -2291,6 +2290,7 @@ def plot_confusion_matrix(cm, classes,
     Normalization can be applied by setting `normalize=True`.
 
     Example::
+
             plot_confusion_matrix(matrix, Normalize=True)
 
     """
