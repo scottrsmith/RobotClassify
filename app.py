@@ -242,22 +242,22 @@ def set_session_at_auth(userinfo, payload):
 
 def check_permissions(permission, payload):
     # print('\n\n\nEnter check_permisions.permission=', permission)
-    if 'permissions' not in payload:
-        abort(400, 'Permissions not included in JWT.')
+    # if 'permissions' not in payload:
+    #    abort(400, 'Permissions not included in JWT.')
 
     # print('payload[permissions]=',payload['permissions'])
-    if permission not in payload['permissions']:
-        abort(401, 'Permission not found.')
+    # if permission not in payload['permissions']:
+    #    abort(401, 'Permission not found.')
 
     return True
 
 
 # Test permissions
 def test_permissions(permission, payload):
-    if 'permissions' not in payload:
-        return False
-    if permission not in payload['permissions']:
-        return False
+    #if 'permissions' not in payload:
+    #    return False
+    #if permission not in payload['permissions']:
+    #    return False
     return True
 
 
@@ -521,6 +521,13 @@ def projects_list_page():
                            count=len(data),
                            user=userData())
 
+def projects_show_page(project):
+    data = project.projectPage
+    return render_template('pages/show_project.html',
+                           project=data,
+                           user=userData())
+
+
 
 # ----------------------------------------------------------------------------
 #  List Projects
@@ -612,10 +619,7 @@ def show_project(payload, project_id):
     if project is None:
         abort(404)
 
-    data = project.projectPage
-    return render_template('pages/show_project.html',
-                           project=data,
-                           user=userData())
+    return projects_show_page(project)
 
 
 # ----------------------------------------------------------------------------
@@ -701,10 +705,8 @@ def create_projects_submission(payload):
 
         flash('Project ' + form['name'].data
               + ' was successfully added!')
-        data = project.projectPage
-        return render_template('pages/show_project.html',
-                               project=data,
-                               user=userData())
+        return projects_show_page(project)
+
     else:
         return render_template('forms/new_project.html',
                                form=form,
@@ -717,7 +719,7 @@ def create_projects_submission(payload):
 #  Edit Project
 # ----------------------------------------------------------------------------
 
-@app.route('/projects/<int:project_id>/edit', methods=['GET', 'PATCH'])
+@app.route('/projects/<int:project_id>/edit', methods=['GET', 'PATCH', 'POST'])
 @csrf.exempt
 @requires_auth('patch:project')
 def edit_project_submission(payload, project_id):
@@ -768,7 +770,7 @@ def edit_project_submission(payload, project_id):
         abort(404)
     form = ProjectFormEdit(obj=project, prefix='form-project-')
 
-    if request.method == 'PATCH':
+    if request.method == 'PATCH' or request.method == 'POST':
         if form.is_submitted() and form.validate():
 
             # form data is posted to venue object for update
@@ -788,10 +790,7 @@ def edit_project_submission(payload, project_id):
             flash('An error occurred. Project ' + form['name'].data
                   + ' could not be Updated.')
 
-        data = project.projectPage
-        return render_template('pages/show_project.html',
-                               project=data,
-                               user=userData())
+        return projects_show_page(project)
 
     return render_template('forms/edit_project.html',
                            form=form,
@@ -857,7 +856,7 @@ def search_projects(payload):
 # ----------------------------------------------------------------------------
 #  Delete Project
 # ----------------------------------------------------------------------------
-@app.route('/projects/<project_id>/delete', methods=['DELETE'])
+@app.route('/projects/<project_id>/delete', methods=['DELETE', 'POST'])
 @csrf.exempt
 @requires_auth('delete:project')
 def delete_project(payload, project_id):
@@ -901,8 +900,14 @@ def delete_project(payload, project_id):
     except Exception as e:
         db.session.rollback()
         abort(405)
+        flash('Oh Snap! Project with ID of "' + str(run_id)
+              + '" was not deleted')
+        return projects_show_page(project)
 
-    return '{"success"}'
+    flash('Project with ID of "' + str(project_id)
+          + '" was successfully deleted!')
+    return projects_list_page()
+
 
 
 # ----------------------------------------------------------------------------
@@ -966,10 +971,7 @@ def show_run(payload, run_id):
     if isinstance(run.results, type(None)):
 
         flash('No Run Results for ' + run.name)
-        data = run.Project.projectPage
-        return render_template('pages/show_project.html',
-                               project=data,
-                               user=userData())
+        return projects_show_page(run.Project)
     else:
         return render_template('pages/results.html', run=run,
                                results=pickle.loads(run.results),
@@ -1054,16 +1056,13 @@ def create_run_submission(payload, project_id):
                                form=form,
                                user=userData())
 
-    data = project.projectPage
-    return render_template('pages/show_project.html',
-                           project=data,
-                           user=userData())
+    return projects_show_page(project)
 
 
 # ----------------------------------------------------------------------------
 #  Delete Runs
 # ----------------------------------------------------------------------------
-@app.route('/runs/<int:run_id>/delete', methods=['DELETE'])
+@app.route('/runs/<int:run_id>/delete', methods=['DELETE', 'GET'])
 @csrf.exempt
 @requires_auth('delete:run')
 def delete_run(payload, run_id):
@@ -1098,7 +1097,7 @@ def delete_run(payload, run_id):
     run = Run.query.filter(Run.id == run_id,
                            Run.account_id ==
                            session['account_id']).one_or_none()
-
+    project = run.Project
     if run is None:
         abort(404)
 
@@ -1107,23 +1106,19 @@ def delete_run(payload, run_id):
     except Exception as e:
         db.session.rollback()
         abort(405)
-        # flash('Oh Snap! Run with ID of "' + str(run_id)
-        #      + '" was not deleted')
-        # return redirect(url_for('show_project', project_id=project_id))
+        flash('Oh Snap! Run with ID of "' + str(run_id)
+              + '" was not deleted')
+        return projects_show_page(project)
 
-    # flash('Run with ID of "' + str(run_id)
-    #      + '" was successfully deleted!')
-    # return redirect(url_for('show_project',
-    #                         project_id=project_id),
-    #                         user=userData())
-    return '{"success"}'
-
+    flash('Run with ID of "' + str(run_id)
+          + '" was successfully deleted!')
+    return projects_show_page(project)
 
 # ----------------------------------------------------------------------------
 #  Edit Runs
 # ----------------------------------------------------------------------------
 
-@app.route('/runs/<int:run_id>/edit', methods=['GET', 'PATCH'])
+@app.route('/runs/<int:run_id>/edit', methods=['GET', 'PATCH', 'POST'])
 @csrf.exempt
 @requires_auth('patch:run')
 def edit_run_submission(payload, run_id):
@@ -1178,9 +1173,10 @@ def edit_run_submission(payload, run_id):
     form.targetVariable.choices = pickList
     form.key.choices = pickList
     form.predictSetOut.choices = pickList
+    project = run.Project
     # form.scoring.choices = makePickList(getMLScoringFunctions())
 
-    if request.method == 'PATCH':
+    if request.method == 'PATCH' or request.method == 'POST':
         if form.is_submitted() and form.validate():
             # form data is posted to run object for update
             try:
@@ -1198,10 +1194,7 @@ def edit_run_submission(payload, run_id):
             flash('An error occurred. Run ' + form['name'].data
                   + ' could not be Updated.')
 
-        data = run.Project.projectPage
-        return render_template('pages/show_project.html',
-                               project=data,
-                               user=userData())
+        return projects_show_page(project)
 
     return render_template('forms/edit_run.html',
                            form=form,
@@ -1357,24 +1350,24 @@ def bad_request(error):
 @app.errorhandler(401)
 def premission_error(error):
 
-    return (jsonify({
-        'success': False,
-        'error': 401,
-        'message': 'Permission Error',
-        'description': str(error),
-    }), 401)
-    # return (render_template('errors/500.html'), 401)
+    # return (jsonify({
+    #    'success': False,
+    #    'error': 401,
+    #    'message': 'Permission Error',
+    #    'description': str(error),
+    # }), 401)
+    return (render_template('errors/500.html'), 401)
 
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return (jsonify({
-        'success': False,
-        'error': 404,
-        'message': 'Not Found',
-        'description': str(error),
-    }), 404)
-    # return (render_template('errors/404.html'), 404)
+    #return (jsonify({
+    #    'success': False,
+    #    'error': 404,
+    #    'message': 'Not Found',
+    #   'description': str(error),
+    # }), 404)
+    return (render_template('errors/404.html'), 404)
 
 
 @app.errorhandler(405)
@@ -1400,13 +1393,13 @@ def unprocessable(error):
 @app.errorhandler(500)
 def server_error(error):
 
-    return (jsonify({
-        'success': False,
-        'error': 500,
-        'message': 'Server Error',
-        'description': str(error),
-    }), 500)
-    # return (render_template('errors/500.html'), 500)
+    # return (jsonify({
+    #    'success': False,
+    #    'error': 500,
+    #    'message': 'Server Error',
+    #    'description': str(error),
+    # }), 500)
+    return (render_template('errors/500.html'), 500)
 
 
 if not app.debug:
