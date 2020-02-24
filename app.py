@@ -254,9 +254,9 @@ def check_permissions(permission, payload):
 
 # Test permissions
 def test_permissions(permission, payload):
-    #if 'permissions' not in payload:
+    # if 'permissions' not in payload:
     #    return False
-    #if permission not in payload['permissions']:
+    # if permission not in payload['permissions']:
     #    return False
     return True
 
@@ -771,7 +771,7 @@ def edit_project_submission(payload, project_id):
     form = ProjectFormEdit(obj=project, prefix='form-project-')
 
     if request.method == 'PATCH' or request.method == 'POST':
-        if form.is_submitted() and form.validate():
+        if form.is_submitted():
 
             # form data is posted to venue object for update
             form.populate_obj(project)
@@ -1177,7 +1177,7 @@ def edit_run_submission(payload, run_id):
     # form.scoring.choices = makePickList(getMLScoringFunctions())
 
     if request.method == 'PATCH' or request.method == 'POST':
-        if form.is_submitted() and form.validate():
+        if form.is_submitted():
             # form data is posted to run object for update
             try:
                 form.populate_obj(run)
