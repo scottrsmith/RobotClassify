@@ -22,26 +22,6 @@ Using RobotClassify requires four simple steps that can all be accomplished via 
 
 RobotClassify can be accessed from the URL: https://robotclassify.herokuapp.com/.
 
-There are two user accounts for testing:
-- Editor Role: udacityscott+edit@gmail.com / Password: Udacity$Scott
-
-  Editors can create projects, runs, and perform training
-
-- Viewer Role: udacityscott+view@gmail.com / Password: Udacity$Scott
-
-  Viewers can only view projects, runs, and their results.
-
-
-Bearer Tokens can be obtained for these accounts, after logging in, at https://robotclassify.herokuapp.com/jwt.
-
-There are three approaches to running and evaluating RobotClassify:
-
-* Web
-* UnitTest
-* Curl
-
-There are scripts to help with each approach. Example files are located at https://github.com/scottrsmith/RobotClassify/tree/master/examples.
-
 ## Running on the Web ###
 The web interface provides a 4 step approach to completing training and getting a result:
 * Load the training and test files by creating a project
@@ -59,38 +39,13 @@ For example, the Titanic Kaggle competition (https://www.kaggle.com/c/titanic) p
 
 Following these instructions will give a training result that would put you in the top 8% of competitors.
 
-## UnitTest ##
-
-Unit tests are run using the script `test.sh`. This script requires Postgress on the local machine where the test is to be run.
-
-The `test.sh` script will:
-* Create the robotclassiy_test database
-* Get a Token and User ID for the API user (placed into environment variables)
-* Populate the test database with data for the API user
-* Run the tests
-
-## Curl ##
-The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Heroku).
-
-- `curl.sh` (Sets the environment variables, token and database URL)
-- `curl_pass_editor.sh` (Curl commands that will pass for the editor user)
-- `curl.fail_editor.sh` (Curl commands that will fail for the editor user)
-- `curl_pass_viewer.sh` (Curl commands that will pass for the viewer user)
-
-It is best to run the `curl.sh` script and then cut and paste each command from the file.
-
-## Getting updated tokens ##
-If you need to get an updated token, you need to login to the Web app and issue the following URL:
-
-[https://robotclassify.herokuapp.com/jwt](https://robotclassify.herokuapp.com/jwt)
-
-This will retrieve the current bearer token for the logged-in user.
-
 # Implementation Overview #
 
 The application was written with Flask as the backend and Flask What-the-forms for the frontend. 
 
 ## Roles ##
+
+DISABLED FOR NOW - ALL PERMISSIONS AVAILABLE FOR ALL USERS.
 
 There are two roles:
 - Viewer Role: Viewers can only view projects, runs, and their results.
