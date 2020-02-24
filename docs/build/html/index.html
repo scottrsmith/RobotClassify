@@ -42,9 +42,6 @@
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#running-and-testing-instructions">Running and Testing Instructions</a><ul>
 <li><a class="reference internal" href="#running-on-the-web">Running on the Web</a></li>
-<li><a class="reference internal" href="#unittest">UnitTest</a></li>
-<li><a class="reference internal" href="#curl">Curl</a></li>
-<li><a class="reference internal" href="#getting-updated-tokens">Getting updated tokens</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#implementation-overview">Implementation Overview</a><ul>
@@ -141,23 +138,6 @@ reporting on business data.  The goal is to automate the entire ML process (feat
 <div class="section" id="running-and-testing-instructions">
 <h1>Running and Testing Instructions<a class="headerlink" href="#running-and-testing-instructions" title="Permalink to this headline">¶</a></h1>
 <p>RobotClassify can be accessed from the URL: <a class="reference external" href="https://robotclassify.herokuapp.com/">https://robotclassify.herokuapp.com/</a>.</p>
-<p>There are two user accounts for testing:</p>
-<ul>
-<li><p>Editor Role: <a class="reference external" href="mailto:udacityscott+edit&#37;&#52;&#48;gmail&#46;com">udacityscott+edit<span>&#64;</span>gmail<span>&#46;</span>com</a> / Password: Udacity$Scott</p>
-<p>Editors can create projects, runs, and perform training</p>
-</li>
-<li><p>Viewer Role: <a class="reference external" href="mailto:udacityscott+view&#37;&#52;&#48;gmail&#46;com">udacityscott+view<span>&#64;</span>gmail<span>&#46;</span>com</a> / Password: Udacity$Scott</p>
-<p>Viewers can only view projects, runs, and their results.</p>
-</li>
-</ul>
-<p>Bearer Tokens can be obtained for these accounts, after logging in, at <a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a>.</p>
-<p>There are three approaches to running and evaluating RobotClassify:</p>
-<ul class="simple">
-<li><p>Web</p></li>
-<li><p>UnitTest</p></li>
-<li><p>Curl</p></li>
-</ul>
-<p>There are scripts to help with each approach. Example files are located at <a class="reference external" href="https://github.com/scottrsmith/RobotClassify/tree/master/examples">https://github.com/scottrsmith/RobotClassify/tree/master/examples</a>.</p>
 <div class="section" id="running-on-the-web">
 <h2>Running on the Web<a class="headerlink" href="#running-on-the-web" title="Permalink to this headline">¶</a></h2>
 <p>The web interface provides a 4 step approach to completing training and getting a result:</p>
@@ -178,40 +158,13 @@ reporting on business data.  The goal is to automate the entire ML process (feat
 </ul>
 <p>Following these instructions will give a training result that would put you in the top 8% of competitors.</p>
 </div>
-<div class="section" id="unittest">
-<h2>UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h2>
-<p>Unit tests are run using the script <code class="docutils literal notranslate"><span class="pre">test.sh</span></code>. This script requires Postgress on the local machine where the test is to be run.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">test.sh</span></code> script will:</p>
-<ul class="simple">
-<li><p>Create the robotclassiy_test database</p></li>
-<li><p>Get a Token and User ID for the API user (placed into environment variables)</p></li>
-<li><p>Populate the test database with data for the API user</p></li>
-<li><p>Run the tests</p></li>
-</ul>
-</div>
-<div class="section" id="curl">
-<h2>Curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h2>
-<p>The current implementation is enabled for Curl. Curl will allow for operations against the product database (Hosted on Heroku).</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">curl.sh</span></code> (Sets the environment variables, token and database URL)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">curl_pass_editor.sh</span></code> (Curl commands that will pass for the editor user)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">curl.fail_editor.sh</span></code> (Curl commands that will fail for the editor user)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">curl_pass_viewer.sh</span></code> (Curl commands that will pass for the viewer user)</p></li>
-</ul>
-<p>It is best to run the <code class="docutils literal notranslate"><span class="pre">curl.sh</span></code> script and then cut and paste each command from the file.</p>
-</div>
-<div class="section" id="getting-updated-tokens">
-<h2>Getting updated tokens<a class="headerlink" href="#getting-updated-tokens" title="Permalink to this headline">¶</a></h2>
-<p>If you need to get an updated token, you need to login to the Web app and issue the following URL:</p>
-<p><a class="reference external" href="https://robotclassify.herokuapp.com/jwt">https://robotclassify.herokuapp.com/jwt</a></p>
-<p>This will retrieve the current bearer token for the logged-in user.</p>
-</div>
 </div>
 <div class="section" id="implementation-overview">
 <h1>Implementation Overview<a class="headerlink" href="#implementation-overview" title="Permalink to this headline">¶</a></h1>
 <p>The application was written with Flask as the backend and Flask What-the-forms for the frontend.</p>
 <div class="section" id="roles">
 <h2>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h2>
+<p>DISABLED FOR NOW - ALL PERMISSIONS AVAILABLE FOR ALL USERS.</p>
 <p>There are two roles:</p>
 <ul class="simple">
 <li><p>Viewer Role: Viewers can only view projects, runs, and their results.</p></li>
