@@ -1356,7 +1356,7 @@ def premission_error(error):
     #    'message': 'Permission Error',
     #    'description': str(error),
     # }), 401)
-    return (render_template('errors/500.html'), 401)
+    return (render_template('errors/500.html', user=userData()), 401)
 
 
 @app.errorhandler(404)
@@ -1367,7 +1367,7 @@ def not_found_error(error):
     #    'message': 'Not Found',
     #   'description': str(error),
     # }), 404)
-    return (render_template('errors/404.html'), 404)
+    return (render_template('errors/404.html', user=userData()), 404)
 
 
 @app.errorhandler(405)
@@ -1399,7 +1399,7 @@ def server_error(error):
     #    'message': 'Server Error',
     #    'description': str(error),
     # }), 500)
-    return (render_template('errors/500.html'), 500)
+    return (render_template('errors/500.html', user=userData()), 500)
 
 
 if not app.debug:

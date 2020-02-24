@@ -45,7 +45,7 @@ The application was written with Flask as the backend and Flask What-the-forms f
 
 ## Roles ##
 
-DISABLED FOR NOW - ALL PERMISSIONS AVAILABLE FOR ALL USERS.
+DISABLED FOR NOW - ALL PERMISSIONS AVAILABLE FOR ALL USERS.fit
 
 There are two roles:
 - Viewer Role: Viewers can only view projects, runs, and their results.
