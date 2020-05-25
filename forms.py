@@ -11,6 +11,15 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from flask_uploads import UploadSet, DATA
 import config
 
+import mlLib.trainModels as tm
+
+trainingTypeChoices = [
+            ('Kaggle', 'Kaggle'),
+            ('Train-only',  'Train-only'),
+            ('Predict', ' Predict'),
+            ('Cluster', 'Cluster')
+        ]
+
 
 # ----------------------------------------------------------------------------
 #  Project Form
@@ -33,6 +42,20 @@ class ProjectForm(FlaskForm):
                                         FileAllowed(config.dataFiles,
                                                     'csv files only')])
 
+    modelType = SelectField(
+        'modelType',
+        validators=[DataRequired('A ML Model Type is required')],
+        choices=[
+            (tm.TRAIN_CLASSIFICATION, tm.TRAIN_CLASSIFICATION),
+            (tm.TRAIN_REGRESSION, tm.TRAIN_REGRESSION),
+            (tm.TRAIN_CLUSTERING, tm.TRAIN_CLUSTERING)
+        ])
+
+    trainingType = SelectField(
+        'modelType',
+        validators=[DataRequired('A training type is required')],
+        choices=trainingTypeChoices)
+
 
 # ----------------------------------------------------------------------------
 #  Project Form Edit
@@ -46,6 +69,20 @@ class ProjectFormEdit(FlaskForm):
     description = StringField(
         'description',
         validators=[DataRequired(message='Description Required')])
+
+    modelType = SelectField(
+        'modelType',
+        validators=[DataRequired('A ML Model Type is required')],
+        choices=[
+            (tm.TRAIN_CLASSIFICATION, tm.TRAIN_CLASSIFICATION),
+            (tm.TRAIN_REGRESSION, tm.TRAIN_REGRESSION),
+            (tm.TRAIN_CLUSTERING, tm.TRAIN_CLUSTERING)
+        ])
+
+    trainingType = SelectField(
+        'modelType',
+        validators=[DataRequired('A training type is required')],
+        choices=trainingTypeChoices)
 
 
 # ----------------------------------------------------------------------------
@@ -77,33 +114,16 @@ class RunForm(FlaskForm):
             'The Predict requires at least two choices')],
         choices=[])
 
+    clusterDimensionThreshold = IntegerField('clusterDimensionThreshold')
+
     scoring = SelectField(
         'scoring',
         validators=[DataRequired('A target scoring method is required')],
-        choices=[('f1', 'f1'),
-                 ('r2', 'r2'),
-                 ('Precision', 'Precision'),
-                 ('Recall', 'Recall'),
-                 ('Accuracy', 'Accuracy')])
+        choices=[])
 
     modelList = SelectMultipleField(
         'modelList',
         validators=[DataRequired('A ML Model is required')],
-        choices=[
-            ('l2', 'l2'),
-            ('rfc', 'rfc'),
-            # ('gbc', 'gbc'),
-            ('decisiontree', 'decisiontree'),
-            ('kneighbors', 'kneighbors'),
-            # ('sgd', 'sgd'),
-            ('bagging', 'bagging'),
-            ('adaboost', 'adaboost'),
-            ('gaussiannb', 'gaussiannb'),
-            ('etc', 'etc'),
-            # ('svc', 'svc'),
-            ('xgbc', 'xgbc'),
-            # ('stack', 'stack'),
-            # ('vote', 'vote'),
-        ])
+        choices=[])
 
     basicAutoMethod = BooleanField('basicAutoMethod', default=False)

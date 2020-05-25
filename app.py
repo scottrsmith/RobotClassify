@@ -46,6 +46,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 # Machine learning libraries
 from xgboost import XGBClassifier
 from mlLib.project import autoFlaskEvaluateClassifier, getMLScoringFunctions
+import mlLib.trainModels as tm
 
 # System libraries
 import logging
@@ -81,8 +82,28 @@ def dumpData(obj, name='None'):
         print("    data.%s = %r" % (attr, obj[attr]))
 
 
-def makePickList(columns):
+def makePickList(columns, add=None):
+    if add is not None:
+        columns.append(add)
     return [(c, c) for c in columns]
+
+
+def makeModelPickList(model):
+    if model is None:
+        columns = tm.availableModels[tm.TRAIN_CLASSIFICATION]
+    else:
+        columns = tm.availableModels[model]
+
+    return makePickList(columns)
+
+
+def makeScorerPickList(model):
+    if model is None:
+        scorers = tm.availableScorers[tm.TRAIN_CLASSIFICATION]
+    else:
+        scorers = tm.availableScorers[model]
+
+    return makePickList(scorers)
 
 
 def dumpSession(name=None):
@@ -521,12 +542,12 @@ def projects_list_page():
                            count=len(data),
                            user=userData())
 
+
 def projects_show_page(project):
     data = project.projectPage
     return render_template('pages/show_project.html',
                            project=data,
                            user=userData())
-
 
 
 # ----------------------------------------------------------------------------
@@ -909,7 +930,6 @@ def delete_project(payload, project_id):
     return projects_list_page()
 
 
-
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 #  R U N S
@@ -1040,8 +1060,12 @@ def create_run_submission(payload, project_id):
     form = RunForm(prefix='form-run-')
     pickList = makePickList(project.columns)
     form.targetVariable.choices = pickList
-    form.key.choices = pickList
     form.predictSetOut.choices = pickList
+    form.key.choices = makePickList(project.columns, add='None')
+
+    # set the available models based upon selected model for the project
+    form.modelList.choices = makeModelPickList(project.modelType)
+    form.scoring.choices = makeScorerPickList(project.modelType)
 
     if form.is_submitted() and request.method == 'POST':
         run = Run()
@@ -1054,7 +1078,8 @@ def create_run_submission(payload, project_id):
     else:
         return render_template('forms/new_run.html',
                                form=form,
-                               user=userData())
+                               user=userData(),
+                               project=project)
 
     return projects_show_page(project)
 
@@ -1114,6 +1139,7 @@ def delete_run(payload, run_id):
           + '" was successfully deleted!')
     return projects_show_page(project)
 
+
 # ----------------------------------------------------------------------------
 #  Edit Runs
 # ----------------------------------------------------------------------------
@@ -1171,10 +1197,15 @@ def edit_run_submission(payload, run_id):
     form = RunForm(obj=run, prefix='form-run-')
     pickList = makePickList(run.Project.columns)
     form.targetVariable.choices = pickList
-    form.key.choices = pickList
     form.predictSetOut.choices = pickList
+    form.key.choices = makePickList(run.Project.columns, add='None')
+
     project = run.Project
     # form.scoring.choices = makePickList(getMLScoringFunctions())
+
+    # set the available models based upon selected model for the project
+    form.modelList.choices = makeModelPickList(project.modelType)
+    form.scoring.choices = makeScorerPickList(project.modelType)
 
     if request.method == 'PATCH' or request.method == 'POST':
         if form.is_submitted():
@@ -1199,6 +1230,7 @@ def edit_run_submission(payload, run_id):
     return render_template('forms/edit_run.html',
                            form=form,
                            run=run,
+                           project=project,
                            user=userData())
 
 
@@ -1259,13 +1291,15 @@ def run_submission(payload, run_id):
         trainingFileOut=None,
         predictFileOut=None,
         resultsFile='KaggleSubmitFile.csv',
+        modelType=run.Project.modelType,
         modelList=run.modelList,
         confusionMatrixLabels=None,
         scoring=run.scoring,
-        setProjectGoals={'f1': (0.9, '>')},
+        setProjectGoals=None,
         runVerbose=0,
         recommendOnly=True,
         basicAutoMethod=True,
+        clusterDimensionThreshold=run.clusterDimensionThreshold,
         skewFactor=40.0,
         doExplore=True,
         doTrain=True,
@@ -1361,7 +1395,7 @@ def premission_error(error):
 
 @app.errorhandler(404)
 def not_found_error(error):
-    #return (jsonify({
+    # return (jsonify({
     #    'success': False,
     #    'error': 404,
     #    'message': 'Not Found',

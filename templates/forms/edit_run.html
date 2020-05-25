@@ -59,18 +59,30 @@
 	    {% endif %}
       </div>
 
-      <div class="form-group">
-        <label for="predictSetOut">Predict Set Out. Typically the Record Key and Target Variable</label>
-        <small>Ctrl+Click to select mat least two</small>
-        {{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
-	    {% if form.predictSetOut.errors %}
-	        <ul class="errors">
-	        	{% for error in form.predictSetOut.errors %}
-	        		<li>{{ error }}</li>
-	            {% endfor %}
-	        </ul>
-	    {% endif %}
-      </div>
+	  {% if project.trainingType != 'Train-only' %}
+		<div class="form-group">
+			<label for="predictSetOut">Predict Set Out. Typically the Record Key and Target Variable</label>
+			<small>Ctrl+Click to select mat least two</small>
+			{{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
+			{% if form.predictSetOut.errors %}
+				<ul class="errors">
+					{% for error in form.predictSetOut.errors %}
+						<li>{{ error }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endif %}
+	  </div>
+
+	{% if project.trainingType == 'Cluster' %}
+	  <div class="form-group">
+		<label for="form-run-clusterDimensionThreshold">Cluster Dimension Threshold</label><br>
+		<small>Max number of clusters to evaluate</small>
+		{{ form.clusterDimensionThreshold(class_ = 'form-control', placeholder=20, autofocus = true) }}
+	  </div>
+	{% endif %}
+
+	  
 
       <div class="form-group">
         <label for="modelList">Classification Models for Training</label>

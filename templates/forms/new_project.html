@@ -16,6 +16,20 @@
        </div>
 
       <div class="form-group">
+        <label for="form-run-modelList">Model Type</label>
+		    <small>Select one</small>
+        {{ form.modelType(class_ = 'form-control', placeholder='modelType', id=form.modelType, autofocus = true) }}
+		
+      </div>
+
+      <div class="form-group">
+        <label for="form-run-modelList">Training Type</label>
+		    <small>Select one</small>
+        {{ form.trainingType(class_ = 'form-control', placeholder='trainingType', id=form.trainingType, autofocus = true) }}
+      </div>
+
+
+      <div class="form-group">
         <label for="form-project-trainingFile">Training File</label>
         {{ form.trainingFile }}		
       </div>

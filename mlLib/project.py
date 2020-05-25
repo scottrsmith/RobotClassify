@@ -227,6 +227,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
                                 transcriptFile=None,
                                 predictFileOut=None,
                                 resultsFile=None,
+                                modelType=None,
                                 modelList=None,
                                 confusionMatrixLabels=[],
                                 scoring='f1',
@@ -239,6 +240,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
                                 doExplore=True,
                                 doTrain=True,
                                 doPredict=True,
+                                clusterDimensionThreshold=20,
                                 skewFactor=None,
                                 toTerminal=True
                                 ):
@@ -275,6 +277,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
              recommendOnly=True,
              basicAutoMethod=True,
              skewFactor=40.0,
+             clusterDimensionThreshold = 20,
              doExplore=True,
              doTrain=True,
              doPredict=True,
@@ -294,11 +297,13 @@ def autoFlaskEvaluateClassifier(projectName=None,
                        errorFile=None, toTerminal=toTerminal)
 
     project = mlProject(projectName, projectName)
+    if modelType is None:
+        modelType = tm.TRAIN_CLASSIFICATION
 
     project.setTrainingPreferences(
         crossValidationSplits=5,
         parallelJobs=-1,
-        modelType=tm.TRAIN_CLASSIFICATION,
+        modelType=modelType,
         modelList=modelList,
         useStandardScaler=False,
         gridSearchScoring=scoring,
@@ -313,6 +318,7 @@ def autoFlaskEvaluateClassifier(projectName=None,
         runEstimatorHyperparameters=tm.RUNDEFAULT,
         runAutoFeaturesMode=True,
         skewFactor=skewFactor,
+        clusterDimensionThreshold = clusterDimensionThreshold,
         runMetaClassifier=tm.RUNDEFAULT)
 
     if type(trainingFileDF) is bytes:
@@ -347,7 +353,10 @@ def autoFlaskEvaluateClassifier(projectName=None,
     project.saveKey(TESTINGFILENAME, key)
     project.MergeFilesAsTrainAndTest(TRAININGFILENAME, TESTINGFILENAME)
 
-    project.dropColumn(TRAININGFILENAME, key)
+    if key == 'None':
+        pass
+    elif key is not None:
+        project.dropColumn(TRAININGFILENAME, key)
 
     project.setGoals(setProjectGoals)
     # project.setGoals( {'Accuracy': (0.9,'>'),
@@ -365,9 +374,9 @@ def autoFlaskEvaluateClassifier(projectName=None,
         # mlUtility.runLog (project.explore[TRAININGFILENAME])
         # mlUtility.runLog (project.explore[TRAININGFILENAME].
         #                                           allStatsSummary())
-        # results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
-        #    plotExploreHeatMap(toWeb=True)
-        results['exploreheatmap'] = None
+        results['exploreheatmap'] = project.explore[TRAININGFILENAME].\
+            plotExploreHeatMap(toWeb=True)
+        # results['exploreheatmap'] = None
         pass
 
         # project.explore[TRAININGFILENAME].plotFeatureImportance()
@@ -412,16 +421,20 @@ def autoFlaskEvaluateClassifier(projectName=None,
 
         predict.importPredictFromDF(
             project.PullTrainingData(), readyForPredict=True)
-        keyName, keyData = project.getKey()
+  
+        if key != 'None':
+            keyName, keyData = project.getKey()
 
         predict.prepPredict()
-        predict.exportPreppedFile(
-            predictFileOut, columnName=keyName, columnData=keyData)
+        # predict.exportPreppedFile(
+        #    predictFileOut, columnName=keyName, columnData=keyData)
 
         ans = predict.runPredict()
 
         # Prepare the predict file for Kaggle upload
-        predict.addToPredictFile(keyName, keyData)
+        if key != 'None':
+            predict.addToPredictFile(keyName, keyData)
+
         if useProba:
             pass
         else:
@@ -459,7 +472,7 @@ def autoEvaluateClassifier(projectName=None,
                            scoring='f1',
                            useProba=False,
                            bottomImportancePrecentToCut=None,
-                           setProjectGoals={'f1': (0.9, '>')},
+                           setProjectGoals=None,
                            runVerbose=1,
                            recommendOnly=None,
                            basicAutoMethod=None,
@@ -1825,6 +1838,7 @@ class mlProject (object):
         modelNames = {'gbc': 'gradientboostingclassifier__',
                       'l1': 'logisticregression__',
                       'l2': 'logisticregression__',
+                      'linearregression': 'linearregression__',
                       'rfc': 'randomforestclassifier__',
                       'bagging': 'baggingclassifier__',
                       'adaboost': 'adaboostclassifier__',

@@ -14,7 +14,20 @@
         <label for="address">Description</label>
         {{ form.description(class_ = 'form-control', autofocus = true) }}
       </div>
-	  
+    
+      <div class="form-group">
+        <label for="form-run-modelList">Model Type</label>
+		    <small>Select one</small>
+        {{ form.modelType(class_ = 'form-control', placeholder='modelType', id=form.modelType, autofocus = true) }}
+		
+      </div>
+
+      <div class="form-group">
+        <label for="form-run-modelList">Training Type</label>
+		    <small>Select one</small>
+        {{ form.trainingType(class_ = 'form-control', placeholder='trainingType', id=form.trainingType, autofocus = true) }}
+      </div>
+
 	  <div>
 		  <h3>Training files can not be updated </h3>
       <div>

@@ -34,7 +34,7 @@ PROFILE_KEY = 'profile'
 SECRET_KEY = os.urandom(32)
 JWT_PAYLOAD = 'jwt_payload'
 ALGORITHMS = ['RS256']
-MAX_FILE_SIZE_MB = 1  # One Megabyte file size max
+MAX_FILE_SIZE_MB = 6  # Six Megabyte file size max
 
 # WTF_CSRF_CHECK_DEFAULT = False
 # WTF_CSRF_HEADERS = ['X-CSRFToken', 'X-CSRF-Token']

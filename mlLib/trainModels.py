@@ -67,6 +67,7 @@ from sklearn.metrics import r2_score, mean_absolute_error, accuracy_score,\
 from sklearn.metrics import f1_score, recall_score, precision_score
 
 from sklearn.cluster import KMeans
+from sklearn.metrics.cluster import completeness_score
 
 # Classification metrics
 from sklearn.metrics import roc_curve, auc, roc_auc_score
@@ -92,13 +93,42 @@ RUNSHORT = 'Run Short'
 
 availableModels = {TRAIN_REGRESSION: ['lasso', 'ridge', 'enet', 'rf', 'gb',
                                       'dtr', 'linearregression'],
-                   # TRAIN_CLASSIFICATION: ['l1', 'l2', 'rfc', 'gbc',
-                   #           'decisiontree', 'kneighbors', 'sgd', 'bagging',
                    TRAIN_CLASSIFICATION: ['l2', 'rfc', 'gbc', 'decisiontree',
                                           'kneighbors', 'sgd', 'bagging',
                                           'adaboost', 'gaussiannb', 'etc',
                                           'svc', 'xgbc', 'stack', 'vote'],
                    TRAIN_CLUSTERING: ['kmeans']}
+
+# https://scikit-learn.org/stable/modules/model_evaluation.html
+# ['accuracy', 'adjusted_mutual_info_score', 'adjusted_rand_score',
+# 'average_precision',
+# 'balanced_accuracy', 'completeness_score', 'explained_variance', 'f1',
+# 'f1_macro',
+# 'f1_micro', 'f1_samples', 'f1_weighted', 'fowlkes_mallows_score',
+# 'homogeneity_score',
+# 'jaccard', 'jaccard_macro', 'jaccard_micro', 'jaccard_samples',
+# 'jaccard_weighted',
+# 'max_error', 'mutual_info_score', 'neg_brier_score', 'neg_log_loss',
+# 'neg_mean_absolute_error', 'neg_mean_gamma_deviance',
+# 'neg_mean_poisson_deviance',
+# 'neg_mean_squared_error', 'neg_mean_squared_log_error',
+# 'neg_median_absolute_error',
+# 'neg_root_mean_squared_error', 'normalized_mutual_info_score', 'precision',
+# 'precision_macro', 'precision_micro', 'precision_samples',
+# 'precision_weighted',
+# 'r2', 'recall', 'recall_macro', 'recall_micro', 'recall_samples',
+# 'recall_weighted',
+# 'roc_auc', 'roc_auc_ovo', 'roc_auc_ovo_weighted', 'roc_auc_ovr',
+# 'roc_auc_ovr_weighted',
+# 'v_measure_score']
+#
+availableScorers = {TRAIN_REGRESSION: ['explained_variance', 'max_error', 'r2',
+                                       'neg_mean_squared_error',
+                                       'neg_mean_absolute_error'],
+                    TRAIN_CLASSIFICATION: ['f1', 'r2', 'Precision', 'Recall',
+                                           'Accuracy'],
+                    TRAIN_CLUSTERING: ['completeness_score',
+                                       'adjusted_rand_score']}
 
 
 def memorySnapshot(log, cnt=10, start=False):
@@ -156,7 +186,7 @@ def getModelPreferences(name, project, forBase=True, forMeta=False):
         elif name == 'dtr':
             return dtrPreferences(project, override, forBase, forMeta)
         elif name == 'linearregression':
-            return linearRegressionPreferences(project, override, forBase)
+            return linearRegressionPreferences(project, override, forBase, forMeta)
 
     # Now classification models
     if project.modelType == TRAIN_CLASSIFICATION:
@@ -1059,7 +1089,7 @@ def kmeansPreferences(project, override, forBase, forMeta):
     else:  # short run
         hyperparameters = {}
 
-    scorers = []
+    scorers = ['completeness_score']
     return KMeans(n_clusters=project.kmeansClusters,
                   random_state=project.randomState),\
         hyperparameters, scorers
@@ -1393,6 +1423,7 @@ class trainModels (object):
 
         predProba = None
         pred = None
+        completeness_score = None
 
         f1, recall, precision = None, None, None
 
@@ -1470,15 +1501,21 @@ class trainModels (object):
                         confusionMatrix = confusion_matrix(self.y_test, pred)
                         # confusionMatrix = confusionMatrix.astype('float')/
                         #                   confusionMatrix.sum(axis=0)
+                    elif scorer == 'completeness_score':
+                        # if pred is None:
+                        #     pred = model.predict(X_test)
+                        # score = model.score(X_test, pred)
+                        completeness_score = 0.555
 
             # Track feature importance
-            bestModel = model.best_estimator_
             coef = None
             fi = None
-            if hasattr(bestModel, 'feature_importances_'):
-                fi = bestModel.feature_importances_
-            if hasattr(bestModel, 'coef_'):
-                coef = bestModel.coef_[0]
+            if hasattr(model, 'best_estimator_'):
+                bestModel = model.best_estimator_
+                if hasattr(bestModel, 'feature_importances_'):
+                    fi = bestModel.feature_importances_
+                if hasattr(bestModel, 'coef_'):
+                    coef = bestModel.coef_[0]
 
                 # Record the scores
             self.modelScores[name] = {'r2': r2,
@@ -1495,7 +1532,8 @@ class trainModels (object):
                                       'Precision': precision,
                                       'RunTime': self.runTimes[name],
                                       'COEF': coef,
-                                      'FI': fi}
+                                      'FI': fi,
+                                      'completeness_score': completeness_score}
 
             self.shortModelScoresColumns = ['r2', 'MAE', 'Best', 'AUROC',
                                             'Accuracy', 'fbeta',
@@ -1517,6 +1555,7 @@ class trainModels (object):
                 return fitModel.best_estimator_
             else:
                 return fitModel
+    
         if self.project.testSize == 0:
             theBest = self.theLastRun
         elif self.project.goalsToReach is not None:
@@ -1568,7 +1607,7 @@ class trainModels (object):
         highestR2Name = None
         lowestMAEName = None
         bestHoldoutR2Name = None
-
+ 
         for name in self.modelScores:
             scores = self.modelScores[name]
             r2 = scores['r2']
@@ -1591,7 +1630,7 @@ class trainModels (object):
                 if Best > bestHoldoutR2:
                     bestHoldoutR2 = Best
                     bestHoldoutR2Name = name
-
+ 
         if ((highestR2Name == lowestMAEName) and
                 (lowestMAEName == bestHoldoutR2Name)):
             theBest = highestR2Name

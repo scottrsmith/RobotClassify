@@ -1,10 +1,6 @@
 """
 **Introduction**
 
-There are three models:
-- Venue
-- Artists
-- Shows
 
 """
 
@@ -58,6 +54,20 @@ class Project(db.Model):
     description
     Description of the project
     '''
+
+    modelType = db.Column(db.String(20))
+    '''
+    modelType:
+        TRAIN_CLASSIFICATION = 'Classification'
+        TRAIN_REGRESSION = 'Regression'
+        TRAIN_CLUSTERING = 'Clustering'
+    '''
+
+    trainingType = db.Column(db.String(20))
+    '''
+        kaggle, train-only, predict, cluster
+    '''
+
     trainingFile = db.Column(db.String(120))
     '''
     Training file.
@@ -224,6 +234,12 @@ class Run(db.Model):
     '''
     targetVariable
     The variable that is to be predicted.
+    '''
+
+    clusterDimensionThreshold = db.Column(db.Integer)
+    '''
+    clusterDimensionThreshold
+    The max number of clusters to evaluate
     '''
 
     key = db.Column(db.String(120))

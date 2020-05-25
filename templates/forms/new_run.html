@@ -16,32 +16,43 @@
         {{ form.description(class_ = 'form-control', autofocus = true) }}
       </div>
 
+      <!-- ('Kaggle', 'Train-only','Predict','Cluster') -->
+  
+      
       <div class="form-group">
         <label for="form-run-targetVariable">Target Variable to Predict</label>
         <small>Select one</small>
         {{ form.targetVariable(class_ = 'form-control', placeholder='targetVariable', id=form.targetVariable, autofocus = true) }}
-		
-     </div>
-
-
+      </div>
+      
       <div class="form-group">
         <label for="form-run-key">Record Key</label>
         <small>Select one</small>
-        {{ form.key(class_ = 'form-control', placeholder='key', id=form.key, autofocus = true) }}
-		
-     </div>
-
-      <div class="form-group">
-        <label for="form-run-predictSetOut">Predict Set Out</label><br>
-        <small>Typically the Record Key and Target Variable. Ctrl+Click to select two</small>
-        {{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
-		
+        {{ form.key(class_ = 'form-control', placeholder='None', id=form.key, autofocus = true) }}
       </div>
+
+      {% if project.trainingType != 'Train-only' %}
+        <div class="form-group">
+          <label for="form-run-predictSetOut">Predict Set Out</label><br>
+          <small>Typically the Record Key and Target Variable. Ctrl+Click to select two</small>
+          {{ form.predictSetOut(class_ = 'form-control', placeholder='predictSetOut', id=form.predictSetOut, autofocus = true) }}
+        </div>
+      {% endif %}
+
+      {% if project.trainingType == 'Cluster' %}
+        <div class="form-group">
+          <label for="form-run-clusterDimensionThreshold">Cluster Dimension Threshold</label><br>
+          <small>Max number of clusters to evaluate</small>
+          {{ form.clusterDimensionThreshold(class_ = 'form-control', placeholder=20, autofocus = true) }}
+        </div>
+      {% endif %}
+
+
 
       <div class="form-group">
         <label for="form-run-modelList">Classification Models for Training</label>
         <!-- <small>Ctrl+Click to select multiple</small> -->
-		 <small>Select one</small>
+		    <small>Select one</small>
         {{ form.modelList(class_ = 'form-control', placeholder='modelList', id=form.modelList, autofocus = true) }}
 		
       </div>
