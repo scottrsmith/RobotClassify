@@ -19,7 +19,7 @@ phases:
       commands:
         - printf 'Begin pre-build'
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple_jwt_api.yml
+        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' RobotClassify.yml
         - $(aws ecr get-login --no-include-email)
         - export KUBECONFIG=$HOME/.kube/config
         - printf 'End pre-build'
@@ -39,7 +39,7 @@ phases:
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region us-west-2
       - pwd
       - ls -la
-      - kubectl apply -f simple_jwt_api.yml
+      - kubectl apply -f RobotClassify.yml
       - printf '[{"name":"RobotClassify","imageUri":"%s"}]' $REPOSITORY_URI:$TAG
       - printf '[{"name":"RobotClassify","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       - pwd
