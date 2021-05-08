@@ -13,7 +13,7 @@ cryptography==2.8
 cycler==0.10.0
 dnspython==1.16.0
 ecdsa==0.15
-eventlet==0.25.1
+eventlet==0.31.0
 fabric==2.5.0
 falcon==2.0.0
 Flask==1.0.2
