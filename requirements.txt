@@ -45,7 +45,7 @@ mccabe==0.6.1
 mlxtend==0.17.0
 mongoengine==0.19.1
 monotonic==1.5
-numpy==1.18.1
+numpy==1.22.0
 pandas==0.25.3
 paramiko==2.7.1
 psycopg2-binary==2.8.4
