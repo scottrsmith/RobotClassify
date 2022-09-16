@@ -38,7 +38,7 @@ joblib==0.14.1
 jose==1.0.0
 kiwisolver==1.1.0
 lazy-object-proxy==1.4.3
-Mako==1.1.0
+Mako==1.2.2
 MarkupSafe==1.1.1
 matplotlib==3.1.2
 mccabe==0.6.1
